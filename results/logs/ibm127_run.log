@@ -1,0 +1,97 @@
+== mult_8: 1898 gates, 8 active qubits
+   original         depth=   1138 2q=   276 xt=   31 dur=  159894.0ns gates=  1898 t=0.0s
+   lee2026          depth=   1138 2q=   276 xt=   31 dur=  159894.0ns gates=  1898 t=0.3s
+   jk2026           depth=   1102 2q=   276 xt=   31 dur=  158685.0ns gates=  1898 t=0.2s
+   mkco             depth=   1102 2q=   276 xt=   31 dur=  158685.0ns gates=  1898 t=0.1s
+   lee2026_2q       depth=   1138 2q=   276 xt=   31 dur=  159894.0ns gates=  1898 t=0.2s
+   jk2026_2q        depth=   1150 2q=   276 xt=   31 dur=  160320.7ns gates=  1898 t=0.1s
+   mkco_2q          depth=   1138 2q=   276 xt=   31 dur=  159894.0ns gates=  1898 t=0.1s
+   mkco_xt          depth=   1154 2q=   276 xt=   23 dur=  160391.8ns gates=  1898 t=4.4s
+   qiskit_o3        depth=   1172 2q=   276 xt=   31 dur=   23752.7ns gates=  1958 t=3.8s
+   qiskit_o3+mkco   depth=   1136 2q=   276 xt=   31 dur=   22543.6ns gates=  1958 t=0.4s
+== add_17: 2812 gates, 17 active qubits
+   original         depth=   1003 2q=   253 xt=  151 dur=  145600.5ns gates=  2812 t=0.0s
+   lee2026          depth=   1003 2q=   253 xt=  151 dur=  145600.5ns gates=  2812 t=0.5s
+   jk2026           depth=    964 2q=   255 xt=  148 dur=  145422.5ns gates=  2812 t=0.2s
+   mkco             depth=    964 2q=   255 xt=  148 dur=  145422.5ns gates=  2812 t=0.2s
+   lee2026_2q       depth=   1003 2q=   253 xt=  151 dur=  145600.5ns gates=  2812 t=0.3s
+   jk2026_2q        depth=   1002 2q=   253 xt=  151 dur=  145564.9ns gates=  2812 t=0.0s
+   mkco_2q          depth=   1002 2q=   253 xt=  151 dur=  145564.9ns gates=  2812 t=0.2s
+   mkco_xt          depth=   1019 2q=   253 xt=  144 dur=  145742.7ns gates=  2812 t=23.6s
+   qiskit_o3        depth=   1026 2q=   253 xt=  151 dur=  142187.1ns gates=  2918 t=5.7s
+   qiskit_o3+mkco   depth=    988 2q=   254 xt=  149 dur=  141618.1ns gates=  2918 t=0.2s
+== qae_17: 3033 gates, 17 active qubits
+   original         depth=   1066 2q=   274 xt=  165 dur=  157369.4ns gates=  3033 t=0.0s
+   lee2026          depth=   1066 2q=   274 xt=  165 dur=  157369.4ns gates=  3033 t=0.5s
+   jk2026           depth=   1035 2q=   274 xt=  165 dur=  156515.9ns gates=  3033 t=0.2s
+   mkco             depth=   1035 2q=   274 xt=  165 dur=  156515.9ns gates=  3033 t=0.2s
+   lee2026_2q       depth=   1066 2q=   274 xt=  165 dur=  157369.4ns gates=  3033 t=0.3s
+   jk2026_2q        depth=   1068 2q=   274 xt=  165 dur=  157440.5ns gates=  3033 t=0.0s
+   mkco_2q          depth=   1066 2q=   274 xt=  165 dur=  157369.4ns gates=  3033 t=0.1s
+   mkco_xt          depth=   1075 2q=   274 xt=  138 dur=  157511.6ns gates=  3033 t=21.0s
+   qiskit_o3        depth=   1084 2q=   274 xt=  165 dur=  153138.3ns gates=  3090 t=6.4s
+   qiskit_o3+mkco   depth=   1055 2q=   274 xt=  165 dur=  152284.9ns gates=  3090 t=0.2s
+== qft_16: 3444 gates, 16 active qubits
+   original         depth=   1009 2q=   260 xt=  210 dur=  149120.4ns gates=  3444 t=0.0s
+   lee2026          depth=   1009 2q=   260 xt=  210 dur=  149120.4ns gates=  3444 t=0.5s
+   jk2026           depth=    980 2q=   260 xt=  211 dur=  148231.4ns gates=  3444 t=0.2s
+   mkco             depth=    980 2q=   260 xt=  211 dur=  148231.4ns gates=  3444 t=0.2s
+   lee2026_2q       depth=   1009 2q=   260 xt=  210 dur=  149120.4ns gates=  3444 t=0.4s
+   jk2026_2q        depth=   1008 2q=   260 xt=  210 dur=  149084.9ns gates=  3444 t=0.1s
+   mkco_2q          depth=   1008 2q=   260 xt=  210 dur=  149084.9ns gates=  3444 t=0.1s
+   mkco_xt          depth=   1027 2q=   260 xt=  195 dur=  149369.4ns gates=  3444 t=30.1s
+   qiskit_o3        depth=   1026 2q=   260 xt=  210 dur=  145316.0ns gates=  3518 t=9.6s
+   qiskit_o3+mkco   depth=    997 2q=   260 xt=  211 dur=  144427.0ns gates=  3518 t=0.2s
+== hubbard_8: 8125 gates, 8 active qubits
+   original         depth=   4400 2q=  1111 xt=  166 dur=  638046.4ns gates=  8125 t=0.0s
+   lee2026          depth=   4400 2q=  1111 xt=  166 dur=  638046.4ns gates=  8125 t=1.3s
+   jk2026           depth=   4268 2q=  1112 xt=  167 dur=  634952.6ns gates=  8125 t=1.3s
+   mkco             depth=   4268 2q=  1112 xt=  167 dur=  634952.6ns gates=  8125 t=0.7s
+   lee2026_2q       depth=   4400 2q=  1111 xt=  166 dur=  638046.4ns gates=  8125 t=1.0s
+   jk2026_2q        depth=   4388 2q=  1110 xt=  167 dur=  637121.9ns gates=  8125 t=0.3s
+   mkco_2q          depth=   4388 2q=  1110 xt=  167 dur=  637121.9ns gates=  8125 t=0.3s
+   mkco_xt          depth=   4415 2q=  1110 xt=  130 dur=  637548.7ns gates=  8125 t=30.2s
+   qiskit_o3        depth=   4382 2q=  1111 xt=  166 dur=  630366.5ns gates=  8059 t=15.4s
+   qiskit_o3+mkco   depth=   4246 2q=  1110 xt=  169 dur=  626703.8ns gates=  8059 t=0.4s
+== hhl_8: 18165 gates, 8 active qubits
+   original         depth=  10641 2q=  2319 xt=   56 dur= 1365412.8ns gates= 18165 t=0.0s
+   lee2026          depth=  10641 2q=  2319 xt=   56 dur= 1365412.8ns gates= 18165 t=2.8s
+   jk2026           depth=  10434 2q=  2319 xt=   56 dur= 1359509.8ns gates= 18165 t=6.2s
+   mkco             depth=  10434 2q=  2319 xt=   56 dur= 1359509.8ns gates= 18165 t=1.1s
+   lee2026_2q       depth=  10641 2q=  2319 xt=   56 dur= 1365412.8ns gates= 18165 t=2.0s
+   jk2026_2q        depth=  10651 2q=  2319 xt=   56 dur= 1365626.2ns gates= 18165 t=0.4s
+   mkco_2q          depth=  10641 2q=  2319 xt=   56 dur= 1365412.8ns gates= 18165 t=0.7s
+   mkco_xt          depth=  10658 2q=  2319 xt=   55 dur= 1365768.4ns gates= 18165 t=30.1s
+   qiskit_o3        depth=  11190 2q=  2319 xt=   56 dur= 1175618.9ns gates= 19098 t=26.5s
+   qiskit_o3+mkco   depth=  10983 2q=  2319 xt=   56 dur= 1169964.9ns gates= 19098 t=1.1s
+== heisenberg_32: 58848 gates, 32 active qubits
+   original         depth=   7143 2q=   881 xt= 1234 dur=  549162.5ns gates= 58848 t=0.0s
+   lee2026          depth=   7143 2q=   881 xt= 1234 dur=  549162.5ns gates= 58848 t=8.4s
+   jk2026           depth=   7143 2q=   881 xt= 1234 dur=  549162.5ns gates= 58848 t=1.6s
+   mkco             depth=   7143 2q=   881 xt= 1234 dur=  549162.5ns gates= 58848 t=3.6s
+   lee2026_2q       depth=   7143 2q=   881 xt= 1234 dur=  549162.5ns gates= 58848 t=6.4s
+   jk2026_2q        depth=   7145 2q=   881 xt= 1234 dur=  549233.7ns gates= 58848 t=1.3s
+   mkco_2q          depth=   7143 2q=   881 xt= 1234 dur=  549162.5ns gates= 58848 t=1.9s
+   mkco_xt          depth=   7687 2q=   881 xt= 1087 dur=  552576.4ns gates= 58848 t=60.6s
+   qiskit failed: 'ecr would be supported on [Qubit(8), Qubit(16)] if the direction was swapped, but no rules are known to do that. ["cx", "cz", "ecr", "swap", "rzx", "rxx", "ryy", "rzz"] can be automatically flipped.'
+== grover_10: 93235 gates, 10 active qubits
+   original         depth=  43923 2q= 10895 xt= 4431 dur= 6292610.6ns gates= 93235 t=0.0s
+   lee2026          depth=  43923 2q= 10895 xt= 4431 dur= 6292610.6ns gates= 93235 t=14.3s
+   jk2026           depth=  41641 2q= 10895 xt= 4431 dur= 6221170.5ns gates= 93235 t=3.1s
+   mkco             depth=  41641 2q= 10895 xt= 4431 dur= 6221170.5ns gates= 93235 t=5.7s
+   lee2026_2q       depth=  43923 2q= 10895 xt= 4431 dur= 6292610.6ns gates= 93235 t=12.0s
+   jk2026_2q        depth=  45169 2q= 10895 xt= 4431 dur= 6323547.8ns gates= 93235 t=7.7s
+   mkco_2q          depth=  43923 2q= 10895 xt= 4431 dur= 6292610.6ns gates= 93235 t=3.7s
+   mkco_xt          depth=  45858 2q= 10895 xt= 3870 dur= 6347088.5ns gates= 93235 t=60.9s
+   qiskit_o3        depth=  43995 2q= 10895 xt= 4431 dur= 6264450.8ns gates= 93398 t=183.5s
+   qiskit_o3+mkco   depth=  41713 2q= 10895 xt= 4431 dur= 6193010.8ns gates= 93398 t=5.7s
+== hubbard_18: 357535 gates, 31 active qubits
+   original         depth= 136644 2q= 21769 xt= 7332 dur=13230209.9ns gates=357535 t=0.0s
+   lee2026          depth= 136644 2q= 21769 xt= 7332 dur=13230209.9ns gates=357535 t=44.0s
+   jk2026           depth= 136637 2q= 21767 xt= 7335 dur=13228787.7ns gates=357535 t=11.0s
+   mkco             depth= 136637 2q= 21769 xt= 7329 dur=13187431.3ns gates=357535 t=19.9s
+   lee2026_2q       depth= 136644 2q= 21769 xt= 7332 dur=13230209.9ns gates=357535 t=34.2s
+   jk2026_2q        depth= 136652 2q= 21766 xt= 7336 dur=13228894.4ns gates=357535 t=4.9s
+   mkco_2q          depth= 136653 2q= 21766 xt= 7334 dur=13228574.4ns gates=357535 t=11.8s
+   mkco_xt          depth= 137968 2q= 21766 xt= 5435 dur=13256915.7ns gates=357535 t=62.5s
+   qiskit failed: 'ecr would be supported on [Qubit(20), Qubit(21)] if the direction was swapped, but no rules are known to do that. ["cx", "cz", "ecr", "swap", "rzx", "rxx", "ryy", "rzz"] can be automatically flipped.'

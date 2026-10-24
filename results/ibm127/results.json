@@ -1,0 +1,2547 @@
+{
+ "mult_8": {
+  "qubits_active": 8,
+  "methods": {
+   "original": {
+    "depth": 1138,
+    "depth_2q": 276,
+    "gates": 1898,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 159894.0,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 1138,
+    "depth_2q": 276,
+    "gates": 1898,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 159894.0,
+    "time_s": 0.33,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998612
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 1102,
+    "depth_2q": 276,
+    "gates": 1898,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 158685.0,
+    "time_s": 0.16,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 69,
+      "distinct_pair_types": 6,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999861
+     }
+    }
+   },
+   "mkco": {
+    "depth": 1102,
+    "depth_2q": 276,
+    "gates": 1898,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 158685.0,
+    "time_s": 0.11,
+    "lower_bound": 1102,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 75,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999861
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 1138,
+    "depth_2q": 276,
+    "gates": 1898,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 159894.0,
+    "time_s": 0.22,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 1150,
+    "depth_2q": 276,
+    "gates": 1898,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 160320.7,
+    "time_s": 0.12,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 34,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 1138,
+    "depth_2q": 276,
+    "gates": 1898,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 159894.0,
+    "time_s": 0.06,
+    "lower_bound": 276,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998612
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 1154,
+    "depth_2q": 276,
+    "gates": 1898,
+    "ecr": 311,
+    "xt_pairs": 23,
+    "duration_ns": 160391.8,
+    "time_s": 4.39,
+    "model": [
+     {
+      "layers": 276,
+      "xt_pairs_model_before": 31.000000000000014,
+      "xt_pairs_model_after": 23.000000000000007,
+      "iterations": 6238
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 34,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998613
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 1172,
+    "depth_2q": 276,
+    "gates": 1958,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 23752.7,
+    "time_s": 3.82
+   },
+   "qiskit_o3+mkco": {
+    "depth": 1136,
+    "depth_2q": 276,
+    "gates": 1958,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 22543.6,
+    "time_s": 0.43,
+    "lower_bound": 1136,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 75,
+      "distinct_pair_types": 75,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 1102,
+    "depth_2q": 276,
+    "gates": 1897,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 158685.0,
+    "time_s": 0.21,
+    "lower_bound": 1102,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 2,
+     "groups_merged": 1,
+     "gates_removed": 1
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 74,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998613
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 1102,
+    "depth_2q": 276,
+    "gates": 1897,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 158685.0,
+    "time_s": 0.48,
+    "lower_bound": 1102,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 0,
+     "merged_groups": 1,
+     "gates_before": 1898,
+     "gates_after": 1897
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 74,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998613
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 1136,
+    "depth_2q": 276,
+    "gates": 1957,
+    "ecr": 311,
+    "xt_pairs": 31,
+    "duration_ns": 159040.6,
+    "time_s": 0.74,
+    "lower_bound": 1136,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 0,
+     "merged_groups": 1,
+     "gates_before": 1958,
+     "gates_after": 1957
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 74,
+      "distinct_pair_types": 74,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998662
+     }
+    }
+   }
+  }
+ },
+ "add_17": {
+  "qubits_active": 17,
+  "methods": {
+   "original": {
+    "depth": 1003,
+    "depth_2q": 253,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 151,
+    "duration_ns": 145600.5,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 1003,
+    "depth_2q": 253,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 151,
+    "duration_ns": 145600.5,
+    "time_s": 0.45,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997871
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 964,
+    "depth_2q": 255,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 148,
+    "duration_ns": 145422.5,
+    "time_s": 0.2,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 116,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997866
+     }
+    }
+   },
+   "mkco": {
+    "depth": 964,
+    "depth_2q": 255,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 148,
+    "duration_ns": 145422.5,
+    "time_s": 0.16,
+    "lower_bound": 964,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 129,
+      "distinct_pair_types": 7,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997866
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 1003,
+    "depth_2q": 253,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 151,
+    "duration_ns": 145600.5,
+    "time_s": 0.34,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 1002,
+    "depth_2q": 253,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 151,
+    "duration_ns": 145564.9,
+    "time_s": 0.05,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 48,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 1002,
+    "depth_2q": 253,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 151,
+    "duration_ns": 145564.9,
+    "time_s": 0.23,
+    "lower_bound": 253,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 48,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997875
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 1019,
+    "depth_2q": 253,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 144,
+    "duration_ns": 145742.7,
+    "time_s": 23.64,
+    "model": [
+     {
+      "layers": 253,
+      "xt_pairs_model_before": 150.9999999999996,
+      "xt_pairs_model_after": 143.99999999999963,
+      "iterations": 10023
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 48,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997874
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 1026,
+    "depth_2q": 253,
+    "gates": 2918,
+    "ecr": 499,
+    "xt_pairs": 151,
+    "duration_ns": 142187.1,
+    "time_s": 5.66
+   },
+   "qiskit_o3+mkco": {
+    "depth": 988,
+    "depth_2q": 254,
+    "gates": 2918,
+    "ecr": 499,
+    "xt_pairs": 149,
+    "duration_ns": 141618.1,
+    "time_s": 0.18,
+    "lower_bound": 988,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 127,
+      "distinct_pair_types": 7,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 964,
+    "depth_2q": 255,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 148,
+    "duration_ns": 145422.5,
+    "time_s": 0.25,
+    "lower_bound": 964,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 1,
+     "groups_merged": 0,
+     "gates_removed": 0
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 129,
+      "distinct_pair_types": 7,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997866
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 964,
+    "depth_2q": 255,
+    "gates": 2812,
+    "ecr": 499,
+    "xt_pairs": 148,
+    "duration_ns": 145422.5,
+    "time_s": 0.46,
+    "lower_bound": 964,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 2812,
+     "gates_after": 2812
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 129,
+      "distinct_pair_types": 7,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997866
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 988,
+    "depth_2q": 254,
+    "gates": 2918,
+    "ecr": 499,
+    "xt_pairs": 149,
+    "duration_ns": 145067.0,
+    "time_s": 0.46,
+    "lower_bound": 988,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 2918,
+     "gates_after": 2918
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 127,
+      "distinct_pair_types": 7,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997848
+     }
+    }
+   }
+  }
+ },
+ "qae_17": {
+  "qubits_active": 17,
+  "methods": {
+   "original": {
+    "depth": 1066,
+    "depth_2q": 274,
+    "gates": 3033,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 157369.4,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 1066,
+    "depth_2q": 274,
+    "gates": 3033,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 157369.4,
+    "time_s": 0.49,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997449
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 1035,
+    "depth_2q": 274,
+    "gates": 3033,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 156515.9,
+    "time_s": 0.22,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 120,
+      "distinct_pair_types": 9,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997552
+     }
+    }
+   },
+   "mkco": {
+    "depth": 1035,
+    "depth_2q": 274,
+    "gates": 3033,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 156515.9,
+    "time_s": 0.16,
+    "lower_bound": 1035,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 142,
+      "distinct_pair_types": 9,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997553
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 1066,
+    "depth_2q": 274,
+    "gates": 3033,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 157369.4,
+    "time_s": 0.34,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 1068,
+    "depth_2q": 274,
+    "gates": 3033,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 157440.5,
+    "time_s": 0.04,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 45,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 1066,
+    "depth_2q": 274,
+    "gates": 3033,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 157369.4,
+    "time_s": 0.1,
+    "lower_bound": 274,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997449
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 1075,
+    "depth_2q": 274,
+    "gates": 3033,
+    "ecr": 541,
+    "xt_pairs": 138,
+    "duration_ns": 157511.6,
+    "time_s": 20.97,
+    "model": [
+     {
+      "layers": 274,
+      "xt_pairs_model_before": 164.99999999999963,
+      "xt_pairs_model_after": 137.99999999999966,
+      "iterations": 10868
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 46,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997445
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 1084,
+    "depth_2q": 274,
+    "gates": 3090,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 153138.3,
+    "time_s": 6.37
+   },
+   "qiskit_o3+mkco": {
+    "depth": 1055,
+    "depth_2q": 274,
+    "gates": 3090,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 152284.9,
+    "time_s": 0.18,
+    "lower_bound": 1055,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 140,
+      "distinct_pair_types": 8,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 1035,
+    "depth_2q": 274,
+    "gates": 3030,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 156515.9,
+    "time_s": 0.29,
+    "lower_bound": 1035,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 2,
+     "groups_merged": 3,
+     "gates_removed": 3
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 142,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997661
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 1030,
+    "depth_2q": 274,
+    "gates": 3019,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 156444.8,
+    "time_s": 0.85,
+    "lower_bound": 1030,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 5,
+     "merged_groups": 3,
+     "gates_before": 3033,
+     "gates_after": 3019
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 141,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997627
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 1051,
+    "depth_2q": 274,
+    "gates": 3084,
+    "ecr": 541,
+    "xt_pairs": 165,
+    "duration_ns": 156622.6,
+    "time_s": 0.7,
+    "lower_bound": 1051,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 4,
+     "merged_groups": 0,
+     "gates_before": 3090,
+     "gates_after": 3084
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 139,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997718
+     }
+    }
+   }
+  }
+ },
+ "qft_16": {
+  "qubits_active": 16,
+  "methods": {
+   "original": {
+    "depth": 1009,
+    "depth_2q": 260,
+    "gates": 3444,
+    "ecr": 614,
+    "xt_pairs": 210,
+    "duration_ns": 149120.4,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 1009,
+    "depth_2q": 260,
+    "gates": 3444,
+    "ecr": 614,
+    "xt_pairs": 210,
+    "duration_ns": 149120.4,
+    "time_s": 0.52,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997332
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 980,
+    "depth_2q": 260,
+    "gates": 3444,
+    "ecr": 614,
+    "xt_pairs": 211,
+    "duration_ns": 148231.4,
+    "time_s": 0.23,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 148,
+      "distinct_pair_types": 9,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997325
+     }
+    }
+   },
+   "mkco": {
+    "depth": 980,
+    "depth_2q": 260,
+    "gates": 3444,
+    "ecr": 614,
+    "xt_pairs": 211,
+    "duration_ns": 148231.4,
+    "time_s": 0.19,
+    "lower_bound": 980,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 166,
+      "distinct_pair_types": 9,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997322
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 1009,
+    "depth_2q": 260,
+    "gates": 3444,
+    "ecr": 614,
+    "xt_pairs": 210,
+    "duration_ns": 149120.4,
+    "time_s": 0.39,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 1008,
+    "depth_2q": 260,
+    "gates": 3444,
+    "ecr": 614,
+    "xt_pairs": 210,
+    "duration_ns": 149084.9,
+    "time_s": 0.06,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 64,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 1008,
+    "depth_2q": 260,
+    "gates": 3444,
+    "ecr": 614,
+    "xt_pairs": 210,
+    "duration_ns": 149084.9,
+    "time_s": 0.12,
+    "lower_bound": 260,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 64,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997323
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 1027,
+    "depth_2q": 260,
+    "gates": 3444,
+    "ecr": 614,
+    "xt_pairs": 195,
+    "duration_ns": 149369.4,
+    "time_s": 30.12,
+    "model": [
+     {
+      "layers": 260,
+      "xt_pairs_model_before": 210.00000000000028,
+      "xt_pairs_model_after": 195.00000000000006,
+      "iterations": 9664
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 64,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997331
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 1026,
+    "depth_2q": 260,
+    "gates": 3518,
+    "ecr": 614,
+    "xt_pairs": 210,
+    "duration_ns": 145316.0,
+    "time_s": 9.59
+   },
+   "qiskit_o3+mkco": {
+    "depth": 997,
+    "depth_2q": 260,
+    "gates": 3518,
+    "ecr": 614,
+    "xt_pairs": 211,
+    "duration_ns": 144427.0,
+    "time_s": 0.21,
+    "lower_bound": 997,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 166,
+      "distinct_pair_types": 10,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 980,
+    "depth_2q": 260,
+    "gates": 3442,
+    "ecr": 614,
+    "xt_pairs": 211,
+    "duration_ns": 148231.4,
+    "time_s": 0.42,
+    "lower_bound": 980,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 2,
+     "groups_merged": 2,
+     "gates_removed": 2
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 165,
+      "distinct_pair_types": 9,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997375
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 980,
+    "depth_2q": 260,
+    "gates": 3422,
+    "ecr": 614,
+    "xt_pairs": 211,
+    "duration_ns": 148231.4,
+    "time_s": 0.91,
+    "lower_bound": 980,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 9,
+     "merged_groups": 2,
+     "gates_before": 3444,
+     "gates_after": 3422
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 163,
+      "distinct_pair_types": 9,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997223
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 997,
+    "depth_2q": 260,
+    "gates": 3502,
+    "ecr": 614,
+    "xt_pairs": 211,
+    "duration_ns": 148373.7,
+    "time_s": 0.88,
+    "lower_bound": 997,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 8,
+     "merged_groups": 0,
+     "gates_before": 3518,
+     "gates_after": 3502
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 163,
+      "distinct_pair_types": 10,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997411
+     }
+    }
+   }
+  }
+ },
+ "hubbard_8": {
+  "qubits_active": 8,
+  "methods": {
+   "original": {
+    "depth": 4400,
+    "depth_2q": 1111,
+    "gates": 8125,
+    "ecr": 1344,
+    "xt_pairs": 166,
+    "duration_ns": 638046.4,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 4400,
+    "depth_2q": 1111,
+    "gates": 8125,
+    "ecr": 1344,
+    "xt_pairs": 166,
+    "duration_ns": 638046.4,
+    "time_s": 1.3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999505
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 4268,
+    "depth_2q": 1112,
+    "gates": 8125,
+    "ecr": 1344,
+    "xt_pairs": 167,
+    "duration_ns": 634952.6,
+    "time_s": 1.33,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 244,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999995036
+     }
+    }
+   },
+   "mkco": {
+    "depth": 4268,
+    "depth_2q": 1112,
+    "gates": 8125,
+    "ecr": 1344,
+    "xt_pairs": 167,
+    "duration_ns": 634952.6,
+    "time_s": 0.66,
+    "lower_bound": 4268,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 260,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999995043
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 4400,
+    "depth_2q": 1111,
+    "gates": 8125,
+    "ecr": 1344,
+    "xt_pairs": 166,
+    "duration_ns": 638046.4,
+    "time_s": 1.0,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 4388,
+    "depth_2q": 1110,
+    "gates": 8125,
+    "ecr": 1344,
+    "xt_pairs": 167,
+    "duration_ns": 637121.9,
+    "time_s": 0.29,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 215,
+      "distinct_pair_types": 5,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 4388,
+    "depth_2q": 1110,
+    "gates": 8125,
+    "ecr": 1344,
+    "xt_pairs": 167,
+    "duration_ns": 637121.9,
+    "time_s": 0.29,
+    "lower_bound": 1110,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 216,
+      "distinct_pair_types": 6,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999995054
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 4415,
+    "depth_2q": 1110,
+    "gates": 8125,
+    "ecr": 1344,
+    "xt_pairs": 130,
+    "duration_ns": 637548.7,
+    "time_s": 30.17,
+    "model": [
+     {
+      "layers": 1110,
+      "xt_pairs_model_before": 166.99999999999966,
+      "xt_pairs_model_after": 129.9999999999997,
+      "iterations": 7744
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 218,
+      "distinct_pair_types": 6,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999995056
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 4382,
+    "depth_2q": 1111,
+    "gates": 8059,
+    "ecr": 1344,
+    "xt_pairs": 166,
+    "duration_ns": 630366.5,
+    "time_s": 15.39
+   },
+   "qiskit_o3+mkco": {
+    "depth": 4246,
+    "depth_2q": 1110,
+    "gates": 8059,
+    "ecr": 1344,
+    "xt_pairs": 169,
+    "duration_ns": 626703.8,
+    "time_s": 0.44,
+    "lower_bound": 4246,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 270,
+      "distinct_pair_types": 15,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 4266,
+    "depth_2q": 1112,
+    "gates": 8115,
+    "ecr": 1344,
+    "xt_pairs": 167,
+    "duration_ns": 634881.5,
+    "time_s": 0.79,
+    "lower_bound": 4266,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 2,
+     "groups_merged": 9,
+     "gates_removed": 10
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 257,
+      "distinct_pair_types": 9,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999995047
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 4251,
+    "depth_2q": 1112,
+    "gates": 8091,
+    "ecr": 1344,
+    "xt_pairs": 167,
+    "duration_ns": 634597.0,
+    "time_s": 2.92,
+    "lower_bound": 4251,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 3,
+     "fused_groups": 11,
+     "merged_groups": 15,
+     "gates_before": 8125,
+     "gates_after": 8091
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 250,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999995041
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 4229,
+    "depth_2q": 1110,
+    "gates": 8025,
+    "ecr": 1344,
+    "xt_pairs": 169,
+    "duration_ns": 633174.8,
+    "time_s": 2.78,
+    "lower_bound": 4229,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 3,
+     "fused_groups": 13,
+     "merged_groups": 17,
+     "gates_before": 8059,
+     "gates_after": 8025
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 260,
+      "distinct_pair_types": 15,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999995083
+     }
+    }
+   }
+  }
+ },
+ "hhl_8": {
+  "qubits_active": 8,
+  "methods": {
+   "original": {
+    "depth": 10641,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1365412.8,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 10641,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1365412.8,
+    "time_s": 2.82,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999989698
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 10434,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1359509.8,
+    "time_s": 6.22,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 299,
+      "distinct_pair_types": 6,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999989695
+     }
+    }
+   },
+   "mkco": {
+    "depth": 10434,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1359509.8,
+    "time_s": 1.14,
+    "lower_bound": 10434,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 333,
+      "distinct_pair_types": 7,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999989687
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 10641,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1365412.8,
+    "time_s": 1.99,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 10651,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1365626.2,
+    "time_s": 0.42,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 121,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 10641,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1365412.8,
+    "time_s": 0.74,
+    "lower_bound": 2319,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999989698
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 10658,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 55,
+    "duration_ns": 1365768.4,
+    "time_s": 30.11,
+    "model": [
+     {
+      "layers": 2319,
+      "xt_pairs_model_before": 55.99999999999996,
+      "xt_pairs_model_after": 54.999999999999964,
+      "iterations": 28800
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 121,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999989715
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 11190,
+    "depth_2q": 2319,
+    "gates": 19098,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1175618.9,
+    "time_s": 26.47
+   },
+   "qiskit_o3+mkco": {
+    "depth": 10983,
+    "depth_2q": 2319,
+    "gates": 19098,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1169964.9,
+    "time_s": 1.06,
+    "lower_bound": 10983,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 333,
+      "distinct_pair_types": 7,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 10434,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1359509.8,
+    "time_s": 1.64,
+    "lower_bound": 10434,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 1,
+     "groups_merged": 0,
+     "gates_removed": 0
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 333,
+      "distinct_pair_types": 7,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999989687
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 10434,
+    "depth_2q": 2319,
+    "gates": 18165,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1359509.8,
+    "time_s": 2.63,
+    "lower_bound": 10434,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 18165,
+     "gates_after": 18165
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 333,
+      "distinct_pair_types": 7,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999989687
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 10983,
+    "depth_2q": 2319,
+    "gates": 19098,
+    "ecr": 2377,
+    "xt_pairs": 56,
+    "duration_ns": 1364061.5,
+    "time_s": 2.78,
+    "lower_bound": 10983,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 19098,
+     "gates_after": 19098
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 333,
+      "distinct_pair_types": 7,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999990657
+     }
+    }
+   }
+  }
+ },
+ "heisenberg_32": {
+  "qubits_active": 32,
+  "methods": {
+   "original": {
+    "depth": 7143,
+    "depth_2q": 881,
+    "gates": 58848,
+    "ecr": 3942,
+    "xt_pairs": 1234,
+    "duration_ns": 549162.5,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 7143,
+    "depth_2q": 881,
+    "gates": 58848,
+    "ecr": 3942,
+    "xt_pairs": 1234,
+    "duration_ns": 549162.5,
+    "time_s": 8.43,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 7143,
+    "depth_2q": 881,
+    "gates": 58848,
+    "ecr": 3942,
+    "xt_pairs": 1234,
+    "duration_ns": 549162.5,
+    "time_s": 1.57,
+    "beam": 1,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "mkco": {
+    "depth": 7143,
+    "depth_2q": 881,
+    "gates": 58848,
+    "ecr": 3942,
+    "xt_pairs": 1234,
+    "duration_ns": 549162.5,
+    "time_s": 3.65,
+    "lower_bound": 7143,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 7143,
+    "depth_2q": 881,
+    "gates": 58848,
+    "ecr": 3942,
+    "xt_pairs": 1234,
+    "duration_ns": 549162.5,
+    "time_s": 6.36,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 7145,
+    "depth_2q": 881,
+    "gates": 58848,
+    "ecr": 3942,
+    "xt_pairs": 1234,
+    "duration_ns": 549233.7,
+    "time_s": 1.29,
+    "beam": 1,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 33,
+      "distinct_pair_types": 2,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 7143,
+    "depth_2q": 881,
+    "gates": 58848,
+    "ecr": 3942,
+    "xt_pairs": 1234,
+    "duration_ns": 549162.5,
+    "time_s": 1.92,
+    "lower_bound": 881,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 7687,
+    "depth_2q": 881,
+    "gates": 58848,
+    "ecr": 3942,
+    "xt_pairs": 1087,
+    "duration_ns": 552576.4,
+    "time_s": 60.55,
+    "model": [
+     {
+      "layers": 881,
+      "xt_pairs_model_before": 1233.9999999999725,
+      "xt_pairs_model_after": 1086.999999999981,
+      "iterations": 12672
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 36,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 3538,
+    "depth_2q": 936,
+    "gates": 23089,
+    "ecr": 4071,
+    "xt_pairs": 1312,
+    "duration_ns": 540090.9,
+    "time_s": 24.6,
+    "coupling": "bidirectional (retry)"
+   },
+   "qiskit_o3+mkco": {
+    "depth": 3538,
+    "depth_2q": 936,
+    "gates": 23089,
+    "ecr": 4071,
+    "xt_pairs": 1312,
+    "duration_ns": 540090.9,
+    "time_s": 2.66,
+    "lower_bound": 3538,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 5265,
+    "depth_2q": 881,
+    "gates": 41441,
+    "ecr": 3942,
+    "xt_pairs": 1233,
+    "duration_ns": 536503.2,
+    "time_s": 6.14,
+    "lower_bound": 5265,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 3,
+     "groups_merged": 10329,
+     "gates_removed": 17407
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 892,
+      "distinct_pair_types": 10,
+      "failures": 0
+     },
+     "statevector": null
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 3011,
+    "depth_2q": 881,
+    "gates": 20324,
+    "ecr": 3942,
+    "xt_pairs": 1232,
+    "duration_ns": 499947.5,
+    "time_s": 11.57,
+    "lower_bound": 3011,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 3,
+     "fused_groups": 5330,
+     "merged_groups": 10685,
+     "gates_before": 58848,
+     "gates_after": 20324
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 530,
+      "distinct_pair_types": 12,
+      "failures": 0
+     },
+     "statevector": null
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 3534,
+    "depth_2q": 939,
+    "gates": 22859,
+    "ecr": 4071,
+    "xt_pairs": 1300,
+    "duration_ns": 539592.8,
+    "time_s": 5.53,
+    "lower_bound": 3534,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 17,
+     "merged_groups": 225,
+     "gates_before": 23089,
+     "gates_after": 22859
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 212,
+      "distinct_pair_types": 59,
+      "failures": 0
+     },
+     "statevector": null
+    }
+   }
+  }
+ },
+ "grover_10": {
+  "qubits_active": 10,
+  "methods": {
+   "original": {
+    "depth": 43923,
+    "depth_2q": 10895,
+    "gates": 93235,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6292610.6,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 43923,
+    "depth_2q": 10895,
+    "gates": 93235,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6292610.6,
+    "time_s": 14.35,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999931483
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 41641,
+    "depth_2q": 10895,
+    "gates": 93235,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6221170.5,
+    "time_s": 3.08,
+    "beam": 1,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 14096,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999931419
+     }
+    }
+   },
+   "mkco": {
+    "depth": 41641,
+    "depth_2q": 10895,
+    "gates": 93235,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6221170.5,
+    "time_s": 5.67,
+    "lower_bound": 41641,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 14222,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999931374
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 43923,
+    "depth_2q": 10895,
+    "gates": 93235,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6292610.6,
+    "time_s": 12.01,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 45169,
+    "depth_2q": 10895,
+    "gates": 93235,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6323547.8,
+    "time_s": 7.74,
+    "beam": 1,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 12984,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 43923,
+    "depth_2q": 10895,
+    "gates": 93235,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6292610.6,
+    "time_s": 3.71,
+    "lower_bound": 10895,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999931483
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 45858,
+    "depth_2q": 10895,
+    "gates": 93235,
+    "ecr": 16397,
+    "xt_pairs": 3870,
+    "duration_ns": 6347088.5,
+    "time_s": 60.93,
+    "model": [
+     {
+      "layers": 10895,
+      "xt_pairs_model_before": 4431.000000000322,
+      "xt_pairs_model_after": 3870.0000000001946,
+      "iterations": 5824
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 12984,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999931489
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 43995,
+    "depth_2q": 10895,
+    "gates": 93398,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6264450.8,
+    "time_s": 183.48
+   },
+   "qiskit_o3+mkco": {
+    "depth": 41713,
+    "depth_2q": 10895,
+    "gates": 93398,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6193010.8,
+    "time_s": 5.67,
+    "lower_bound": 41713,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 14222,
+      "distinct_pair_types": 8,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 41641,
+    "depth_2q": 10895,
+    "gates": 92661,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6221135.0,
+    "time_s": 9.13,
+    "lower_bound": 41641,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 2,
+     "groups_merged": 94,
+     "gates_removed": 574
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 4705,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999931398
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 41631,
+    "depth_2q": 10895,
+    "gates": 92654,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6220957.2,
+    "time_s": 22.62,
+    "lower_bound": 41631,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 8,
+     "merged_groups": 94,
+     "gates_before": 93235,
+     "gates_after": 92654
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 4699,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999931399
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 41703,
+    "depth_2q": 10895,
+    "gates": 92817,
+    "ecr": 16397,
+    "xt_pairs": 4431,
+    "duration_ns": 6221597.3,
+    "time_s": 22.64,
+    "lower_bound": 41703,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 8,
+     "merged_groups": 94,
+     "gates_before": 93398,
+     "gates_after": 92817
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 4699,
+      "distinct_pair_types": 8,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999993152
+     }
+    }
+   }
+  }
+ },
+ "hubbard_18": {
+  "qubits_active": 31,
+  "methods": {
+   "original": {
+    "depth": 136644,
+    "depth_2q": 21769,
+    "gates": 357535,
+    "ecr": 33958,
+    "xt_pairs": 7332,
+    "duration_ns": 13230209.9,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 136644,
+    "depth_2q": 21769,
+    "gates": 357535,
+    "ecr": 33958,
+    "xt_pairs": 7332,
+    "duration_ns": 13230209.9,
+    "time_s": 43.97,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 136637,
+    "depth_2q": 21767,
+    "gates": 357535,
+    "ecr": 33958,
+    "xt_pairs": 7335,
+    "duration_ns": 13228787.7,
+    "time_s": 10.96,
+    "beam": 1,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 48,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco": {
+    "depth": 136637,
+    "depth_2q": 21769,
+    "gates": 357535,
+    "ecr": 33958,
+    "xt_pairs": 7329,
+    "duration_ns": 13187431.3,
+    "time_s": 19.92,
+    "lower_bound": 136637,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 2654,
+      "distinct_pair_types": 8,
+      "failures": 0
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 136644,
+    "depth_2q": 21769,
+    "gates": 357535,
+    "ecr": 33958,
+    "xt_pairs": 7332,
+    "duration_ns": 13230209.9,
+    "time_s": 34.24,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 136652,
+    "depth_2q": 21766,
+    "gates": 357535,
+    "ecr": 33958,
+    "xt_pairs": 7336,
+    "duration_ns": 13228894.4,
+    "time_s": 4.89,
+    "beam": 1,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 119,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 136653,
+    "depth_2q": 21766,
+    "gates": 357535,
+    "ecr": 33958,
+    "xt_pairs": 7334,
+    "duration_ns": 13228574.4,
+    "time_s": 11.79,
+    "lower_bound": 21766,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 132,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 137968,
+    "depth_2q": 21766,
+    "gates": 357535,
+    "ecr": 33958,
+    "xt_pairs": 5435,
+    "duration_ns": 13256915.7,
+    "time_s": 62.53,
+    "model": [
+     {
+      "layers": 21766,
+      "xt_pairs_model_before": 7334.000000000981,
+      "xt_pairs_model_after": 5435.00000000055,
+      "iterations": 4800
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 132,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 65436,
+    "depth_2q": 19938,
+    "gates": 156700,
+    "ecr": 33586,
+    "xt_pairs": 7612,
+    "duration_ns": 11450489.0,
+    "time_s": 246.88,
+    "coupling": "bidirectional (retry)"
+   },
+   "qiskit_o3+mkco": {
+    "depth": 65339,
+    "depth_2q": 20016,
+    "gates": 156700,
+    "ecr": 33586,
+    "xt_pairs": 7377,
+    "duration_ns": 11434126.0,
+    "time_s": 20.71,
+    "lower_bound": 65339,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 4550,
+      "distinct_pair_types": 1295,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 110907,
+    "depth_2q": 21767,
+    "gates": 264547,
+    "ecr": 33958,
+    "xt_pairs": 7333,
+    "duration_ns": 13004404.1,
+    "time_s": 38.09,
+    "lower_bound": 110907,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 3,
+     "groups_merged": 53944,
+     "gates_removed": 92988
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 11358,
+      "distinct_pair_types": 10,
+      "failures": 0
+     },
+     "statevector": null
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 72992,
+    "depth_2q": 21766,
+    "gates": 170310,
+    "ecr": 33958,
+    "xt_pairs": 7326,
+    "duration_ns": 12313544.5,
+    "time_s": 89.97,
+    "lower_bound": 72992,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 3,
+     "fused_groups": 36992,
+     "merged_groups": 54568,
+     "gates_before": 357535,
+     "gates_after": 170310
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 3627,
+      "distinct_pair_types": 10,
+      "failures": 0
+     },
+     "statevector": null
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 64969,
+    "depth_2q": 20017,
+    "gates": 153756,
+    "ecr": 33586,
+    "xt_pairs": 7383,
+    "duration_ns": 11419261.8,
+    "time_s": 52.23,
+    "lower_bound": 64969,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 2,
+     "fused_groups": 286,
+     "merged_groups": 2694,
+     "gates_before": 156700,
+     "gates_after": 153756
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 3730,
+      "distinct_pair_types": 861,
+      "failures": 0
+     },
+     "statevector": null
+    }
+   }
+  }
+ }
+}

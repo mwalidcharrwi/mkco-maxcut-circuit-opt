@@ -1,0 +1,156 @@
+E4 {'n': 75, 'lb': 5, 'dsatur': 6, 'jk': 6, 'mkco': 5, 't_dsatur': 0.017142057418823242, 't_jk': 0.04073500633239746, 't_mkco': 0.004525184631347656, 'qubits': 30, 'degree': 5, 'seed': 0}
+E4 {'n': 75, 'lb': 5, 'dsatur': 6, 'jk': 6, 'mkco': 5, 't_dsatur': 0.005047798156738281, 't_jk': 0.016633987426757812, 't_mkco': 0.0368192195892334, 'qubits': 30, 'degree': 5, 'seed': 1}
+E4 {'n': 75, 'lb': 5, 'dsatur': 6, 'jk': 6, 'mkco': 5, 't_dsatur': 0.004917144775390625, 't_jk': 0.015986919403076172, 't_mkco': 0.011272192001342773, 'qubits': 30, 'degree': 5, 'seed': 2}
+E4 {'n': 135, 'lb': 9, 'dsatur': 10, 'jk': 11, 'mkco': 9, 't_dsatur': 0.019509077072143555, 't_jk': 0.08928203582763672, 't_mkco': 5.448134899139404, 'qubits': 30, 'degree': 9, 'seed': 0}
+E4 {'n': 135, 'lb': 9, 'dsatur': 10, 'jk': 11, 'mkco': 9, 't_dsatur': 0.01926898956298828, 't_jk': 0.08886003494262695, 't_mkco': 0.008533954620361328, 'qubits': 30, 'degree': 9, 'seed': 1}
+E4 {'n': 135, 'lb': 9, 'dsatur': 10, 'jk': 10, 'mkco': 9, 't_dsatur': 0.019481182098388672, 't_jk': 0.08600091934204102, 't_mkco': 0.18451809883117676, 'qubits': 30, 'degree': 9, 'seed': 2}
+E4 {'n': 375, 'lb': 15, 'dsatur': 17, 'jk': 17, 'mkco': 15, 't_dsatur': 0.21734905242919922, 't_jk': 1.0812509059906006, 't_mkco': 0.06432914733886719, 'qubits': 50, 'degree': 15, 'seed': 0}
+E4 {'n': 375, 'lb': 15, 'dsatur': 17, 'jk': 17, 'mkco': 15, 't_dsatur': 0.22085189819335938, 't_jk': 1.111480951309204, 't_mkco': 0.0396420955657959, 'qubits': 50, 'degree': 15, 'seed': 1}
+E4 {'n': 375, 'lb': 15, 'dsatur': 17, 'jk': 17, 'mkco': 15, 't_dsatur': 0.21817588806152344, 't_jk': 1.092785120010376, 't_mkco': 0.3475058078765869, 'qubits': 50, 'degree': 15, 'seed': 2}
+E4 {'n': 625, 'lb': 25, 'dsatur': 26, 'jk': 27, 'mkco': 25, 't_dsatur': 0.926393985748291, 't_jk': 5.000109910964966, 't_mkco': 0.047724008560180664, 'qubits': 50, 'degree': 25, 'seed': 0}
+E4 {'n': 625, 'lb': 25, 'dsatur': 28, 'jk': 27, 'mkco': 25, 't_dsatur': 0.9443151950836182, 't_jk': 5.02655291557312, 't_mkco': 0.6463050842285156, 'qubits': 50, 'degree': 25, 'seed': 1}
+E4 {'n': 625, 'lb': 25, 'dsatur': 28, 'jk': 27, 'mkco': 26, 't_dsatur': 0.9410169124603271, 't_jk': 5.169440031051636, 't_mkco': 10.023037910461426, 'qubits': 50, 'degree': 25, 'seed': 2}
+E4 {'n': 750, 'lb': 15, 'dsatur': 17, 'jk': 18, 'mkco': 15, 't_dsatur': 0.9721760749816895, 't_jk': 4.369301080703735, 't_mkco': 0.35519886016845703, 'qubits': 100, 'degree': 15, 'seed': 0}
+E4 {'n': 750, 'lb': 15, 'dsatur': 18, 'jk': 18, 'mkco': 16, 't_dsatur': 1.0149428844451904, 't_jk': 4.5397398471832275, 't_mkco': 10.036798238754272, 'qubits': 100, 'degree': 15, 'seed': 1}
+E4 {'n': 750, 'lb': 15, 'dsatur': 17, 'jk': 18, 'mkco': 15, 't_dsatur': 0.9639022350311279, 't_jk': 4.472654819488525, 't_mkco': 0.2843019962310791, 'qubits': 100, 'degree': 15, 'seed': 2}
+E4 {'n': 1550, 'lb': 31, 'dsatur': 35, 'jk': 34, 'mkco': 32, 't_dsatur': 7.635483980178833, 't_jk': 39.66362690925598, 't_mkco': 10.021378993988037, 'qubits': 100, 'degree': 31, 'seed': 0}
+E4 {'n': 1550, 'lb': 31, 'dsatur': 35, 'jk': 34, 'mkco': 32, 't_dsatur': 8.599148035049438, 't_jk': 39.73692083358765, 't_mkco': 10.028373956680298, 'qubits': 100, 'degree': 31, 'seed': 1}
+E4 {'n': 1550, 'lb': 31, 'dsatur': 34, 'jk': 34, 'mkco': 31, 't_dsatur': 7.9836671352386475, 't_jk': 38.830065965652466, 't_mkco': 0.5266292095184326, 'qubits': 100, 'degree': 31, 'seed': 2}
+E5 {'case': 'gf2_4_phase3', 'backend': 'exact', 'n_gates': 10, 'lb': 4, 'layers': 5, 'spins_log_encoding': 20, 'spins_one_hot': 40, 'time': 0.004765987396240234} | QAOA nodes optimal: 0 / 0
+E5 {'case': 'gf2_4_phase3', 'backend': 'qaoa', 'n_gates': 10, 'lb': 4, 'layers': 5, 'spins_log_encoding': 20, 'spins_one_hot': 40, 'time': 45.52909326553345} | QAOA nodes optimal: 3 / 3
+E5 {'case': 'gf2_5_phase3', 'backend': 'exact', 'n_gates': 15, 'lb': 5, 'layers': 5, 'spins_log_encoding': 45, 'spins_one_hot': 75, 'time': 0.016338825225830078} | QAOA nodes optimal: 0 / 0
+E5 {'case': 'gf2_5_phase3', 'backend': 'qaoa', 'n_gates': 15, 'lb': 5, 'layers': 5, 'spins_log_encoding': 45, 'spins_one_hot': 75, 'time': 13.06005311012268} | QAOA nodes optimal: 4 / 4
+E5 {'case': 'draper_6_core', 'backend': 'exact', 'n_gates': 21, 'lb': 6, 'layers': 6, 'spins_log_encoding': 63, 'spins_one_hot': 126, 'time': 1.5126659870147705} | QAOA nodes optimal: 0 / 0
+E5 {'case': 'draper_6_core', 'backend': 'qaoa', 'n_gates': 21, 'lb': 6, 'layers': 6, 'spins_log_encoding': 63, 'spins_one_hot': 126, 'time': 6.7967259883880615} | QAOA nodes optimal: 4 / 4
+E5 {'case': 'ccz_m8_n16', 'backend': 'exact', 'n_gates': 16, 'lb': 11, 'layers': 11, 'spins_log_encoding': 64, 'spins_one_hot': 176, 'time': 0.050705909729003906} | QAOA nodes optimal: 0 / 0
+E5 {'case': 'ccz_m8_n16', 'backend': 'qaoa', 'n_gates': 16, 'lb': 11, 'layers': 11, 'spins_log_encoding': 64, 'spins_one_hot': 176, 'time': 26.81669306755066} | QAOA nodes optimal: 10 / 10
+E6 {'case': 'draper_8_core', 'copies': 1, 'qubits': 16, 'baseline_core': 8, 'baseline_total': 8, 'mkco_core': 8, 'mkco_total': 8}
+E6 {'case': 'draper_8_core', 'copies': 2, 'qubits': 32, 'baseline_core': 4, 'baseline_total': 6, 'mkco_core': 4, 'mkco_total': 6}
+E6 {'case': 'draper_8_core', 'copies': 3, 'qubits': 48, 'baseline_core': 3, 'baseline_total': 7, 'mkco_core': 3, 'mkco_total': 7}
+E6 {'case': 'draper_8_core', 'copies': 4, 'qubits': 64, 'baseline_core': 2, 'baseline_total': 6, 'mkco_core': 2, 'mkco_total': 6}
+E6 {'case': 'draper_16_core', 'copies': 1, 'qubits': 32, 'baseline_core': 16, 'baseline_total': 16, 'mkco_core': 16, 'mkco_total': 16}
+E6 {'case': 'draper_16_core', 'copies': 2, 'qubits': 64, 'baseline_core': 8, 'baseline_total': 10, 'mkco_core': 8, 'mkco_total': 10}
+E6 {'case': 'draper_16_core', 'copies': 3, 'qubits': 96, 'baseline_core': 6, 'baseline_total': 10, 'mkco_core': 6, 'mkco_total': 10}
+E6 {'case': 'draper_16_core', 'copies': 4, 'qubits': 128, 'baseline_core': 4, 'baseline_total': 8, 'mkco_core': 4, 'mkco_total': 8}
+E6 {'case': 'ccz_m10_n80', 'copies': 1, 'qubits': 10, 'baseline_core': 35, 'baseline_total': 35, 'mkco_core': 31, 'mkco_total': 31}
+E6 {'case': 'ccz_m10_n80', 'copies': 2, 'qubits': 20, 'baseline_core': 17, 'baseline_total': 19, 'mkco_core': 16, 'mkco_total': 18}
+E6 {'case': 'ccz_m10_n80', 'copies': 3, 'qubits': 30, 'baseline_core': 12, 'baseline_total': 16, 'mkco_core': 11, 'mkco_total': 15}
+E6 {'case': 'ccz_m10_n80', 'copies': 4, 'qubits': 40, 'baseline_core': 9, 'baseline_total': 13, 'mkco_core': 8, 'mkco_total': 12}
+E6 {'case': 'ccz_m16_n150', 'copies': 1, 'qubits': 16, 'baseline_core': 38, 'baseline_total': 38, 'mkco_core': 38, 'mkco_total': 38}
+E6 {'case': 'ccz_m16_n150', 'copies': 2, 'qubits': 32, 'baseline_core': 19, 'baseline_total': 21, 'mkco_core': 19, 'mkco_total': 21}
+E6 {'case': 'ccz_m16_n150', 'copies': 3, 'qubits': 48, 'baseline_core': 13, 'baseline_total': 17, 'mkco_core': 13, 'mkco_total': 17}
+E6 {'case': 'ccz_m16_n150', 'copies': 4, 'qubits': 64, 'baseline_core': 11, 'baseline_total': 15, 'mkco_core': 10, 'mkco_total': 14}
+E6 {'case': 'mcz_m20_n120', 'copies': 1, 'qubits': 20, 'baseline_core': 57, 'baseline_total': 57, 'mkco_core': 58, 'mkco_total': 58}
+E6 {'case': 'mcz_m20_n120', 'copies': 2, 'qubits': 40, 'baseline_core': 30, 'baseline_total': 32, 'mkco_core': 24, 'mkco_total': 26}
+E6 {'case': 'mcz_m20_n120', 'copies': 3, 'qubits': 60, 'baseline_core': 21, 'baseline_total': 25, 'mkco_core': 16, 'mkco_total': 20}
+E6 {'case': 'mcz_m20_n120', 'copies': 4, 'qubits': 80, 'baseline_core': 17, 'baseline_total': 21, 'mkco_core': 12, 'mkco_total': 16}
+E3 {'n': 10, 'lb': 5, 'dsatur': 5, 'jk': 5, 'mkco': 5, 't_dsatur': 0.00019884109497070312, 't_jk': 0.0011551380157470703, 't_mkco': 0.00018525123596191406, 'backtracking': 5, 'backtracking_proven': True, 't_backtracking': 0.0038836002349853516, 'gates': 10, 'seed': 0}
+E3 {'n': 10, 'lb': 6, 'dsatur': 6, 'jk': 6, 'mkco': 6, 't_dsatur': 0.0002052783966064453, 't_jk': 0.0012607574462890625, 't_mkco': 0.00014901161193847656, 'backtracking': 6, 'backtracking_proven': True, 't_backtracking': 0.002655029296875, 'gates': 10, 'seed': 1}
+E3 {'n': 10, 'lb': 6, 'dsatur': 6, 'jk': 6, 'mkco': 6, 't_dsatur': 0.00020933151245117188, 't_jk': 0.0011317729949951172, 't_mkco': 0.0001361370086669922, 'backtracking': 6, 'backtracking_proven': True, 't_backtracking': 0.002382040023803711, 'gates': 10, 'seed': 2}
+E3 {'n': 10, 'lb': 6, 'dsatur': 6, 'jk': 6, 'mkco': 6, 't_dsatur': 0.00018715858459472656, 't_jk': 0.0011148452758789062, 't_mkco': 0.00017189979553222656, 'backtracking': 6, 'backtracking_proven': True, 't_backtracking': 0.0023720264434814453, 'gates': 10, 'seed': 3}
+E3 {'n': 10, 'lb': 5, 'dsatur': 5, 'jk': 5, 'mkco': 5, 't_dsatur': 0.00019097328186035156, 't_jk': 0.0010280609130859375, 't_mkco': 0.0001678466796875, 'backtracking': 5, 'backtracking_proven': True, 't_backtracking': 0.002031087875366211, 'gates': 10, 'seed': 4}
+E3 {'n': 20, 'lb': 8, 'dsatur': 9, 'jk': 9, 'mkco': 8, 't_dsatur': 0.0005571842193603516, 't_jk': 0.003813028335571289, 't_mkco': 0.003016233444213867, 'backtracking': 8, 'backtracking_proven': True, 't_backtracking': 0.007696866989135742, 'gates': 20, 'seed': 0}
+E3 {'n': 20, 'lb': 9, 'dsatur': 9, 'jk': 11, 'mkco': 9, 't_dsatur': 0.0006127357482910156, 't_jk': 0.004115104675292969, 't_mkco': 0.00019097328186035156, 'backtracking': 9, 'backtracking_proven': True, 't_backtracking': 0.007853984832763672, 'gates': 20, 'seed': 1}
+E3 {'n': 20, 'lb': 9, 'dsatur': 9, 'jk': 9, 'mkco': 9, 't_dsatur': 0.0005931854248046875, 't_jk': 0.003457784652709961, 't_mkco': 0.0001850128173828125, 'backtracking': 9, 'backtracking_proven': True, 't_backtracking': 0.007222175598144531, 'gates': 20, 'seed': 2}
+E3 {'n': 20, 'lb': 9, 'dsatur': 9, 'jk': 10, 'mkco': 9, 't_dsatur': 0.0005717277526855469, 't_jk': 0.00400996208190918, 't_mkco': 0.00018310546875, 'backtracking': 9, 'backtracking_proven': True, 't_backtracking': 0.008363962173461914, 'gates': 20, 'seed': 3}
+E3 {'n': 20, 'lb': 10, 'dsatur': 10, 'jk': 10, 'mkco': 10, 't_dsatur': 0.0005958080291748047, 't_jk': 0.0035829544067382812, 't_mkco': 0.0001709461212158203, 'backtracking': 10, 'backtracking_proven': True, 't_backtracking': 0.008216142654418945, 'gates': 20, 'seed': 4}
+E3 {'n': 30, 'lb': 13, 'dsatur': 14, 'jk': 13, 'mkco': 13, 't_dsatur': 0.0012941360473632812, 't_jk': 0.008420944213867188, 't_mkco': 0.0020949840545654297, 'backtracking': 13, 'backtracking_proven': True, 't_backtracking': 0.018852710723876953, 'gates': 30, 'seed': 0}
+E3 {'n': 30, 'lb': 14, 'dsatur': 14, 'jk': 14, 'mkco': 14, 't_dsatur': 0.001329183578491211, 't_jk': 0.008771896362304688, 't_mkco': 0.00019812583923339844, 'backtracking': 14, 'backtracking_proven': True, 't_backtracking': 0.01816701889038086, 'gates': 30, 'seed': 1}
+E3 {'n': 30, 'lb': 13, 'dsatur': 15, 'jk': 13, 'mkco': 13, 't_dsatur': 0.0013070106506347656, 't_jk': 0.008782148361206055, 't_mkco': 0.004054069519042969, 'backtracking': 13, 'backtracking_proven': True, 't_backtracking': 0.05005002021789551, 'gates': 30, 'seed': 2}
+E3 {'n': 30, 'lb': 13, 'dsatur': 14, 'jk': 14, 'mkco': 13, 't_dsatur': 0.0013399124145507812, 't_jk': 0.008661985397338867, 't_mkco': 0.003351926803588867, 'backtracking': 13, 'backtracking_proven': True, 't_backtracking': 0.7260971069335938, 'gates': 30, 'seed': 3}
+E3 {'n': 30, 'lb': 13, 'dsatur': 14, 'jk': 14, 'mkco': 13, 't_dsatur': 0.001316070556640625, 't_jk': 0.009122133255004883, 't_mkco': 0.0026140213012695312, 'backtracking': 13, 'backtracking_proven': True, 't_backtracking': 0.0743248462677002, 'gates': 30, 'seed': 4}
+E3 {'n': 40, 'lb': 16, 'dsatur': 18, 'jk': 17, 'mkco': 16, 't_dsatur': 0.0025076866149902344, 't_jk': 0.017750978469848633, 't_mkco': 0.007941007614135742, 'backtracking': 17, 'backtracking_proven': False, 't_backtracking': 10.033692836761475, 'gates': 40, 'seed': 0}
+E3 {'n': 40, 'lb': 19, 'dsatur': 19, 'jk': 20, 'mkco': 19, 't_dsatur': 0.0025129318237304688, 't_jk': 0.01833510398864746, 't_mkco': 0.0002028942108154297, 'backtracking': 19, 'backtracking_proven': True, 't_backtracking': 0.03170919418334961, 'gates': 40, 'seed': 1}
+E3 {'n': 40, 'lb': 16, 'dsatur': 16, 'jk': 17, 'mkco': 16, 't_dsatur': 0.0024690628051757812, 't_jk': 0.017145872116088867, 't_mkco': 0.00019812583923339844, 'backtracking': 16, 'backtracking_proven': False, 't_backtracking': 10.031071901321411, 'gates': 40, 'seed': 2}
+E3 {'n': 40, 'lb': 16, 'dsatur': 16, 'jk': 17, 'mkco': 16, 't_dsatur': 0.002496004104614258, 't_jk': 0.017333984375, 't_mkco': 0.00020122528076171875, 'backtracking': 16, 'backtracking_proven': True, 't_backtracking': 0.032312870025634766, 'gates': 40, 'seed': 3}
+E3 {'n': 40, 'lb': 15, 'dsatur': 18, 'jk': 19, 'mkco': 16, 't_dsatur': 0.0025527477264404297, 't_jk': 0.017800331115722656, 't_mkco': 10.009589910507202, 'backtracking': 16, 'backtracking_proven': False, 't_backtracking': 10.031390905380249, 'gates': 40, 'seed': 4}
+E3 {'n': 50, 'lb': 18, 'dsatur': 23, 'jk': 20, 'mkco': 18, 't_dsatur': 0.004237651824951172, 't_jk': 0.0318601131439209, 't_mkco': 1.3947689533233643, 'backtracking': 21, 'backtracking_proven': False, 't_backtracking': 10.053224086761475, 'gates': 50, 'seed': 0}
+E3 {'n': 50, 'lb': 20, 'dsatur': 20, 'jk': 23, 'mkco': 20, 't_dsatur': 0.004193782806396484, 't_jk': 0.03233814239501953, 't_mkco': 0.00021195411682128906, 'backtracking': 20, 'backtracking_proven': True, 't_backtracking': 0.05166292190551758, 'gates': 50, 'seed': 1}
+E3 {'n': 50, 'lb': 18, 'dsatur': 20, 'jk': 19, 'mkco': 18, 't_dsatur': 0.004197835922241211, 't_jk': 0.030148029327392578, 't_mkco': 0.0043888092041015625, 'backtracking': 18, 'backtracking_proven': False, 't_backtracking': 10.048879146575928, 'gates': 50, 'seed': 2}
+E3 {'n': 50, 'lb': 19, 'dsatur': 19, 'jk': 20, 'mkco': 19, 't_dsatur': 0.0041692256927490234, 't_jk': 0.030086994171142578, 't_mkco': 0.00021004676818847656, 'backtracking': 19, 'backtracking_proven': True, 't_backtracking': 0.05509781837463379, 'gates': 50, 'seed': 3}
+E3 {'n': 50, 'lb': 18, 'dsatur': 20, 'jk': 20, 'mkco': 18, 't_dsatur': 0.004122018814086914, 't_jk': 0.031581878662109375, 't_mkco': 0.13311314582824707, 'backtracking': 20, 'backtracking_proven': False, 't_backtracking': 10.051389932632446, 'gates': 50, 'seed': 4}
+E3 {'n': 60, 'lb': 23, 'dsatur': 24, 'jk': 25, 'mkco': 23, 't_dsatur': 0.0065059661865234375, 't_jk': 0.0507199764251709, 't_mkco': 0.0036962032318115234, 'gates': 60, 'seed': 0}
+E3 {'n': 60, 'lb': 25, 'dsatur': 25, 'jk': 27, 'mkco': 25, 't_dsatur': 0.006757259368896484, 't_jk': 0.050000905990600586, 't_mkco': 0.0002200603485107422, 'gates': 60, 'seed': 1}
+E3 {'n': 60, 'lb': 23, 'dsatur': 24, 'jk': 24, 'mkco': 23, 't_dsatur': 0.0066738128662109375, 't_jk': 0.04944777488708496, 't_mkco': 0.0023851394653320312, 'gates': 60, 'seed': 2}
+E3 {'n': 60, 'lb': 24, 'dsatur': 25, 'jk': 24, 'mkco': 24, 't_dsatur': 0.006726980209350586, 't_jk': 0.04938101768493652, 't_mkco': 0.0025010108947753906, 'gates': 60, 'seed': 3}
+E3 {'n': 60, 'lb': 21, 'dsatur': 23, 'jk': 23, 'mkco': 21, 't_dsatur': 0.006662845611572266, 't_jk': 0.050718069076538086, 't_mkco': 0.013464927673339844, 'gates': 60, 'seed': 4}
+E3 {'n': 70, 'lb': 27, 'dsatur': 28, 'jk': 28, 'mkco': 27, 't_dsatur': 0.009852170944213867, 't_jk': 0.07853889465332031, 't_mkco': 0.003591299057006836, 'gates': 70, 'seed': 0}
+E3 {'n': 70, 'lb': 28, 'dsatur': 30, 'jk': 28, 'mkco': 28, 't_dsatur': 0.009999752044677734, 't_jk': 0.07563424110412598, 't_mkco': 0.004229068756103516, 'gates': 70, 'seed': 1}
+E3 {'n': 70, 'lb': 27, 'dsatur': 27, 'jk': 28, 'mkco': 27, 't_dsatur': 0.00996708869934082, 't_jk': 0.07575678825378418, 't_mkco': 0.00022339820861816406, 'gates': 70, 'seed': 2}
+E3 {'n': 70, 'lb': 26, 'dsatur': 27, 'jk': 27, 'mkco': 26, 't_dsatur': 0.00979471206665039, 't_jk': 0.07418513298034668, 't_mkco': 0.0023453235626220703, 'gates': 70, 'seed': 3}
+E3 {'n': 70, 'lb': 26, 'dsatur': 28, 'jk': 26, 'mkco': 26, 't_dsatur': 0.00968480110168457, 't_jk': 0.07589602470397949, 't_mkco': 0.004426002502441406, 'gates': 70, 'seed': 4}
+E3 {'n': 80, 'lb': 32, 'dsatur': 33, 'jk': 33, 'mkco': 32, 't_dsatur': 0.014514923095703125, 't_jk': 0.11235809326171875, 't_mkco': 0.0025632381439208984, 'gates': 80, 'seed': 0}
+E3 {'n': 80, 'lb': 31, 'dsatur': 35, 'jk': 32, 'mkco': 31, 't_dsatur': 0.014379024505615234, 't_jk': 0.1092061996459961, 't_mkco': 0.010576009750366211, 'gates': 80, 'seed': 1}
+E3 {'n': 80, 'lb': 29, 'dsatur': 32, 'jk': 29, 'mkco': 29, 't_dsatur': 0.01388096809387207, 't_jk': 0.10937190055847168, 't_mkco': 0.022705793380737305, 'gates': 80, 'seed': 2}
+E3 {'n': 80, 'lb': 30, 'dsatur': 32, 'jk': 31, 'mkco': 30, 't_dsatur': 0.013845205307006836, 't_jk': 0.10835981369018555, 't_mkco': 0.004714012145996094, 'gates': 80, 'seed': 3}
+E3 {'n': 80, 'lb': 28, 'dsatur': 31, 'jk': 29, 'mkco': 28, 't_dsatur': 0.013920068740844727, 't_jk': 0.10931396484375, 't_mkco': 0.032700300216674805, 'gates': 80, 'seed': 4}
+E3 {'n': 90, 'lb': 37, 'dsatur': 37, 'jk': 37, 'mkco': 37, 't_dsatur': 0.0192110538482666, 't_jk': 0.1634979248046875, 't_mkco': 0.00023603439331054688, 'gates': 90, 'seed': 0}
+E3 {'n': 90, 'lb': 33, 'dsatur': 33, 'jk': 33, 'mkco': 33, 't_dsatur': 0.01951003074645996, 't_jk': 0.15285468101501465, 't_mkco': 0.00023102760314941406, 'gates': 90, 'seed': 1}
+E3 {'n': 90, 'lb': 33, 'dsatur': 36, 'jk': 34, 'mkco': 33, 't_dsatur': 0.019494056701660156, 't_jk': 0.15236616134643555, 't_mkco': 0.01565694808959961, 'gates': 90, 'seed': 2}
+E3 {'n': 90, 'lb': 34, 'dsatur': 35, 'jk': 35, 'mkco': 34, 't_dsatur': 0.019581079483032227, 't_jk': 0.15265321731567383, 't_mkco': 0.004066944122314453, 'gates': 90, 'seed': 3}
+E3 {'n': 90, 'lb': 33, 'dsatur': 36, 'jk': 35, 'mkco': 33, 't_dsatur': 0.01915121078491211, 't_jk': 0.15048599243164062, 't_mkco': 0.010421037673950195, 'gates': 90, 'seed': 4}
+E3 {'n': 100, 'lb': 39, 'dsatur': 39, 'jk': 41, 'mkco': 39, 't_dsatur': 0.025749921798706055, 't_jk': 0.2076120376586914, 't_mkco': 0.00023603439331054688, 'gates': 100, 'seed': 0}
+E3 {'n': 100, 'lb': 36, 'dsatur': 39, 'jk': 37, 'mkco': 36, 't_dsatur': 0.03758740425109863, 't_jk': 0.22243571281433105, 't_mkco': 0.0152130126953125, 'gates': 100, 'seed': 1}
+E3 {'n': 100, 'lb': 39, 'dsatur': 41, 'jk': 39, 'mkco': 39, 't_dsatur': 0.025651931762695312, 't_jk': 0.20402812957763672, 't_mkco': 0.00664210319519043, 'gates': 100, 'seed': 2}
+E3 {'n': 100, 'lb': 36, 'dsatur': 37, 'jk': 39, 'mkco': 36, 't_dsatur': 0.02591419219970703, 't_jk': 0.19991183280944824, 't_mkco': 0.01707315444946289, 'gates': 100, 'seed': 3}
+E3 {'n': 100, 'lb': 35, 'dsatur': 38, 'jk': 36, 'mkco': 35, 't_dsatur': 0.025545120239257812, 't_jk': 0.2056870460510254, 't_mkco': 0.019521713256835938, 'gates': 100, 'seed': 4}
+E1 {'n': 50, 'lb': 30, 'dsatur': 30, 'jk': 33, 'mkco': 30, 't_dsatur': 0.0052242279052734375, 't_jk': 0.048948049545288086, 't_mkco': 0.0002129077911376953, 'backtracking': 30, 'backtracking_proven': True, 't_backtracking': 0.09126710891723633, 'm': 10, 'seed': 0}
+E1 {'n': 50, 'lb': 28, 'dsatur': 28, 'jk': 32, 'mkco': 28, 't_dsatur': 0.004821062088012695, 't_jk': 0.04593682289123535, 't_mkco': 0.00019788742065429688, 'backtracking': 28, 'backtracking_proven': True, 't_backtracking': 0.07793211936950684, 'm': 10, 'seed': 1}
+E1 {'n': 50, 'lb': 29, 'dsatur': 29, 'jk': 34, 'mkco': 29, 't_dsatur': 0.005112171173095703, 't_jk': 0.047471046447753906, 't_mkco': 0.0002110004425048828, 'backtracking': 29, 'backtracking_proven': True, 't_backtracking': 0.08586597442626953, 'm': 10, 'seed': 2}
+E1 {'n': 50, 'lb': 25, 'dsatur': 25, 'jk': 28, 'mkco': 25, 't_dsatur': 0.0047931671142578125, 't_jk': 0.04293084144592285, 't_mkco': 0.0002028942108154297, 'backtracking': 25, 'backtracking_proven': True, 't_backtracking': 0.16273093223571777, 'm': 10, 'seed': 3}
+E1 {'n': 50, 'lb': 26, 'dsatur': 27, 'jk': 32, 'mkco': 27, 't_dsatur': 0.004790067672729492, 't_jk': 0.04125690460205078, 't_mkco': 10.006319284439087, 'backtracking': 27, 'backtracking_proven': True, 't_backtracking': 0.07782387733459473, 'm': 10, 'seed': 4}
+E1 {'n': 100, 'lb': 47, 'dsatur': 50, 'jk': 58, 'mkco': 48, 't_dsatur': 0.03074502944946289, 't_jk': 0.27051806449890137, 't_mkco': 10.000240087509155, 'm': 10, 'seed': 0}
+E1 {'n': 100, 'lb': 47, 'dsatur': 52, 'jk': 56, 'mkco': 48, 't_dsatur': 0.03106093406677246, 't_jk': 0.27294921875, 't_mkco': 10.003288984298706, 'm': 10, 'seed': 1}
+E1 {'n': 100, 'lb': 52, 'dsatur': 52, 'jk': 60, 'mkco': 52, 't_dsatur': 0.03116321563720703, 't_jk': 0.2830197811126709, 't_mkco': 0.0002429485321044922, 'm': 10, 'seed': 2}
+E1 {'n': 100, 'lb': 47, 'dsatur': 47, 'jk': 55, 'mkco': 47, 't_dsatur': 0.030497074127197266, 't_jk': 0.24662017822265625, 't_mkco': 0.00023889541625976562, 'm': 10, 'seed': 3}
+E1 {'n': 100, 'lb': 48, 'dsatur': 53, 'jk': 60, 'mkco': 50, 't_dsatur': 0.030935049057006836, 't_jk': 0.2686781883239746, 't_mkco': 10.013012886047363, 'm': 10, 'seed': 4}
+E1 {'n': 150, 'lb': 66, 'dsatur': 74, 'jk': 83, 'mkco': 69, 't_dsatur': 0.09838485717773438, 't_jk': 0.8306050300598145, 't_mkco': 10.001166105270386, 'm': 10, 'seed': 0}
+E1 {'n': 150, 'lb': 72, 'dsatur': 73, 'jk': 88, 'mkco': 72, 't_dsatur': 0.1014261245727539, 't_jk': 0.8562600612640381, 't_mkco': 0.022947072982788086, 'm': 10, 'seed': 1}
+E1 {'n': 150, 'lb': 70, 'dsatur': 75, 'jk': 84, 'mkco': 72, 't_dsatur': 0.09697890281677246, 't_jk': 0.8860220909118652, 't_mkco': 10.012618064880371, 'm': 10, 'seed': 2}
+E1 {'n': 150, 'lb': 64, 'dsatur': 70, 'jk': 78, 'mkco': 66, 't_dsatur': 0.09666204452514648, 't_jk': 0.8637466430664062, 't_mkco': 10.0137619972229, 'm': 10, 'seed': 3}
+E1 {'n': 150, 'lb': 67, 'dsatur': 73, 'jk': 84, 'mkco': 70, 't_dsatur': 0.09688591957092285, 't_jk': 0.8040978908538818, 't_mkco': 10.015062093734741, 'm': 10, 'seed': 4}
+E1 {'n': 200, 'lb': 95, 'dsatur': 96, 'jk': 107, 'mkco': 95, 't_dsatur': 0.2678208351135254, 't_jk': 2.073961019515991, 't_mkco': 0.005721092224121094, 'm': 10, 'seed': 0}
+E1 {'n': 200, 'lb': 91, 'dsatur': 98, 'jk': 114, 'mkco': 95, 't_dsatur': 0.23378705978393555, 't_jk': 1.9430551528930664, 't_mkco': 10.013520002365112, 'm': 10, 'seed': 1}
+E1 {'n': 200, 'lb': 92, 'dsatur': 95, 'jk': 113, 'mkco': 92, 't_dsatur': 0.23171305656433105, 't_jk': 1.979511022567749, 't_mkco': 2.8734309673309326, 'm': 10, 'seed': 2}
+E1 {'n': 200, 'lb': 90, 'dsatur': 94, 'jk': 106, 'mkco': 90, 't_dsatur': 0.24021100997924805, 't_jk': 1.8643341064453125, 't_mkco': 0.09871482849121094, 'm': 10, 'seed': 3}
+E1 {'n': 200, 'lb': 87, 'dsatur': 95, 'jk': 106, 'mkco': 92, 't_dsatur': 0.23044490814208984, 't_jk': 1.8643481731414795, 't_mkco': 10.011693000793457, 'm': 10, 'seed': 4}
+E1 {'n': 50, 'lb': 32, 'dsatur': 32, 'jk': 35, 'mkco': 32, 't_dsatur': 0.004966020584106445, 't_jk': 0.05026102066040039, 't_mkco': 0.00018715858459472656, 'backtracking': 32, 'backtracking_proven': True, 't_backtracking': 0.09209823608398438, 'm': 20, 'seed': 0}
+E1 {'n': 50, 'lb': 33, 'dsatur': 33, 'jk': 34, 'mkco': 33, 't_dsatur': 0.005038022994995117, 't_jk': 0.04426693916320801, 't_mkco': 0.00018215179443359375, 'backtracking': 33, 'backtracking_proven': True, 't_backtracking': 0.07620406150817871, 'm': 20, 'seed': 1}
+E1 {'n': 50, 'lb': 33, 'dsatur': 33, 'jk': 38, 'mkco': 33, 't_dsatur': 0.004887104034423828, 't_jk': 0.05794477462768555, 't_mkco': 0.00019097328186035156, 'backtracking': 33, 'backtracking_proven': True, 't_backtracking': 0.09141302108764648, 'm': 20, 'seed': 2}
+E1 {'n': 50, 'lb': 25, 'dsatur': 25, 'jk': 29, 'mkco': 25, 't_dsatur': 0.004619121551513672, 't_jk': 0.03837394714355469, 't_mkco': 0.00021719932556152344, 'backtracking': 25, 'backtracking_proven': True, 't_backtracking': 0.0681910514831543, 'm': 20, 'seed': 3}
+E1 {'n': 50, 'lb': 31, 'dsatur': 31, 'jk': 33, 'mkco': 31, 't_dsatur': 0.004782915115356445, 't_jk': 0.0481109619140625, 't_mkco': 0.00019669532775878906, 'backtracking': 31, 'backtracking_proven': True, 't_backtracking': 0.07898497581481934, 'm': 20, 'seed': 4}
+E1 {'n': 100, 'lb': 57, 'dsatur': 57, 'jk': 65, 'mkco': 57, 't_dsatur': 0.03127789497375488, 't_jk': 0.3104979991912842, 't_mkco': 0.00022792816162109375, 'm': 20, 'seed': 0}
+E1 {'n': 100, 'lb': 52, 'dsatur': 53, 'jk': 62, 'mkco': 53, 't_dsatur': 0.03197503089904785, 't_jk': 0.2625870704650879, 't_mkco': 10.012323141098022, 'm': 20, 'seed': 1}
+E1 {'n': 100, 'lb': 54, 'dsatur': 54, 'jk': 62, 'mkco': 54, 't_dsatur': 0.03097701072692871, 't_jk': 0.29456615447998047, 't_mkco': 0.00024080276489257812, 'm': 20, 'seed': 2}
+E1 {'n': 100, 'lb': 47, 'dsatur': 48, 'jk': 58, 'mkco': 48, 't_dsatur': 0.030007123947143555, 't_jk': 0.2665059566497803, 't_mkco': 10.003412246704102, 'm': 20, 'seed': 3}
+E1 {'n': 100, 'lb': 48, 'dsatur': 48, 'jk': 60, 'mkco': 48, 't_dsatur': 0.03001689910888672, 't_jk': 0.27288126945495605, 't_mkco': 0.0002522468566894531, 'm': 20, 'seed': 4}
+E1 {'n': 150, 'lb': 79, 'dsatur': 80, 'jk': 94, 'mkco': 80, 't_dsatur': 0.09885716438293457, 't_jk': 0.9364008903503418, 't_mkco': 10.012645721435547, 'm': 20, 'seed': 0}
+E1 {'n': 150, 'lb': 76, 'dsatur': 76, 'jk': 90, 'mkco': 76, 't_dsatur': 0.09715509414672852, 't_jk': 0.801720142364502, 't_mkco': 0.00029778480529785156, 'm': 20, 'seed': 1}
+E1 {'n': 150, 'lb': 76, 'dsatur': 76, 'jk': 89, 'mkco': 76, 't_dsatur': 0.11089086532592773, 't_jk': 0.9135890007019043, 't_mkco': 0.00029587745666503906, 'm': 20, 'seed': 2}
+E1 {'n': 150, 'lb': 70, 'dsatur': 70, 'jk': 86, 'mkco': 70, 't_dsatur': 0.09607577323913574, 't_jk': 0.8412783145904541, 't_mkco': 0.00028896331787109375, 'm': 20, 'seed': 3}
+E1 {'n': 150, 'lb': 68, 'dsatur': 69, 'jk': 85, 'mkco': 69, 't_dsatur': 0.09651875495910645, 't_jk': 0.7924227714538574, 't_mkco': 10.008065700531006, 'm': 20, 'seed': 4}
+E1 {'n': 200, 'lb': 95, 'dsatur': 96, 'jk': 118, 'mkco': 96, 't_dsatur': 0.2364358901977539, 't_jk': 1.9635632038116455, 't_mkco': 10.001554250717163, 'm': 20, 'seed': 0}
+E1 {'n': 200, 'lb': 95, 'dsatur': 95, 'jk': 122, 'mkco': 95, 't_dsatur': 0.22782206535339355, 't_jk': 1.884861946105957, 't_mkco': 0.00031495094299316406, 'm': 20, 'seed': 1}
+E1 {'n': 200, 'lb': 94, 'dsatur': 96, 'jk': 114, 'mkco': 96, 't_dsatur': 0.23015499114990234, 't_jk': 2.0455479621887207, 't_mkco': 10.009485721588135, 'm': 20, 'seed': 2}
+E1 {'n': 200, 'lb': 90, 'dsatur': 91, 'jk': 112, 'mkco': 90, 't_dsatur': 0.23868274688720703, 't_jk': 1.854579210281372, 't_mkco': 0.13647198677062988, 'm': 20, 'seed': 3}
+E1 {'n': 200, 'lb': 93, 'dsatur': 93, 'jk': 120, 'mkco': 93, 't_dsatur': 0.23137378692626953, 't_jk': 1.9251041412353516, 't_mkco': 0.0003311634063720703, 'm': 20, 'seed': 4}
+E1 {'n': 50, 'lb': 37, 'dsatur': 37, 'jk': 39, 'mkco': 37, 't_dsatur': 0.004991054534912109, 't_jk': 0.06513500213623047, 't_mkco': 0.0002579689025878906, 'backtracking': 37, 'backtracking_proven': True, 't_backtracking': 0.1067497730255127, 'm': 30, 'seed': 0}
+E1 {'n': 50, 'lb': 32, 'dsatur': 32, 'jk': 35, 'mkco': 32, 't_dsatur': 0.004888772964477539, 't_jk': 0.05095720291137695, 't_mkco': 0.00021696090698242188, 'backtracking': 32, 'backtracking_proven': True, 't_backtracking': 0.07571887969970703, 'm': 30, 'seed': 1}
+E1 {'n': 50, 'lb': 28, 'dsatur': 28, 'jk': 32, 'mkco': 28, 't_dsatur': 0.004748821258544922, 't_jk': 0.04998898506164551, 't_mkco': 0.00017714500427246094, 'backtracking': 28, 'backtracking_proven': True, 't_backtracking': 0.07018017768859863, 'm': 30, 'seed': 2}
+E1 {'n': 50, 'lb': 32, 'dsatur': 32, 'jk': 35, 'mkco': 32, 't_dsatur': 0.004795074462890625, 't_jk': 0.05129098892211914, 't_mkco': 0.00020003318786621094, 'backtracking': 32, 'backtracking_proven': True, 't_backtracking': 0.09077692031860352, 'm': 30, 'seed': 3}
+E1 {'n': 50, 'lb': 34, 'dsatur': 34, 'jk': 37, 'mkco': 34, 't_dsatur': 0.00502324104309082, 't_jk': 0.05784010887145996, 't_mkco': 0.00018405914306640625, 'backtracking': 34, 'backtracking_proven': True, 't_backtracking': 0.10404205322265625, 'm': 30, 'seed': 4}
+E1 {'n': 100, 'lb': 61, 'dsatur': 61, 'jk': 70, 'mkco': 61, 't_dsatur': 0.03097987174987793, 't_jk': 0.3719780445098877, 't_mkco': 0.0002231597900390625, 'm': 30, 'seed': 0}
+E1 {'n': 100, 'lb': 57, 'dsatur': 57, 'jk': 65, 'mkco': 57, 't_dsatur': 0.031336307525634766, 't_jk': 0.3123598098754883, 't_mkco': 0.0002491474151611328, 'm': 30, 'seed': 1}
+E1 {'n': 100, 'lb': 49, 'dsatur': 50, 'jk': 62, 'mkco': 50, 't_dsatur': 0.03032517433166504, 't_jk': 0.3039889335632324, 't_mkco': 10.002058029174805, 'm': 30, 'seed': 2}
+E1 {'n': 100, 'lb': 59, 'dsatur': 59, 'jk': 69, 'mkco': 59, 't_dsatur': 0.03061389923095703, 't_jk': 0.3276219367980957, 't_mkco': 0.00028705596923828125, 'm': 30, 'seed': 3}
+E1 {'n': 100, 'lb': 68, 'dsatur': 68, 'jk': 74, 'mkco': 68, 't_dsatur': 0.03195595741271973, 't_jk': 0.3784639835357666, 't_mkco': 0.00028395652770996094, 'm': 30, 'seed': 4}
+E1 {'n': 150, 'lb': 89, 'dsatur': 90, 'jk': 101, 'mkco': 90, 't_dsatur': 0.10045003890991211, 't_jk': 1.0857899188995361, 't_mkco': 10.002961874008179, 'm': 30, 'seed': 0}
+E1 {'n': 150, 'lb': 86, 'dsatur': 86, 'jk': 99, 'mkco': 86, 't_dsatur': 0.10103702545166016, 't_jk': 0.9981529712677002, 't_mkco': 0.00025177001953125, 'm': 30, 'seed': 1}
+E1 {'n': 150, 'lb': 74, 'dsatur': 74, 'jk': 89, 'mkco': 74, 't_dsatur': 0.09858107566833496, 't_jk': 0.9080178737640381, 't_mkco': 0.00033283233642578125, 'm': 30, 'seed': 2}
+E1 {'n': 150, 'lb': 80, 'dsatur': 80, 'jk': 97, 'mkco': 80, 't_dsatur': 0.09769606590270996, 't_jk': 0.9676380157470703, 't_mkco': 0.00030994415283203125, 'm': 30, 'seed': 3}
+E1 {'n': 150, 'lb': 95, 'dsatur': 95, 'jk': 109, 'mkco': 95, 't_dsatur': 0.10342621803283691, 't_jk': 1.1746199131011963, 't_mkco': 0.00025010108947753906, 'm': 30, 'seed': 4}
+E1 {'n': 200, 'lb': 118, 'dsatur': 118, 'jk': 137, 'mkco': 118, 't_dsatur': 0.24186229705810547, 't_jk': 2.475897789001465, 't_mkco': 0.0003228187561035156, 'm': 30, 'seed': 0}
+E1 {'n': 200, 'lb': 110, 'dsatur': 110, 'jk': 129, 'mkco': 110, 't_dsatur': 0.2358112335205078, 't_jk': 2.214763879776001, 't_mkco': 0.0003337860107421875, 'm': 30, 'seed': 1}
+E1 {'n': 200, 'lb': 103, 'dsatur': 103, 'jk': 127, 'mkco': 103, 't_dsatur': 0.23621511459350586, 't_jk': 2.152428150177002, 't_mkco': 0.0003399848937988281, 'm': 30, 'seed': 2}
+E1 {'n': 200, 'lb': 102, 'dsatur': 103, 'jk': 122, 'mkco': 103, 't_dsatur': 0.2321159839630127, 't_jk': 2.0384199619293213, 't_mkco': 10.017075777053833, 'm': 30, 'seed': 3}
+E1 {'n': 200, 'lb': 122, 'dsatur': 122, 'jk': 144, 'mkco': 122, 't_dsatur': 0.23284101486206055, 't_jk': 2.635357141494751, 't_mkco': 0.0003192424774169922, 'm': 30, 'seed': 4}

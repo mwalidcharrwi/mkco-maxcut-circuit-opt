@@ -1,0 +1,4 @@
+retrying Qiskit O3 (bidirectional) for heisenberg_32
+heisenberg_32 O3 3538 O3+MKCO 3538
+retrying Qiskit O3 (bidirectional) for hubbard_18
+hubbard_18 O3 65436 O3+MKCO 65339

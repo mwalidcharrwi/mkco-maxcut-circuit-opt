@@ -1,0 +1,8 @@
+# core
+networkx==3.7
+numpy==2.5.4
+scipy==1.18.1
+# optional: Qiskit baseline / cross-checks, exact CP-SAT reference, figures
+ortools==9.15.6755
+qiskit==2.6.1
+matplotlib>=3.8

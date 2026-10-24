@@ -1,0 +1,9 @@
+mult_8 depth 1138 -> 1102 sv True
+add_17 depth 1003 -> 964 sv True
+qae_17 depth 1066 -> 1035 sv True
+qft_16 depth 1009 -> 980 sv True
+hubbard_8 depth 4400 -> 4266 sv True
+hhl_8 depth 10641 -> 10434 sv True
+heisenberg_32 depth 7143 -> 5265 sv None
+grover_10 depth 43923 -> 41641 sv True
+hubbard_18 depth 136644 -> 110907 sv None
