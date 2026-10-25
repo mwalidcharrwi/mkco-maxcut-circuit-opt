@@ -22,15 +22,20 @@ MKCO turns that reduction into a **Max-k-Cut framework** that:
    balanced splits exist. It also gives a qubit-efficient Ising/QUBO
    encoding, n·⌈log₂ depth⌉ spins, for QAOA, annealers or Goemans–Williamson
    SDP (Proposition 6).
-4. **Certifies its answers.** A run-serialised Jackson lower bound (Theorem 7)
-   proves optimality. An independent commutation audit, plus state-vector
-   simulation for ≤ 20 active qubits, verifies every output.
+4. **Certifies its answers.** A run-serialised Jackson lower bound (Theorem 7),
+   plus a Lovász-θ SDP bound for commuting circuits, proves optimality. An
+   independent commutation audit, plus state-vector simulation for ≤ 20 active
+   qubits, verifies every output.
+5. **Goes beyond reordering when asked.** Optional single-qubit (ZSX) and
+   two-qubit (KAK, native ECR direction) resynthesis feed the same Max-k-Cut
+   layering. Selected by depth or by estimated execution time, this beats
+   Qiskit O3 on every benchmark.
 
 **Comparison against the related work.** Lee et al. 2026 and Jain & Kumar 2026
 are run on identical inputs:
-- rows 1–5: the 9 provided IBM-127-transpiled benchmarks (rz/sx/x/ecr,
+- rows 1–6: the 9 provided IBM-127-transpiled benchmarks (rz/sx/x/ecr,
   1.9k–358k gates);
-- rows 6–10: the paper's own experimental settings and structured commuting
+- rows 7–11: the paper's own experimental settings and structured commuting
   circuits.
 
 <!-- HEADLINE -->

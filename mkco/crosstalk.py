@@ -127,9 +127,14 @@ def _anchor_emit(circuit, model, slots, gates):
     return out
 
 
-def optimize_crosstalk(circuit, adj, weight=0.1, time_limit=30.0, seed=0, max_iter=200000):
-    """Keep the optimal 2q-depth, minimise neighbouring-coupler pairs per layer.
+def optimize_crosstalk(circuit, adj, weight=0.1, time_limit=30.0, seed=0, max_iter=200000,
+                       extra_layers=0):
+    """Minimise neighbouring-coupler ECR pairs per layer under a 2q-depth budget.
 
+    With extra_layers = 0 the budget is the optimal 2q-depth k*; otherwise it is
+    k* + extra_layers (the depth-budget form of Theorem 2): the optimal layering
+    is stretched order-preservingly to the larger budget, which keeps it valid,
+    and the weighted Max-k-Cut then spends the slack on soft edges.
     Returns (circuit_with_anchor_barriers, stats).
     """
     import time
@@ -147,7 +152,10 @@ def optimize_crosstalk(circuit, adj, weight=0.1, time_limit=30.0, seed=0, max_it
             out.extend(payload)
             continue
         base = compact(list_schedule(model))
-        k = used_layers(base)
+        k0 = used_layers(base)
+        k = k0 + int(extra_layers)
+        if k > k0 and k0 > 1:          # strictly increasing map 0..k0-1 -> 0..k-1
+            base = np.round(base * (k - 1) / (k0 - 1)).astype(np.int64)
         # soft resources: one per neighbouring coupler pair
         cid = {}
         for r, (e1, e2) in enumerate(adj):
@@ -164,7 +172,7 @@ def optimize_crosstalk(circuit, adj, weight=0.1, time_limit=30.0, seed=0, max_it
         if st.phi_hard > 0:
             st.reset_to(base)
         after = st.phi_soft / weight
-        out.extend(_anchor_emit(sub, model, st.slot, payload))
+        out.extend(_anchor_emit(sub, model, compact(st.slot.copy()), payload))
         stats["segments"].append({"layers": k, "xt_pairs_model_before": before,
                                   "xt_pairs_model_after": after,
                                   "iterations": getattr(st, "iterations", 0)})

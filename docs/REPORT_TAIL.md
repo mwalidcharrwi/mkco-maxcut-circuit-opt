@@ -6,10 +6,11 @@ small demonstration; ⭕ are open problems we identified.
 1. ✅ **Exact general-circuit reduction (Thm 1) and the Max-k-Cut
    characterisation (Thm 2).** This closes the paper's main limitation (commuting
    circuits only) with a linear-memory model.
-2. ✅ **Certified depth bounds (Thm 7).** Optimality proven on all 9 IBM
-   benchmarks and on the F₂ⁿ multiplier. Stronger certificates are open
-   (⭕ Lovász-θ / vector-chromatic SDP bounds for commuting blocks, via the
-   Karger–Motwani–Sudan relaxation that Max-k-Cut SDPs already compute).
+2. ✅ **Certified depth bounds (Thm 7), plus Lovász-θ SDP bounds (E7).**
+   Optimality is proven on all 9 IBM benchmarks and on the F₂ⁿ multiplier. The
+   θ number of the complement of the conflict graph (sandwich theorem)
+   certifies additional commuting instances that the clique bound left open.
+   ⭕ Szegedy's θ⁺ and dual certificates (exact rational rounding) remain open.
 3. ✅ **Soft hardware constraints as weighted edges.** Implemented for
    crosstalk; the same mechanism extends directly to:
    - frequency collisions;
@@ -26,8 +27,9 @@ small demonstration; ⭕ are open problems we identified.
    guarantees that carry Goemans–Williamson / Frieze–Jerrum cut ratios over to
    depth, are open.
 6. ✅ **Depth budgets.** Fixed-k Max-k-Cut gives the least-conflicting schedule
-   under a hard latency or coherence budget. Proposition 3 then bounds the
-   repaired depth.
+   under a hard latency or coherence budget. Proposition 3 bounds the repaired
+   depth. Table 9 and the Pareto figure show the resulting trade-off between
+   two-qubit depth and crosstalk.
 7. ⭕ **Lexicographic / Pareto objectives.** Total depth vs two-qubit depth vs
    crosstalk. The data show real tensions (add_17: depth-optimal costs +2 ECR
    layers; crosstalk mode costs +0.8–7.6% total depth). A multi-objective
@@ -44,9 +46,13 @@ small demonstration; ⭕ are open problems we identified.
 12. ✅ **Single-qubit resynthesis inside the run structure** (rewrite mode).
     ZSX re-synthesis of 1q chains plus run-based merging, followed by Max-k-Cut
     reordering, is shallower than Qiskit O3 on 8/9 benchmarks.
-13. ⭕ **Two-qubit block resynthesis (KAK) inside the run model.** This is the
-    one transformation where Qiskit O3 still wins (hubbard_18). Adding it as a
-    pre-pass, with the Max-k-Cut layering after it, is the natural next step.
+13. ✅ **Two-qubit block resynthesis (KAK) inside the run model** (MKCO-full).
+    Finding: transpiled blocks are already ECR-optimal on 7 of 9 benchmarks
+    (Table 8). Where KAK does find cheaper blocks (heisenberg_32, hubbard_18),
+    locally cheaper blocks can *increase* global depth, because they destroy the
+    cross-block rotation merging that MKCO's commutation runs enable. ⭕ A
+    run-aware KAK that scores blocks by their effect on the global Max-k-Cut
+    layering is an open problem.
 
 ## 8. Limitations and threats to validity
 
@@ -63,11 +69,11 @@ small demonstration; ⭕ are open problems we identified.
   inferred from used edges are proxies. Real gains should be validated with
   device calibration data or hardware runs. Anchor barriers keep the 2q-depth
   optimal but cost 0.8–7.6% in total depth (0.0–0.9% estimated duration).
-- **Qiskit settings.** Coupling map = edges used by each circuit. Two circuits
-  needed a bidirectional retry (marked †), which favours Qiskit. Qiskit
-  re-synthesises gates, so its depths are compared with MKCO's rewrite mode
-  (same transformation class, except that MKCO does not re-synthesise
-  two-qubit blocks) rather than with reorder-only methods.
+- **Qiskit settings.** Device Target with native directed ECR edges, `ecr`
+  mapped to `ECRGate`, trivial layout, `optimization_level=3`, one seed. Other
+  seeds, optimization levels or Qiskit's approximation degree could change its
+  numbers somewhat. Qiskit re-synthesises gates, so it is compared with MKCO's
+  rewrite modes, not with reorder-only methods.
 - **Durations** are nominal Eagle values, not device calibrations.
 - **Runtimes** are single-process Python on a laptop, measured while other
   experiments shared the machine, so treat them as indicative. MKCO stops early
@@ -77,8 +83,9 @@ small demonstration; ⭕ are open problems we identified.
 
 ```bash
 python experiments/run_ibm127.py benchmarks/ibm127     # all methods, verification, QASM outputs
-python experiments/fill_qiskit.py                      # Qiskit retry where needed
-python experiments/add_merge.py && python experiments/add_rewrite.py   # merge / rewrite modes
+python experiments/run_qiskit.py                       # Qiskit O3 on a device Target (+ MKCO after it)
+python experiments/add_merge.py && python experiments/add_rewrite.py && python experiments/add_full.py
+python experiments/run_blocks.py && python experiments/run_pareto.py && python experiments/run_theta.py
 python experiments/summarize_ibm127.py                 # tables -> results/ibm127/tables.md
 python experiments/run_structured.py                   # E1-E6 -> results/structured/*.json
 python experiments/summarize_structured.py

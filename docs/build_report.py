@@ -9,6 +9,14 @@ def read(p):
     return open(p).read() if os.path.exists(p) else ""
 
 
+def demote(text):
+    """Push every markdown heading one level down (for appendices)."""
+    out = []
+    for line in text.splitlines():
+        out.append("#" + line if line.startswith("#") else line)
+    return "\n".join(out)
+
+
 parts = [
     read(os.path.join(D, "REPORT_HEAD.md")).replace("<!-- HEADLINE -->",
                                                     read(os.path.join(D, "REPORT_HEADLINE.md"))),
@@ -20,9 +28,9 @@ parts = [
     read(os.path.join(D, "REPORT_STRUCTURED.md")) + "\n" + read(os.path.join(R, "structured", "tables.md")),
     read(os.path.join(D, "REPORT_TAIL.md")),
     "## Appendix A. Theory: statements and proofs\n\n" +
-    read(os.path.join(D, "THEORY.md")).split("\n", 1)[1],
+    demote(read(os.path.join(D, "THEORY.md")).split("\n", 1)[1]),
     "## Appendix B. Related-work study notes\n\n" +
-    read(os.path.join(D, "RELATED_WORK.md")).split("\n", 1)[1],
+    demote(read(os.path.join(D, "RELATED_WORK.md")).split("\n", 1)[1]),
 ]
 with open(os.path.join(D, "REPORT.md"), "w") as fh:
     fh.write("\n\n".join(p.strip() for p in parts if p.strip()) + "\n")

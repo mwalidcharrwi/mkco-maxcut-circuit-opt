@@ -16,8 +16,10 @@ QASM ──► commutation axes per (gate, qubit)  [Lemma 1, exact from unitarie
      ──► emission (zero-duration gates placed between layers) → structural certificate
      ──► independent commutation audit (+ state-vector check ≤ 20 qubits)
 Modes:  depth | 2q-depth | crosstalk (soft edges + anchor barriers) | fan-out capacities
-Optional pre-pass (rewrite mode): single-qubit ZSX resynthesis + run-based rotation merging,
-        iterated to a fixed point; every fused chain is checked numerically
+Optional pre-passes (gate-rewriting class), each verified numerically block by block:
+  rewrite: single-qubit ZSX resynthesis + run-based rotation merging, to a fixed point
+  full:    + two-qubit KAK block resynthesis in the native ECR direction (keeps the better)
+Bounds:  run-serialised Jackson bound (any circuit) + Lovász theta SDP (commuting circuits)
 ```
 
 ### 3.2 Why Max-k-Cut and not just colouring

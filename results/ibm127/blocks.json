@@ -1,0 +1,74 @@
+[
+ {
+  "circuit": "mult_8",
+  "blocks_with_2q": 151,
+  "multi_gate_blocks": 151,
+  "cheaper_after_kak": 0,
+  "ecr_removed": 0,
+  "time_s": 1.3
+ },
+ {
+  "circuit": "add_17",
+  "blocks_with_2q": 198,
+  "multi_gate_blocks": 198,
+  "cheaper_after_kak": 0,
+  "ecr_removed": 0,
+  "time_s": 0.2
+ },
+ {
+  "circuit": "qae_17",
+  "blocks_with_2q": 213,
+  "multi_gate_blocks": 213,
+  "cheaper_after_kak": 0,
+  "ecr_removed": 0,
+  "time_s": 0.3
+ },
+ {
+  "circuit": "qft_16",
+  "blocks_with_2q": 237,
+  "multi_gate_blocks": 237,
+  "cheaper_after_kak": 0,
+  "ecr_removed": 0,
+  "time_s": 0.3
+ },
+ {
+  "circuit": "hubbard_8",
+  "blocks_with_2q": 695,
+  "multi_gate_blocks": 694,
+  "cheaper_after_kak": 1,
+  "ecr_removed": 0,
+  "time_s": 0.5
+ },
+ {
+  "circuit": "hhl_8",
+  "blocks_with_2q": 1433,
+  "multi_gate_blocks": 1433,
+  "cheaper_after_kak": 1,
+  "ecr_removed": 0,
+  "time_s": 1.1
+ },
+ {
+  "circuit": "heisenberg_32",
+  "blocks_with_2q": 1594,
+  "multi_gate_blocks": 1594,
+  "cheaper_after_kak": 1073,
+  "ecr_removed": 60,
+  "time_s": 4.5
+ },
+ {
+  "circuit": "grover_10",
+  "blocks_with_2q": 8387,
+  "multi_gate_blocks": 8387,
+  "cheaper_after_kak": 58,
+  "ecr_removed": 0,
+  "time_s": 6.9
+ },
+ {
+  "circuit": "hubbard_18",
+  "blocks_with_2q": 12823,
+  "multi_gate_blocks": 12823,
+  "cheaper_after_kak": 4856,
+  "ecr_removed": 3505,
+  "time_s": 25.5
+ }
+]

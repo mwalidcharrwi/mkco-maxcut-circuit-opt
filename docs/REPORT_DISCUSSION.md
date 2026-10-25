@@ -31,29 +31,72 @@ hubbard_18 (−3) improve.
   depth, but only 0.0–0.9% estimated duration, because ECRs dominate execution
   time.
 
-**Gate rewriting vs Qiskit (Table 4).** Qiskit O3 re-synthesises gates, so
-the fair comparison is MKCO's *rewrite mode*: single-qubit ZSX resynthesis
-plus run-based rotation merging, then Max-k-Cut reordering.
-- **Rewrite mode beats Qiskit O3 on 8 of 9 circuits.**
-  - On the two Hamiltonian-simulation circuits, long rz/sx chains collapse
-    under resynthesis, and rewrite mode goes further than Qiskit. heisenberg_32:
-    7,143 → **3,011**, 15% shallower than Qiskit's 3,538, with a lower
-    two-qubit depth as well (881 vs 936).
-  - On the other circuits Qiskit O3 often makes depth *worse* (+0.2% to +5.2%
-    in 6 cases), mainly from the gates it adds to re-orient re-synthesised ECRs.
-- **The exception is hubbard_18.** Qiskit's two-qubit block resynthesis (KAK),
-  which MKCO does not perform, gives 65,436 against rewrite mode's 72,992.
-- **Composition wins there.** Qiskit O3 → MKCO rewrite gives **64,969**, the
-  best result for that circuit, and also the best on hubbard_8 (4,229).
-- **MKCO is part of the best pipeline on all 9 circuits.** Every MKCO result is
-  certified optimal for the gate list it reorders, and rewrite-mode outputs
-  match the *original* circuit under state-vector simulation (≤ 20 qubits).
+![Rewrite vs Qiskit](figures/ibm127_rewrite_vs_qiskit.png)
 
-**Correctness (Table 7).** All reordered outputs (99 audits) pass the independent
+**Gate rewriting vs Qiskit (Table 4).** Qiskit O3 runs on a device Target:
+ECRs only on the native directed edges, and the file's `ecr` mapped to
+`ECRGate`. All of its outputs are therefore executable as written, and every
+one of them that can be simulated matches the input.
+- **MKCO-full is shallower than Qiskit O3 on all 9 circuits** (−3.4% to
+  −25.5%), and every MKCO result is certified optimal for the gate list it
+  reorders.
+  - The two Hamiltonian-simulation circuits gain most: heisenberg_32
+    3,011 vs 4,039 (−25.5%), hubbard_18 72,992 vs 84,761 (−13.9%).
+  - Their transpiled rz/sx chains collapse under single-qubit resynthesis.
+    MKCO's run-based merging then gathers same-axis rotations *across*
+    commuting ECRs, which an adjacent-gate optimiser cannot do.
+- **Composition still helps Qiskit:** MKCO after Qiskit O3 lowers its depth on
+  every circuit (best on hubbard_8: 4,239).
+
+![Execution time](figures/ibm127_duration.png)
+
+**Hardware time.** Total depth counts virtual rz layers, so the
+hardware-relevant figure is estimated execution time.
+- Selecting among MKCO's candidates by estimated duration, MKCO-full is
+  **faster than Qiskit O3 on all 9 circuits**: −0.2% to −7.8% on 8, and
+  −5.8% on hubbard_18.
+- On hubbard_18 it also beats Qiskit on two-qubit depth (18,795 vs 19,938),
+  ECR count (30,453 vs 33,586, −10.3% vs the input) and total depth
+  (80,677 vs 84,761).
+- Depth- and duration-optimal choices differ on hubbard_18. The 1q-only
+  pre-pass gives the smallest total depth (72,992). KAK block resynthesis
+  gives the fewest ECRs and the shortest time.
+
+**Two-qubit block (KAK) resynthesis (Table 8).**
+- The transpiled circuits are already ECR-optimal block by block on 7 of 9
+  benchmarks (0–58 cheaper blocks).
+- On heisenberg_32 and hubbard_18, KAK finds 1,073 and 4,856 cheaper blocks.
+  On hubbard_18 it removes 3,505 ECRs.
+- *Locally* cheaper blocks are not automatically better globally. On
+  heisenberg_32 the KAK branch is 33% deeper than 1q-only (3,998 vs 3,011),
+  because generic KAK output pins single-qubit layers on both wires and
+  destroys the cross-block merging the run model exploits. MKCO therefore
+  evaluates both branches after Max-k-Cut reordering and keeps the better one.
+
+![Pareto](figures/pareto_crosstalk.png)
+
+**Depth budget vs crosstalk (Table 9).** This is Theorem 2's depth-budget
+form in action. The certified-optimal layering is stretched
+order-preservingly to k* + s layers, and the weighted Max-k-Cut spends the
+slack on soft edges.
+- With s = 0 (no depth cost), crosstalk-prone pairs fall 2–26%.
+- With 10% slack they fall 21–44%; with 20% slack, 39–65%.
+- Estimated execution time grows by 1–19% along these fronts. The fronts let
+  a user choose the operating point that fits their device's crosstalk to
+  coherence ratio.
+- The search is time-limited, so a few measured points are dominated; the
+  figure plots the non-dominated ones and Table 9 lists all of them.
+
+**Correctness (Table 7).** All reordered outputs (117 audits) pass the independent
 commutation audit (14,222 reordered gate pairs checked on grover_10 alone).
 Every MKCO output with ≤ 20 active qubits also matches the input under
 state-vector simulation (fidelity 1 to 10 digits, global phase consistent).
 
-**Runtime (Table 6).** MKCO runs in 0.1–20 s, faster than block-wise colouring
-on every circuit and comparable to Jain & Kumar. The crosstalk mode uses its
-time budget (30–60 s).
+![Runtime](figures/runtime_scaling.png)
+
+**Runtime (Table 6).** Reorder-only MKCO runs in 0.1–20 s, faster than
+block-wise colouring on every circuit and comparable to Jain & Kumar.
+- The crosstalk mode uses its time budget (30–60 s).
+- MKCO-full evaluates two pre-pass branches and takes up to 6 minutes on the
+  358k-gate hubbard_18.
+- Qiskit O3 on a device Target takes 0.1–5 s.

@@ -1,0 +1,10 @@
+mult_8: [kak+1q, depth] duration 158.7us (O3 160.3) depth 1102 (O3 1173) 2q 276 (O3 276) ECR 311 (O3 311) sv True
+add_17: [kak+1q, depth] duration 145.4us (O3 145.8) depth 964 (O3 1026) 2q 255 (O3 253) ECR 499 (O3 499) sv True
+qae_17: [kak+1q, depth] duration 156.4us (O3 157.5) depth 1030 (O3 1084) 2q 274 (O3 274) ECR 541 (O3 541) sv True
+qft_16: [kak+1q, depth] duration 148.2us (O3 149.3) depth 980 (O3 1026) 2q 260 (O3 260) ECR 614 (O3 614) sv True
+hubbard_8: [kak+1q, depth] duration 634.0us (O3 637.9) depth 4241 (O3 4390) 2q 1111 (O3 1111) ECR 1344 (O3 1344) sv True
+hhl_8: [kak+1q, depth] duration 1359.5us (O3 1370.0) depth 10434 (O3 11212) 2q 2319 (O3 2319) ECR 2377 (O3 2377) sv True
+heisenberg_32: [1q-only, depth] duration 499.9us (O3 542.4) depth 3011 (O3 4039) 2q 881 (O3 936) ECR 3942 (O3 4071) sv None
+grover_10: [kak+1q, depth] duration 6221.0us (O3 6293.3) depth 41631 (O3 43995) 2q 10895 (O3 10895) ECR 16397 (O3 16397) sv True
+hubbard_18: [kak+1q, depth] duration 10891.4us (O3 11566.0) depth 80677 (O3 84761) 2q 18795 (O3 19938) ECR 30453 (O3 33586) sv None
+exit 0

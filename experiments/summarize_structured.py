@@ -90,6 +90,18 @@ def main():
         A("|---|---:|---:|---:|---:|")
         for r in e6:
             A(f"| {r['case']} | {r['copies']} | {r['qubits']} | {r['baseline_total']} | **{r['mkco_total']}** |")
+    th = load("theta")
+    if th:
+        A("\n### E7 - Lovász-theta certificates where the clique/Jackson bound left a gap\n")
+        A("theta(complement of the conflict graph) <= chromatic number (sandwich theorem), solved as an SDP.\n")
+        A("| exp. | m | gates | seed | clique/Jackson LB | theta | new LB | DSatur | JK'26 | MKCO | MKCO now proven optimal |")
+        A("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---:|")
+        for r in th:
+            A(f"| {r['experiment'].upper()} | {r['m']} | {r['n']} | {r['seed']} | {r['clique_jackson_lb']} | "
+              f"{r['theta']:.3f} | {r['lb']} | {r['dsatur']} | {r['jk']} | {r['mkco']} | "
+              f"{'yes' if r['mkco_certified_by_theta'] else 'no'} |")
+        A(f"\nTheta closes the gap on {sum(r['mkco_certified_by_theta'] for r in th)} of {len(th)} open instances.")
+
     md = "\n".join(out) + "\n"
     open(os.path.join(D, "tables.md"), "w").write(md)
     print(md)

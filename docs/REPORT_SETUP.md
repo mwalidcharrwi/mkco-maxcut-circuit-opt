@@ -32,9 +32,17 @@ IBM Eagle device:
 - `mkco_xt`: our crosstalk mode. Optimal two-qubit depth with weighted soft
   edges (w = 0.1), and anchor barriers so an ASAP hardware scheduler reproduces
   the layering.
-- `qiskit_o3`: Qiskit 2.6, `optimization_level=3`, basis `rz,sx,x,ecr`,
-  trivial layout, coupling map = directed edges used by the circuit. This
-  *re-synthesises* gates, so it belongs to a different transformation class.
+- `qiskit_o3`: Qiskit 2.6, `optimization_level=3`, trivial layout, on a device
+  **Target**: rz/sx/x on every qubit, ECR only on the native directed edges
+  used by the circuit. The file's `ecr` is mapped to Qiskit's `ECRGate`, so
+  Qiskit can re-synthesise and re-orient it. All 9 outputs contain only native
+  ECRs and match the input under simulation (≤ 20 qubits). Qiskit
+  *re-synthesises* gates, so it belongs to the gate-rewriting class.
+  - *An earlier run of this study* loaded `ecr` as an opaque custom gate and
+    passed a bare coupling map. Qiskit then either failed or, on retry with a
+    bidirectional map, produced circuits with 45–49% of ECRs against the native
+    direction (not executable as written). Those numbers are superseded; see
+    `experiments/run_qiskit.py`.
 - `qiskit_o3+mkco`: our reordering applied to Qiskit's output.
 - `mkco_rewrite`: our rewrite mode. Each maximal chain of single-qubit gates
   is re-synthesised in the device basis (rz/sx/x) by ZSX Euler decomposition,
@@ -42,6 +50,12 @@ IBM Eagle device:
   result is reordered by MKCO. Qiskit O3 also re-synthesises two-qubit
   blocks, which MKCO does not.
 - `qiskit_o3+mkco_rewrite`: our rewrite mode applied to Qiskit's output.
+- `mkco_full`: two-qubit block (KAK) resynthesis into native-direction ECRs
+  plus the rewrite mode, iterated to a fixed point, then Max-k-Cut reordering.
+  The numerical KAK step uses Qiskit's `TwoQubitBasisDecomposer`. Block
+  collection, the native-direction constraint, the acceptance rule (fewer
+  ECRs, or equal ECRs and a shallower block) and verification are ours. It
+  keeps the shallower of this pipeline and rewrite-only, so it is never worse.
 
 **Verification.** Every reordered output passes two independent checks:
 1. the structural certificate (a linear extension of the dependency order);

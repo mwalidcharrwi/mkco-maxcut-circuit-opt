@@ -1,10 +1,12 @@
 """MKCO command line.
 
-  python -m mkco opt   IN.qasm OUT.qasm [--metric depth|2q] [--time 30] [--rewrite|--merge] [--xt]
+  python -m mkco opt   IN.qasm OUT.qasm [--metric depth|2q] [--time 30] [--full|--rewrite|--merge] [--xt]
   python -m mkco bench FILES_OR_DIRS... [--metric depth|2q] [--time 30] [--csv out.csv]
 
 `opt` reorders a circuit (commutation-preserving) and prints the certified
-lower bound; `--rewrite` first re-synthesises single-qubit chains (ZSX) and fuses
+lower bound; `--full` first re-synthesises two-qubit blocks (KAK, native ECR
+direction, needs qiskit) and then does `--rewrite`; `--rewrite` re-synthesises
+single-qubit chains (ZSX) and fuses
 same-axis rotations across commuting gates; `--merge` does only the latter;
 `--xt` keeps the optimal 2q-depth and minimises crosstalk-prone ECR pairs on
 neighbouring couplers (coupling graph inferred from the circuit).
@@ -29,6 +31,8 @@ def main(argv=None):
     ap.add_argument("--time", type=float, default=30.0)
     ap.add_argument("--metric", default="depth", choices=["depth", "2q"])
     ap.add_argument("--merge", action="store_true", help="fuse same-axis rotations first")
+    ap.add_argument("--full", action="store_true",
+                    help="two-qubit block (KAK) + single-qubit resynthesis before reordering")
     ap.add_argument("--rewrite", action="store_true",
                     help="single-qubit ZSX resynthesis + rotation merging before reordering")
     ap.add_argument("--xt", action="store_true", help="crosstalk-aware layering")
@@ -38,7 +42,19 @@ def main(argv=None):
     if a.cmd == "opt":
         c = load_qasm(a.paths[0])
         src = c
-        if a.rewrite:
+        if a.full:
+            from .blocks import full_rewrite
+            from .resynth import rewrite_single_qubit
+            full, st = full_rewrite(c)
+            only1q, _ = rewrite_single_qubit(c)
+            # keep whichever pre-pass reorders to the shallower circuit (never worse)
+            d_full = optimize(full, metric=a.metric, time_limit=a.time / 2)[0].depth()
+            d_1q = optimize(only1q, metric=a.metric, time_limit=a.time / 2)[0].depth()
+            src = full if d_full <= d_1q else only1q
+            print(f"full rewrite: {st['gates_before']} -> {st['gates_after']} gates; "
+                  f"kept {'block+1q' if src is full else '1q-only'} pre-pass "
+                  f"(depth {min(d_full, d_1q)} vs {max(d_full, d_1q)})")
+        elif a.rewrite:
             from .resynth import rewrite_single_qubit
             src, st = rewrite_single_qubit(c)
             print(f"rewrite: {st['gates_before']} -> {st['gates_after']} gates "

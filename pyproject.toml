@@ -14,8 +14,9 @@ dependencies = ["numpy>=1.24", "scipy>=1.10", "networkx>=3.0"]
 [project.optional-dependencies]
 qiskit = ["qiskit>=1.0"]
 exact = ["ortools>=9.8"]
+sdp = ["cvxpy>=1.4"]
 plots = ["matplotlib>=3.8"]
-dev = ["pytest>=7", "qiskit>=1.0", "ortools>=9.8", "matplotlib>=3.8"]
+dev = ["pytest>=7", "qiskit>=1.0", "ortools>=9.8", "matplotlib>=3.8", "cvxpy>=1.4"]
 
 [project.scripts]
 mkco = "mkco.__main__:main"

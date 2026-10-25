@@ -1,0 +1,9 @@
+mult_8: mkco_full depth 1102 [full] (cert True), ECR 311 (reversed 0), 2q 276, sv True, 4s | rewrite 1102 | O3 1173
+add_17: mkco_full depth 964 [full] (cert True), ECR 499 (reversed 0), 2q 255, sv True, 1s | rewrite 964 | O3 1026
+qae_17: mkco_full depth 1030 [full] (cert True), ECR 541 (reversed 0), 2q 274, sv True, 4s | rewrite 1030 | O3 1084
+qft_16: mkco_full depth 980 [full] (cert True), ECR 614 (reversed 0), 2q 260, sv True, 7s | rewrite 980 | O3 1026
+hubbard_8: mkco_full depth 4241 [full] (cert True), ECR 1344 (reversed 0), 2q 1111, sv True, 17s | rewrite 4251 | O3 4390
+hhl_8: mkco_full depth 10434 [full] (cert True), ECR 2377 (reversed 0), 2q 2319, sv True, 15s | rewrite 10434 | O3 11212
+heisenberg_32: mkco_full depth 3011 [rewrite-only] (cert True), ECR 3942 (reversed 0), 2q 881, sv None, 50s | rewrite 3011 | O3 4039
+grover_10: mkco_full depth 41631 [full] (cert True), ECR 16397 (reversed 0), 2q 10895, sv True, 91s | rewrite 41631 | O3 43995
+hubbard_18: mkco_full depth 72992 [rewrite-only] (cert True), ECR 33958 (reversed 0), 2q 21766, sv None, 378s | rewrite 72992 | O3 84761

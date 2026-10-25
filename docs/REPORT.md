@@ -22,15 +22,20 @@ MKCO turns that reduction into a **Max-k-Cut framework** that:
    balanced splits exist. It also gives a qubit-efficient Ising/QUBO
    encoding, n·⌈log₂ depth⌉ spins, for QAOA, annealers or Goemans–Williamson
    SDP (Proposition 6).
-4. **Certifies its answers.** A run-serialised Jackson lower bound (Theorem 7)
-   proves optimality. An independent commutation audit, plus state-vector
-   simulation for ≤ 20 active qubits, verifies every output.
+4. **Certifies its answers.** A run-serialised Jackson lower bound (Theorem 7),
+   plus a Lovász-θ SDP bound for commuting circuits, proves optimality. An
+   independent commutation audit, plus state-vector simulation for ≤ 20 active
+   qubits, verifies every output.
+5. **Goes beyond reordering when asked.** Optional single-qubit (ZSX) and
+   two-qubit (KAK, native ECR direction) resynthesis feed the same Max-k-Cut
+   layering. Selected by depth or by estimated execution time, this beats
+   Qiskit O3 on every benchmark.
 
 **Comparison against the related work.** Lee et al. 2026 and Jain & Kumar 2026
 are run on identical inputs:
-- rows 1–5: the 9 provided IBM-127-transpiled benchmarks (rz/sx/x/ecr,
+- rows 1–6: the 9 provided IBM-127-transpiled benchmarks (rz/sx/x/ecr,
   1.9k–358k gates);
-- rows 6–10: the paper's own experimental settings and structured commuting
+- rows 7–11: the paper's own experimental settings and structured commuting
   circuits.
 
 | Question | Lee et al. 2026 | Jain & Kumar 2026 | **MKCO (ours)** |
@@ -38,8 +43,8 @@ are run on identical inputs:
 | Total depth, reorder-only (9 circuits) | no gain on any circuit | same depths as MKCO, uncertified | −1.9% to −5.2% on 7 circuits; **certified optimal on 9/9** |
 | Two-qubit depth | already optimal or no gain | optimal on 9/9 (uncertified) | **certified optimal on 9/9** |
 | Crosstalk-prone ECR pairs at optimal 2q-depth | cannot express | cannot express | **−1.8% to −25.9%** (mean −14.2%) |
-| After Qiskit O3 (re-synthesis) | – | – | further 0% to −5.2%; certified optimal for Qiskit's gate list |
-| Rewrite mode (1q ZSX resynthesis + reordering) vs Qiskit O3 | – | – | **shallower on 8/9** (heisenberg_32: 3,011 vs 3,538); best overall on 9/9 when composed with Qiskit |
+| Gate rewriting vs Qiskit O3 on a device Target (all outputs executable) | – | – | MKCO-full **shallower on 9/9** (−3.4% to −25.5%) and **faster (est. time) on 9/9**; MKCO after Qiskit removes a further 0.6–5.2% |
+| Depth budget vs crosstalk (Pareto) | cannot express | cannot express | −21% to −44% pairs at +10% 2q-depth; −39% to −65% at +20% |
 | F₂ⁿ multiplier (paper §5.1), n = 2…64 | optimal at 24/34 sizes | 7/34 | **34/34 (proven)** |
 | Random multi-controlled-Z (paper §4.3), 60 circuits | 36/60 certified optimal | 0/60 | **41/60**; never worse than DSatur |
 | Random CCZ (paper App. C), 50 circuits | 20/50 certified optimal | 17/50 | **49/50** |
@@ -79,8 +84,10 @@ QASM ──► commutation axes per (gate, qubit)  [Lemma 1, exact from unitarie
      ──► emission (zero-duration gates placed between layers) → structural certificate
      ──► independent commutation audit (+ state-vector check ≤ 20 qubits)
 Modes:  depth | 2q-depth | crosstalk (soft edges + anchor barriers) | fan-out capacities
-Optional pre-pass (rewrite mode): single-qubit ZSX resynthesis + run-based rotation merging,
-        iterated to a fixed point; every fused chain is checked numerically
+Optional pre-passes (gate-rewriting class), each verified numerically block by block:
+  rewrite: single-qubit ZSX resynthesis + run-based rotation merging, to a fixed point
+  full:    + two-qubit KAK block resynthesis in the native ECR direction (keeps the better)
+Bounds:  run-serialised Jackson bound (any circuit) + Lovász theta SDP (commuting circuits)
 ```
 
 ### 3.2 Why Max-k-Cut and not just colouring
@@ -141,9 +148,17 @@ IBM Eagle device:
 - `mkco_xt`: our crosstalk mode. Optimal two-qubit depth with weighted soft
   edges (w = 0.1), and anchor barriers so an ASAP hardware scheduler reproduces
   the layering.
-- `qiskit_o3`: Qiskit 2.6, `optimization_level=3`, basis `rz,sx,x,ecr`,
-  trivial layout, coupling map = directed edges used by the circuit. This
-  *re-synthesises* gates, so it belongs to a different transformation class.
+- `qiskit_o3`: Qiskit 2.6, `optimization_level=3`, trivial layout, on a device
+  **Target**: rz/sx/x on every qubit, ECR only on the native directed edges
+  used by the circuit. The file's `ecr` is mapped to Qiskit's `ECRGate`, so
+  Qiskit can re-synthesise and re-orient it. All 9 outputs contain only native
+  ECRs and match the input under simulation (≤ 20 qubits). Qiskit
+  *re-synthesises* gates, so it belongs to the gate-rewriting class.
+  - *An earlier run of this study* loaded `ecr` as an opaque custom gate and
+    passed a bare coupling map. Qiskit then either failed or, on retry with a
+    bidirectional map, produced circuits with 45–49% of ECRs against the native
+    direction (not executable as written). Those numbers are superseded; see
+    `experiments/run_qiskit.py`.
 - `qiskit_o3+mkco`: our reordering applied to Qiskit's output.
 - `mkco_rewrite`: our rewrite mode. Each maximal chain of single-qubit gates
   is re-synthesised in the device basis (rz/sx/x) by ZSX Euler decomposition,
@@ -151,6 +166,12 @@ IBM Eagle device:
   result is reordered by MKCO. Qiskit O3 also re-synthesises two-qubit
   blocks, which MKCO does not.
 - `qiskit_o3+mkco_rewrite`: our rewrite mode applied to Qiskit's output.
+- `mkco_full`: two-qubit block (KAK) resynthesis into native-direction ECRs
+  plus the rewrite mode, iterated to a fixed point, then Max-k-Cut reordering.
+  The numerical KAK step uses Qiskit's `TwoQubitBasisDecomposer`. Block
+  collection, the native-direction constraint, the acceptance rule (fewer
+  ECRs, or equal ECRs and a shallower block) and verification are ours. It
+  keeps the shallower of this pipeline and rewrite-only, so it is never worse.
 
 **Verification.** Every reordered output passes two independent checks:
 1. the structural certificate (a linear extension of the dependency order);
@@ -199,32 +220,75 @@ hubbard_18 (−3) improve.
   depth, but only 0.0–0.9% estimated duration, because ECRs dominate execution
   time.
 
-**Gate rewriting vs Qiskit (Table 4).** Qiskit O3 re-synthesises gates, so
-the fair comparison is MKCO's *rewrite mode*: single-qubit ZSX resynthesis
-plus run-based rotation merging, then Max-k-Cut reordering.
-- **Rewrite mode beats Qiskit O3 on 8 of 9 circuits.**
-  - On the two Hamiltonian-simulation circuits, long rz/sx chains collapse
-    under resynthesis, and rewrite mode goes further than Qiskit. heisenberg_32:
-    7,143 → **3,011**, 15% shallower than Qiskit's 3,538, with a lower
-    two-qubit depth as well (881 vs 936).
-  - On the other circuits Qiskit O3 often makes depth *worse* (+0.2% to +5.2%
-    in 6 cases), mainly from the gates it adds to re-orient re-synthesised ECRs.
-- **The exception is hubbard_18.** Qiskit's two-qubit block resynthesis (KAK),
-  which MKCO does not perform, gives 65,436 against rewrite mode's 72,992.
-- **Composition wins there.** Qiskit O3 → MKCO rewrite gives **64,969**, the
-  best result for that circuit, and also the best on hubbard_8 (4,229).
-- **MKCO is part of the best pipeline on all 9 circuits.** Every MKCO result is
-  certified optimal for the gate list it reorders, and rewrite-mode outputs
-  match the *original* circuit under state-vector simulation (≤ 20 qubits).
+![Rewrite vs Qiskit](figures/ibm127_rewrite_vs_qiskit.png)
 
-**Correctness (Table 7).** All reordered outputs (99 audits) pass the independent
+**Gate rewriting vs Qiskit (Table 4).** Qiskit O3 runs on a device Target:
+ECRs only on the native directed edges, and the file's `ecr` mapped to
+`ECRGate`. All of its outputs are therefore executable as written, and every
+one of them that can be simulated matches the input.
+- **MKCO-full is shallower than Qiskit O3 on all 9 circuits** (−3.4% to
+  −25.5%), and every MKCO result is certified optimal for the gate list it
+  reorders.
+  - The two Hamiltonian-simulation circuits gain most: heisenberg_32
+    3,011 vs 4,039 (−25.5%), hubbard_18 72,992 vs 84,761 (−13.9%).
+  - Their transpiled rz/sx chains collapse under single-qubit resynthesis.
+    MKCO's run-based merging then gathers same-axis rotations *across*
+    commuting ECRs, which an adjacent-gate optimiser cannot do.
+- **Composition still helps Qiskit:** MKCO after Qiskit O3 lowers its depth on
+  every circuit (best on hubbard_8: 4,239).
+
+![Execution time](figures/ibm127_duration.png)
+
+**Hardware time.** Total depth counts virtual rz layers, so the
+hardware-relevant figure is estimated execution time.
+- Selecting among MKCO's candidates by estimated duration, MKCO-full is
+  **faster than Qiskit O3 on all 9 circuits**: −0.2% to −7.8% on 8, and
+  −5.8% on hubbard_18.
+- On hubbard_18 it also beats Qiskit on two-qubit depth (18,795 vs 19,938),
+  ECR count (30,453 vs 33,586, −10.3% vs the input) and total depth
+  (80,677 vs 84,761).
+- Depth- and duration-optimal choices differ on hubbard_18. The 1q-only
+  pre-pass gives the smallest total depth (72,992). KAK block resynthesis
+  gives the fewest ECRs and the shortest time.
+
+**Two-qubit block (KAK) resynthesis (Table 8).**
+- The transpiled circuits are already ECR-optimal block by block on 7 of 9
+  benchmarks (0–58 cheaper blocks).
+- On heisenberg_32 and hubbard_18, KAK finds 1,073 and 4,856 cheaper blocks.
+  On hubbard_18 it removes 3,505 ECRs.
+- *Locally* cheaper blocks are not automatically better globally. On
+  heisenberg_32 the KAK branch is 33% deeper than 1q-only (3,998 vs 3,011),
+  because generic KAK output pins single-qubit layers on both wires and
+  destroys the cross-block merging the run model exploits. MKCO therefore
+  evaluates both branches after Max-k-Cut reordering and keeps the better one.
+
+![Pareto](figures/pareto_crosstalk.png)
+
+**Depth budget vs crosstalk (Table 9).** This is Theorem 2's depth-budget
+form in action. The certified-optimal layering is stretched
+order-preservingly to k* + s layers, and the weighted Max-k-Cut spends the
+slack on soft edges.
+- With s = 0 (no depth cost), crosstalk-prone pairs fall 2–26%.
+- With 10% slack they fall 21–44%; with 20% slack, 39–65%.
+- Estimated execution time grows by 1–19% along these fronts. The fronts let
+  a user choose the operating point that fits their device's crosstalk to
+  coherence ratio.
+- The search is time-limited, so a few measured points are dominated; the
+  figure plots the non-dominated ones and Table 9 lists all of them.
+
+**Correctness (Table 7).** All reordered outputs (117 audits) pass the independent
 commutation audit (14,222 reordered gate pairs checked on grover_10 alone).
 Every MKCO output with ≤ 20 active qubits also matches the input under
 state-vector simulation (fidelity 1 to 10 digits, global phase consistent).
 
-**Runtime (Table 6).** MKCO runs in 0.1–20 s, faster than block-wise colouring
-on every circuit and comparable to Jain & Kumar. The crosstalk mode uses its
-time budget (30–60 s).
+![Runtime](figures/runtime_scaling.png)
+
+**Runtime (Table 6).** Reorder-only MKCO runs in 0.1–20 s, faster than
+block-wise colouring on every circuit and comparable to Jain & Kumar.
+- The crosstalk mode uses its time budget (30–60 s).
+- MKCO-full evaluates two pre-pass branches and takes up to 6 minutes on the
+  358k-gate hubbard_18.
+- Qiskit O3 on a device Target takes 0.1–5 s.
 
 ### Table 1 - Total depth, reorder-only methods (lower is better)
 
@@ -268,36 +332,35 @@ time budget (30–60 s).
 | grover_10 | 4431 | 4431 | 4431 | 4431 | **3870** | -12.7% | 10895 -> 10895 | 43923 -> 45858 |
 | hubbard_18 | 7332 | 7332 | 7336 | 7334 | **5435** | -25.9% | 21769 -> 21766 | 136644 -> 137968 |
 
-### Table 4 - Gate-rewriting class: MKCO rewrite mode vs Qiskit O3, and their composition
+### Table 4 - Gate-rewriting class: MKCO rewrite modes vs Qiskit O3 (device target), and composition
 
-Depth (lower is better). MKCO-rewrite = single-qubit ZSX resynthesis + run merging, then Max-k-Cut reordering; every MKCO result is certified optimal for the gate list it reorders.
+Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native directed edges, so every output below is executable on the device (0 reversed ECRs). MKCO-rewrite = single-qubit ZSX resynthesis + run merging + Max-k-Cut reordering; MKCO-full adds two-qubit KAK block resynthesis. Every MKCO result is certified optimal for the gate list it reorders.
 
-| Circuit | Original | MKCO (reorder) | **MKCO-rewrite** | Qiskit O3 | O3 + MKCO | **O3 + MKCO-rewrite** | Best | Who wins |
-|---|---:|---:|---:|---:|---:|---:|---:|---|
-| mult_8 | 1138 | 1102 | **1102** | 1172 | 1136 | **1136** | 1102 | MKCO-rewrite |
-| add_17 | 1003 | 964 | **964** | 1026 | 988 | **988** | 964 | MKCO-rewrite |
-| qae_17 | 1066 | 1035 | **1030** | 1084 | 1055 | **1051** | 1030 | MKCO-rewrite |
-| qft_16 | 1009 | 980 | **980** | 1026 | 997 | **997** | 980 | MKCO-rewrite |
-| hubbard_8 | 4400 | 4268 | **4251** | 4382 | 4246 | **4229** | 4229 | O3 + MKCO |
-| hhl_8 | 10641 | 10434 | **10434** | 11190 | 10983 | **10983** | 10434 | MKCO-rewrite |
-| heisenberg_32† | 7143 | 7143 | **3011** | 3538 | 3538 | **3534** | 3011 | MKCO-rewrite |
-| grover_10 | 43923 | 41641 | **41631** | 43995 | 41713 | **41703** | 41631 | MKCO-rewrite |
-| hubbard_18† | 136644 | 136637 | **72992** | 65436 | 65339 | **64969** | 64969 | O3 + MKCO |
+| Circuit | Original | MKCO (reorder) | MKCO-rewrite | **MKCO-full** | Qiskit O3 | O3 + MKCO | O3 + MKCO-rewrite | Best | MKCO-full vs Qiskit O3 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| mult_8 | 1138 | **1102** | **1102** | **1102** | 1173 | 1137 | 1137 | 1102 | -6.1% |
+| add_17 | 1003 | **964** | **964** | **964** | 1026 | 988 | 988 | 964 | -6.0% |
+| qae_17 | 1066 | 1035 | **1030** | **1030** | 1084 | 1055 | 1051 | 1030 | -5.0% |
+| qft_16 | 1009 | **980** | **980** | **980** | 1026 | 997 | 997 | 980 | -4.5% |
+| hubbard_8 | 4400 | 4268 | 4251 | 4241 | 4390 | 4256 | **4239** | 4239 | -3.4% |
+| hhl_8 | 10641 | **10434** | **10434** | **10434** | 11212 | 11005 | 11005 | 10434 | -6.9% |
+| heisenberg_32 | 7143 | 7143 | **3011** | **3011** | 4039 | 4039 | 4013 | 3011 | -25.5% |
+| grover_10 | 43923 | 41641 | **41631** | **41631** | 43995 | 41713 | 41703 | 41631 | -5.4% |
+| hubbard_18 | 136644 | 136637 | **72992** | **72992** | 84761 | 84698 | 84134 | 72992 | -13.9% |
 
-| Circuit | 2q-depth MKCO-rewrite | 2q-depth Qiskit O3 | gates MKCO-rewrite | gates Qiskit O3 | duration MKCO-rewrite (us) | duration Qiskit O3 (us) | duration O3+MKCO-rewrite (us) |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| mult_8 | 276 | 276 | 1897 | 1958 | 158.69 | 160.29 | 159.04 |
-| add_17 | 255 | 253 | 2812 | 2918 | 145.42 | 145.78 | 145.07 |
-| qae_17 | 274 | 274 | 3019 | 3090 | 156.44 | 157.55 | 156.62 |
-| qft_16 | 260 | 260 | 3422 | 3518 | 148.23 | 149.26 | 148.37 |
-| hubbard_8 | 1112 | 1111 | 8091 | 8059 | 634.60 | 637.83 | 633.17 |
-| hhl_8 | 2319 | 2319 | 18165 | 19098 | 1359.51 | 1369.96 | 1364.06 |
-| heisenberg_32 | 881 | 936 | 20324 | 23089 | 499.95 | 540.09 | 539.59 |
-| grover_10 | 10895 | 10895 | 92654 | 93398 | 6220.96 | 6293.25 | 6221.60 |
-| hubbard_18 | 21766 | 19938 | 170310 | 156700 | 12313.54 | 11450.49 | 11419.26 |
+**Hardware-time view.** MKCO-full (duration objective) keeps, per circuit, the candidate with the lowest estimated execution time among {KAK + 1q rewrite, 1q rewrite} x {reorder for depth, for 2q-depth}.
 
-† Qiskit could not re-orient the ECRs it re-synthesised on the native (directed) coupling map, so it was re-run with a bidirectional map (favourable to Qiskit).
-
+| Circuit | est. duration original (us) | Qiskit O3 (us) | MKCO-full, depth obj. (us) | **MKCO-full, duration obj. (us)** | vs Qiskit | 2q-depth Qiskit / MKCO-dur | ECRs Qiskit / MKCO-dur | depth Qiskit / MKCO-dur | reversed ECRs |
+|---|---:|---:|---:|---:|---:|---|---|---|---|
+| mult_8 | 159.89 | 160.29 | 158.69 | **158.69** | -1.0% | 276 / 276 | 311 / 311 | 1173 / 1102 | 0 / 0 |
+| add_17 | 145.60 | 145.78 | 145.42 | **145.42** | -0.2% | 253 / 255 | 499 / 499 | 1026 / 964 | 0 / 0 |
+| qae_17 | 157.37 | 157.55 | 156.44 | **156.44** | -0.7% | 274 / 274 | 541 / 541 | 1084 / 1030 | 0 / 0 |
+| qft_16 | 149.12 | 149.26 | 148.23 | **148.23** | -0.7% | 260 / 260 | 614 / 614 | 1026 / 980 | 0 / 0 |
+| hubbard_8 | 638.05 | 637.94 | 633.96 | **633.96** | -0.6% | 1111 / 1111 | 1344 / 1344 | 4390 / 4241 | 0 / 0 |
+| hhl_8 | 1365.41 | 1369.96 | 1359.51 | **1359.51** | -0.8% | 2319 / 2319 | 2377 / 2377 | 11212 / 10434 | 0 / 0 |
+| heisenberg_32 | 549.16 | 542.37 | 499.95 | **499.95** | -7.8% | 936 / 881 | 4071 / 3942 | 4039 / 3011 | 0 / 0 |
+| grover_10 | 6292.61 | 6293.25 | 6220.96 | **6220.96** | -1.1% | 10895 / 10895 | 16397 / 16397 | 43995 / 41631 | 0 / 0 |
+| hubbard_18 | 13230.21 | 11565.99 | 12313.54 | **10891.42** | -5.8% | 19938 / 18795 | 33586 / 30453 | 84761 / 80677 | 0 / 0 |
 
 ### Table 5 - Estimated execution time (us; ECR 533 ns, sx/x 36 ns, rz virtual)
 
@@ -315,37 +378,94 @@ Depth (lower is better). MKCO-rewrite = single-qubit ZSX resynthesis + run mergi
 
 ### Table 6 - Runtime (s)
 
-| Circuit | Lee'26 | JK'26 | MKCO | MKCO-2q | MKCO-XT | Qiskit O3 | MKCO after O3 |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| mult_8 | 0.3 | 0.2 | 0.1 | 0.1 | 4.4 | 3.8 | 0.4 |
-| add_17 | 0.5 | 0.2 | 0.2 | 0.2 | 23.6 | 5.7 | 0.2 |
-| qae_17 | 0.5 | 0.2 | 0.2 | 0.1 | 21.0 | 6.4 | 0.2 |
-| qft_16 | 0.5 | 0.2 | 0.2 | 0.1 | 30.1 | 9.6 | 0.2 |
-| hubbard_8 | 1.3 | 1.3 | 0.7 | 0.3 | 30.2 | 15.4 | 0.4 |
-| hhl_8 | 2.8 | 6.2 | 1.1 | 0.7 | 30.1 | 26.5 | 1.1 |
-| heisenberg_32 | 8.4 | 1.6 | 3.6 | 1.9 | 60.5 | 24.6 | 2.7 |
-| grover_10 | 14.3 | 3.1 | 5.7 | 3.7 | 60.9 | 183.5 | 5.7 |
-| hubbard_18 | 44.0 | 11.0 | 19.9 | 11.8 | 62.5 | 246.9 | 20.7 |
+| Circuit | Lee'26 | JK'26 | MKCO | MKCO-2q | MKCO-XT | MKCO-full | Qiskit O3 (target) | MKCO after O3 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| mult_8 | 0.3 | 0.2 | 0.1 | 0.1 | 4.4 | 3.7 | 0.1 | 0.2 |
+| add_17 | 0.5 | 0.2 | 0.2 | 0.2 | 23.6 | 1.3 | 0.0 | 0.3 |
+| qae_17 | 0.5 | 0.2 | 0.2 | 0.1 | 21.0 | 3.6 | 0.1 | 0.4 |
+| qft_16 | 0.5 | 0.2 | 0.2 | 0.1 | 30.1 | 7.5 | 0.1 | 0.3 |
+| hubbard_8 | 1.3 | 1.3 | 0.7 | 0.3 | 30.2 | 17.1 | 0.1 | 0.8 |
+| hhl_8 | 2.8 | 6.2 | 1.1 | 0.7 | 30.1 | 14.5 | 0.1 | 1.8 |
+| heisenberg_32 | 8.4 | 1.6 | 3.6 | 1.9 | 60.5 | 49.5 | 0.4 | 2.5 |
+| grover_10 | 14.3 | 3.1 | 5.7 | 3.7 | 60.9 | 90.5 | 0.6 | 9.4 |
+| hubbard_18 | 44.0 | 11.0 | 19.9 | 11.8 | 62.5 | 378.1 | 4.6 | 25.4 |
 
 ### Table 7 - Verification of every reordered output
 
-| Circuit | Active qubits | Commutation audit (all reorderings) | Inverted pairs checked (MKCO) | State-vector check (MKCO) | State-vector check (MKCO-rewrite, vs original) |
-|---|---:|:---:|---:|:---:|:---:|
-| mult_8 | 8 | 11/11 pass | 75 | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| add_17 | 17 | 11/11 pass | 129 | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| qae_17 | 17 | 11/11 pass | 142 | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| qft_16 | 16 | 11/11 pass | 166 | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| hubbard_8 | 8 | 11/11 pass | 260 | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| hhl_8 | 8 | 11/11 pass | 333 | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| heisenberg_32 | 32 | 11/11 pass | 0 | n/a (>20 qubits) | n/a (>20 qubits) |
-| grover_10 | 10 | 11/11 pass | 14222 | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| hubbard_18 | 31 | 11/11 pass | 2654 | n/a (>20 qubits) | n/a (>20 qubits) |
+| Circuit | Active qubits | Commutation audit (all reorderings) | Inverted pairs checked (MKCO) | State-vector check (MKCO) | State-vector (MKCO-rewrite, vs original) | State-vector (MKCO-full dur., vs original) |
+|---|---:|:---:|---:|:---:|:---:|:---:|
+| mult_8 | 8 | 13/13 pass | 75 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| add_17 | 17 | 13/13 pass | 129 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| qae_17 | 17 | 13/13 pass | 142 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| qft_16 | 16 | 13/13 pass | 166 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| hubbard_8 | 8 | 13/13 pass | 260 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| hhl_8 | 8 | 13/13 pass | 333 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| heisenberg_32 | 32 | 13/13 pass | 0 | n/a (>20 qubits) | n/a (>20 qubits) | n/a (>20 qubits) |
+| grover_10 | 10 | 13/13 pass | 14222 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| hubbard_18 | 31 | 13/13 pass | 2654 | n/a (>20 qubits) | n/a (>20 qubits) | n/a (>20 qubits) |
+
+### Table 8 - Two-qubit block (KAK) resynthesis: blocks that become cheaper in native ECRs
+
+| Circuit | two-qubit blocks | cheaper after KAK | ECRs removed |
+|---|---:|---:|---:|
+| mult_8 | 151 | 0 | 0 |
+| add_17 | 198 | 0 | 0 |
+| qae_17 | 213 | 0 | 0 |
+| qft_16 | 237 | 0 | 0 |
+| hubbard_8 | 695 | 1 | 0 |
+| hhl_8 | 1433 | 1 | 0 |
+| heisenberg_32 | 1594 | 1073 | 60 |
+| grover_10 | 8387 | 58 | 0 |
+| hubbard_18 | 12823 | 4856 | 3505 |
+
+### Table 9 - Depth budget vs crosstalk (weighted Max-k-Cut with k = k* + slack)
+
+| Circuit | slack (% of k*) | 2q-depth | crosstalk-prone pairs | vs original | est. duration (us) |
+|---|---:|---:|---:|---:|---:|
+| mult_8 | 0 | 276 | 23 | -25.8% | 160.39 |
+| mult_8 | 1 | 278 | 21 | -32.3% | 161.67 |
+| mult_8 | 2 | 278 | 22 | -29.0% | 161.57 |
+| mult_8 | 5 | 277 | 24 | -22.6% | 161.00 |
+| mult_8 | 10 | 283 | 19 | -38.7% | 164.37 |
+| mult_8 | 20 | 291 | 11 | -64.5% | 168.96 |
+| add_17 | 0 | 253 | 144 | -4.6% | 145.74 |
+| add_17 | 1 | 256 | 141 | -6.6% | 147.41 |
+| add_17 | 2 | 257 | 140 | -7.3% | 147.95 |
+| add_17 | 5 | 261 | 128 | -15.2% | 150.51 |
+| add_17 | 10 | 270 | 117 | -22.5% | 155.66 |
+| add_17 | 20 | 288 | 87 | -42.4% | 165.65 |
+| qae_17 | 0 | 274 | 138 | -16.4% | 157.51 |
+| qae_17 | 1 | 276 | 133 | -19.4% | 158.76 |
+| qae_17 | 2 | 277 | 131 | -20.6% | 159.29 |
+| qae_17 | 5 | 282 | 124 | -24.8% | 162.10 |
+| qae_17 | 10 | 289 | 113 | -31.5% | 166.04 |
+| qae_17 | 20 | 307 | 85 | -48.5% | 176.46 |
+| qft_16 | 0 | 260 | 195 | -7.1% | 149.37 |
+| qft_16 | 1 | 262 | 193 | -8.1% | 150.36 |
+| qft_16 | 2 | 264 | 185 | -11.9% | 151.50 |
+| qft_16 | 5 | 269 | 173 | -17.6% | 154.74 |
+| qft_16 | 10 | 281 | 162 | -22.9% | 161.53 |
+| qft_16 | 20 | 309 | 102 | -51.4% | 177.53 |
+| hubbard_8 | 0 | 1110 | 130 | -21.7% | 637.55 |
+| hubbard_8 | 1 | 1113 | 127 | -23.5% | 639.47 |
+| hubbard_8 | 2 | 1121 | 120 | -27.7% | 643.77 |
+| hubbard_8 | 5 | 1123 | 119 | -28.3% | 645.12 |
+| hubbard_8 | 10 | 1153 | 93 | -44.0% | 662.22 |
+| hubbard_8 | 20 | 1189 | 58 | -65.1% | 683.27 |
+| hhl_8 | 0 | 2319 | 55 | -1.8% | 1365.77 |
+| hhl_8 | 1 | 2320 | 54 | -3.6% | 1366.30 |
+| hhl_8 | 2 | 2323 | 51 | -8.9% | 1368.01 |
+| hhl_8 | 5 | 2323 | 51 | -8.9% | 1367.97 |
+| hhl_8 | 10 | 2330 | 44 | -21.4% | 1372.24 |
+| hhl_8 | 20 | 2339 | 34 | -39.3% | 1377.32 |
 
 ## 6. Results in the settings of Lee et al. and on structured commuting circuits
 
 These experiments reproduce the settings of Lee et al. They are the regime
 where the *search* component of MKCO matters, because the conflict graphs are
 not trivially colourable.
+
+![E1](figures/e1_random_mcz.png)
 
 - **E1 – the paper's random benchmark (Fig. 1 setting: m = 10/20/30 qubits,
   n = 50–200 multi-controlled-Z gates, 5 seeds each, 60 circuits).**
@@ -362,6 +482,16 @@ not trivially colourable.
     m ≥ 20, several layers for m = 10.
   - Where the paper's backtracking finishes (n = 50, 15 circuits), MKCO equals
     the proven optimum on every one.
+  - **E7 – Lovász-θ certificates.** For the instances the clique/Jackson bound
+    left open, the θ number of the complement graph (an SDP, solved with
+    Clarabel) raises the certified bound.
+    - Computed for all 15 open instances with ≤ 150 gates, it proves MKCO
+      optimal on 6 more E1 circuits, raising E1's certified count from 41/60
+      to **47/60**. The one open E3 circuit stays open (θ does not reach
+      MKCO's depth there).
+    - The 5 open 200-gate instances were not attempted: the interior-point SDP
+      time grows steeply with size (about 3–6 min at 150 gates on this laptop).
+    - θ never exceeded a proven chromatic number in the sanity tests.
 
 ![F2n multiplier](figures/gf2_multiplier.png)
 
@@ -374,11 +504,15 @@ not trivially colourable.
     (n = 5–9, 11, 13, 15–17; e.g. n = 6: 14 vs 11). This matches the paper's
     footnote 2.
   - Jain & Kumar's layering is sub-optimal at 27 sizes.
+![E3](figures/e3_ccz.png)
+
 - **E3 – Appendix C (random CCZ on 10 qubits).** MKCO is certified optimal on
   49/50 circuits (DSatur 20/50, JK 17/50), strictly better than DSatur on 30,
   and never worse. Where 10 s of backtracking could prove the optimum
   (19 circuits), MKCO equals it. At 40–50 gates MKCO also beats
   time-limited backtracking.
+![E4](figures/e4_rzz.png)
+
 - **E4 – commuting two-qubit layers (QAOA cost layers = edge colouring).**
   MKCO reaches Vizing's lower bound Δ on 14 of 18 graphs. DSatur and JK never
   do: they land 1–3.7 layers above Δ on average.
@@ -388,6 +522,8 @@ not trivially colourable.
   20–64 spins where one-hot colouring needs 40–176. HMC is optimal on all 4
   instances. On gf2_4 it gives 5 layers against a bound of 4, but exhaustive
   backtracking proves 5 is the optimum, so the bound is loose there.
+![E6](figures/e6_fanout.png)
+
 - **E6 – depth/qubit trade-offs (paper §5.2, made precise).** Fanning wires
   out into c copies turns layering into capacitated Max-k-Cut. Against a fixed
   round-robin copy split coloured by DSatur, MKCO is never worse and is up to
@@ -519,6 +655,30 @@ Meets the certified bound: DSatur 24/34, JK 7/34, MKCO 34/34.
 | mcz_m20_n120 | 3 | 60 | 25 | **20** |
 | mcz_m20_n120 | 4 | 80 | 21 | **16** |
 
+### E7 - Lovász-theta certificates where the clique/Jackson bound left a gap
+
+theta(complement of the conflict graph) <= chromatic number (sandwich theorem), solved as an SDP.
+
+| exp. | m | gates | seed | clique/Jackson LB | theta | new LB | DSatur | JK'26 | MKCO | MKCO now proven optimal |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---:|
+| E3 | 10 | 40 | 4 | 15 | 15.000 | 15 | 18 | 19 | 16 | no |
+| E1 | 10 | 50 | 4 | 26 | 26.384 | 27 | 27 | 32 | 27 | yes |
+| E1 | 10 | 100 | 0 | 47 | 47.015 | 48 | 50 | 58 | 48 | yes |
+| E1 | 10 | 100 | 1 | 47 | 47.000 | 47 | 52 | 56 | 48 | no |
+| E1 | 10 | 100 | 4 | 48 | 48.030 | 49 | 53 | 60 | 50 | no |
+| E1 | 20 | 100 | 1 | 52 | 52.318 | 53 | 53 | 62 | 53 | yes |
+| E1 | 20 | 100 | 3 | 47 | 47.000 | 47 | 48 | 58 | 48 | no |
+| E1 | 30 | 100 | 2 | 49 | 49.318 | 50 | 50 | 62 | 50 | yes |
+| E1 | 10 | 150 | 0 | 66 | 66.000 | 66 | 74 | 83 | 69 | no |
+| E1 | 10 | 150 | 2 | 70 | 70.000 | 70 | 75 | 84 | 72 | no |
+| E1 | 10 | 150 | 3 | 64 | 64.000 | 64 | 70 | 78 | 66 | no |
+| E1 | 10 | 150 | 4 | 67 | 67.000 | 67 | 73 | 84 | 70 | no |
+| E1 | 20 | 150 | 0 | 79 | 79.000 | 79 | 80 | 94 | 80 | no |
+| E1 | 20 | 150 | 4 | 68 | 68.133 | 69 | 69 | 85 | 69 | yes |
+| E1 | 30 | 150 | 0 | 89 | 89.318 | 90 | 90 | 101 | 90 | yes |
+
+Theta closes the gap on 6 of 15 open instances.
+
 ## 7. Research directions opened by the Max-Cut view
 
 Items marked ✅ are implemented and evaluated here; 🧪 are implemented with a
@@ -527,10 +687,11 @@ small demonstration; ⭕ are open problems we identified.
 1. ✅ **Exact general-circuit reduction (Thm 1) and the Max-k-Cut
    characterisation (Thm 2).** This closes the paper's main limitation (commuting
    circuits only) with a linear-memory model.
-2. ✅ **Certified depth bounds (Thm 7).** Optimality proven on all 9 IBM
-   benchmarks and on the F₂ⁿ multiplier. Stronger certificates are open
-   (⭕ Lovász-θ / vector-chromatic SDP bounds for commuting blocks, via the
-   Karger–Motwani–Sudan relaxation that Max-k-Cut SDPs already compute).
+2. ✅ **Certified depth bounds (Thm 7), plus Lovász-θ SDP bounds (E7).**
+   Optimality is proven on all 9 IBM benchmarks and on the F₂ⁿ multiplier. The
+   θ number of the complement of the conflict graph (sandwich theorem)
+   certifies additional commuting instances that the clique bound left open.
+   ⭕ Szegedy's θ⁺ and dual certificates (exact rational rounding) remain open.
 3. ✅ **Soft hardware constraints as weighted edges.** Implemented for
    crosstalk; the same mechanism extends directly to:
    - frequency collisions;
@@ -547,8 +708,9 @@ small demonstration; ⭕ are open problems we identified.
    guarantees that carry Goemans–Williamson / Frieze–Jerrum cut ratios over to
    depth, are open.
 6. ✅ **Depth budgets.** Fixed-k Max-k-Cut gives the least-conflicting schedule
-   under a hard latency or coherence budget. Proposition 3 then bounds the
-   repaired depth.
+   under a hard latency or coherence budget. Proposition 3 bounds the repaired
+   depth. Table 9 and the Pareto figure show the resulting trade-off between
+   two-qubit depth and crosstalk.
 7. ⭕ **Lexicographic / Pareto objectives.** Total depth vs two-qubit depth vs
    crosstalk. The data show real tensions (add_17: depth-optimal costs +2 ECR
    layers; crosstalk mode costs +0.8–7.6% total depth). A multi-objective
@@ -565,9 +727,13 @@ small demonstration; ⭕ are open problems we identified.
 12. ✅ **Single-qubit resynthesis inside the run structure** (rewrite mode).
     ZSX re-synthesis of 1q chains plus run-based merging, followed by Max-k-Cut
     reordering, is shallower than Qiskit O3 on 8/9 benchmarks.
-13. ⭕ **Two-qubit block resynthesis (KAK) inside the run model.** This is the
-    one transformation where Qiskit O3 still wins (hubbard_18). Adding it as a
-    pre-pass, with the Max-k-Cut layering after it, is the natural next step.
+13. ✅ **Two-qubit block resynthesis (KAK) inside the run model** (MKCO-full).
+    Finding: transpiled blocks are already ECR-optimal on 7 of 9 benchmarks
+    (Table 8). Where KAK does find cheaper blocks (heisenberg_32, hubbard_18),
+    locally cheaper blocks can *increase* global depth, because they destroy the
+    cross-block rotation merging that MKCO's commutation runs enable. ⭕ A
+    run-aware KAK that scores blocks by their effect on the global Max-k-Cut
+    layering is an open problem.
 
 ## 8. Limitations and threats to validity
 
@@ -584,11 +750,11 @@ small demonstration; ⭕ are open problems we identified.
   inferred from used edges are proxies. Real gains should be validated with
   device calibration data or hardware runs. Anchor barriers keep the 2q-depth
   optimal but cost 0.8–7.6% in total depth (0.0–0.9% estimated duration).
-- **Qiskit settings.** Coupling map = edges used by each circuit. Two circuits
-  needed a bidirectional retry (marked †), which favours Qiskit. Qiskit
-  re-synthesises gates, so its depths are compared with MKCO's rewrite mode
-  (same transformation class, except that MKCO does not re-synthesise
-  two-qubit blocks) rather than with reorder-only methods.
+- **Qiskit settings.** Device Target with native directed ECR edges, `ecr`
+  mapped to `ECRGate`, trivial layout, `optimization_level=3`, one seed. Other
+  seeds, optimization levels or Qiskit's approximation degree could change its
+  numbers somewhat. Qiskit re-synthesises gates, so it is compared with MKCO's
+  rewrite modes, not with reorder-only methods.
 - **Durations** are nominal Eagle values, not device calibrations.
 - **Runtimes** are single-process Python on a laptop, measured while other
   experiments shared the machine, so treat them as indicative. MKCO stops early
@@ -598,8 +764,9 @@ small demonstration; ⭕ are open problems we identified.
 
 ```bash
 python experiments/run_ibm127.py benchmarks/ibm127     # all methods, verification, QASM outputs
-python experiments/fill_qiskit.py                      # Qiskit retry where needed
-python experiments/add_merge.py && python experiments/add_rewrite.py   # merge / rewrite modes
+python experiments/run_qiskit.py                       # Qiskit O3 on a device Target (+ MKCO after it)
+python experiments/add_merge.py && python experiments/add_rewrite.py && python experiments/add_full.py
+python experiments/run_blocks.py && python experiments/run_pareto.py && python experiments/run_theta.py
 python experiments/summarize_ibm127.py                 # tables -> results/ibm127/tables.md
 python experiments/run_structured.py                   # E1-E6 -> results/structured/*.json
 python experiments/summarize_structured.py
@@ -655,7 +822,7 @@ depth) take none.
 
 ---
 
-## 1. Commutation and equivalent reorderings
+### 1. Commutation and equivalent reorderings
 
 **Lemma 1 (axis rule).** Let `A`, `B` be unitaries with shared qubits `S`. Suppose
 that for every `q ∈ S` there is one Bloch direction `n_q` such that both
@@ -705,7 +872,7 @@ of gates whose relative order changed and which share a qubit commutes.
 `[A,B]=0` numerically on their joint support. The check does not use the
 run/axis machinery, so it independently verifies the optimizer.
 
-## 2. Depth minimisation = mixed-graph colouring
+### 2. Depth minimisation = mixed-graph colouring
 
 A *layering* is a map `ℓ : unit gates → {0,…,k−1}` with:
 - `ℓ(u) < ℓ(v)` whenever `u ≺ v` (precedence arcs);
@@ -731,7 +898,7 @@ precedence is preserved and the weighted ASAP depth is at most `k`. This is
 implemented in `schedule.emit_order`, and every output is re-checked
 structurally.
 
-## 3. The Max-k-Cut formulation
+### 3. The Max-k-Cut formulation
 
 Weight each conflicting pair by `w(u,v) = |supp(u) ∩ supp(v)|`, which gives the
 *conflict multigraph*. For a layering into `k` slots, let `occ[t,q]` be the
@@ -765,7 +932,7 @@ monochromatic graph `H_t` in layer `t` is non-empty. Splitting each layer into
 most `k + Σ_t (½ + √(2|E(H_t)|+¼) − 1)`. A near-feasible Max-k-Cut therefore
 certifies a near-optimal circuit.
 
-## 4. Max-Cut is per-wire load balancing (hierarchical Max-Cut)
+### 4. Max-Cut is per-wire load balancing (hierarchical Max-Cut)
 
 Split a gate set `S` into an early and a late half with spins `z_i = ±1`. Let
 `S_q = Σ_{i ∋ q} z_i` and `n_q = |{i ∈ S : q ∈ supp(i)}|`.
@@ -799,7 +966,7 @@ variables plus penalty terms. Each HMC node can be solved by Goemans–Williamso
 `mkco/hmc.py` implements the first three plus exact enumeration, and exports
 `(h, J)`.
 
-## 5. Certified lower bounds
+### 5. Certified lower bounds
 
 Let `head(g)` be the earliest layer `g` can start in, and `tail(g)` the number
 of layers that must follow it. A run's members share a wire, so they are
@@ -817,7 +984,7 @@ the critical path and Lee et al.'s Eq. (2). *Proof:* induction over `≺`
 When `depth(output) = LB`, the output is **certified optimal**: no reordering
 can do better.
 
-## 6. Window decomposition (general circuits)
+### 6. Window decomposition (general circuits)
 
 **Proposition 8 (window isolation).** Take a feasible layering and a window of
 layers `[a,b]`, and let `W` be the gates in it. Every chain between two gates
@@ -831,7 +998,7 @@ forward–backward justification between sweeps.
 ## Appendix B. Related-work study notes
 
 
-## The base paper
+### The base paper
 **Lee, Jeong & Kim, "Quantum Circuit Optimization by Graph Coloring", *Quantum* (2026), arXiv:2501.14447.**
 
 The paper shows that minimizing the depth of a circuit whose gates all
@@ -855,7 +1022,7 @@ Limitations the authors state, or that follow from the paper:
 5. **Quadratic graph construction.** Algorithm 1 builds an explicit O(n²)
    graph.
 
-## Direct follow-up
+### Direct follow-up
 **Jain & Kumar, "Quantum Circuit Depth Optimization using Graph Coloring", NeurIPS 2026 (WiML affinity poster).**
 
 This work extends Lee et al. to non-commuting circuits with a mixed graph:
@@ -866,7 +1033,7 @@ al. 2018) and a guided beam search. The authors compare only against Qiskit's
 DAG depth of the given order. No code or numbers are public, so
 `mkco/jk.py` is a re-implementation from the published description.
 
-## Colouring and partitioning in quantum compilation
+### Colouring and partitioning in quantum compilation
 - **Edge colouring for two-qubit layers:**
   - CZ/CNOT/Clifford depth (Maslov & Zindorf, IEEE TQE 2022);
   - binary-field inversion (Amento et al. 2013);
@@ -896,7 +1063,7 @@ DAG depth of the given order. No code or numbers are public, so
 
   We found no prior work that casts gate *layering* itself as a Max-Cut.
 
-## Max-Cut / Max-k-Cut and colouring theory
+### Max-Cut / Max-k-Cut and colouring theory
 - Goemans–Williamson SDP (JACM 1995).
 - Frieze–Jerrum Max-k-Cut SDP (Algorithmica 1997).
 - Karger–Motwani–Sudan vector colouring (JACM 1998).
@@ -911,18 +1078,18 @@ DAG depth of the given order. No code or numbers are public, so
   (Sotskov, Mathematics 2020).
 - Jackson's rule (1955) for single-machine release/tail bounds.
 
-## Quantum solvers for Max-k-Cut
+### Quantum solvers for Max-k-Cut
 - QAOA (Farhi et al., arXiv:1411.4028).
 - Binary / log encodings of Max-k-Cut using |V|·log₂k qubits (Fuchs et al.,
   arXiv:2411.08594).
 - Logarithmic HUBO encodings for colouring (2026 preprint).
 
-## Ancilla parallelisation of diagonal gates
+### Ancilla parallelisation of diagonal gates
 - Fan-out: copy, apply diagonal gates in parallel, uncopy (Moore & Nilsson,
   quant-ph/9804034).
 - Recent depth-optimal diagonal synthesis on grids (arXiv:2606.17589).
 
-## Positioning of MKCO
+### Positioning of MKCO
 | Capability | Lee'26 | JK'26 | MKCO |
 |---|:---:|:---:|:---:|
 | Commuting circuits | ✓ | ✓ | ✓ |

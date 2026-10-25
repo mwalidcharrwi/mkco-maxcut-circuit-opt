@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from mkco import generators as gen                       # noqa: E402
 from mkco import gates as G                              # noqa: E402
 from mkco.bounds import jackson_wire_bound               # noqa: E402
-from mkco.circuit import Circuit                         # noqa: E402
+from mkco.circuit import Circuit, Gate                   # noqa: E402
 from mkco.crosstalk import (adjacent_couplers, coupler_edges, crosstalk_pairs,  # noqa: E402
                             optimize_crosstalk)
 from mkco.depmodel import DepModel                       # noqa: E402
@@ -126,6 +126,51 @@ def test_rewrite_preserves_semantics():
         assert equivalent(c, rw)[0]
         opt, _ = optimize(rw, time_limit=1.0)
         assert equivalent(c, opt)[0]
+
+
+def _random_ecr_circuit(seed, nq=3, n=80):
+    rng = np.random.default_rng(seed)
+    c = Circuit(nq)
+    pairs = [(0, 1), (1, 2)]
+    for _ in range(n):
+        if rng.random() < 0.3:
+            c.add("ecr", list(pairs[int(rng.integers(len(pairs)))]))
+        else:
+            name = ["rz", "sx", "x"][int(rng.integers(3))]
+            c.add(name, [int(rng.integers(nq))], (float(rng.uniform(-3, 3)),) if name == "rz" else ())
+    return c
+
+
+def test_block_resynthesis_and_reorientation():
+    try:
+        import qiskit  # noqa: F401
+    except ImportError:
+        return
+    from mkco.blocks import full_rewrite, make_native
+    for seed in range(3):
+        c = _random_ecr_circuit(seed)
+        full, _ = full_rewrite(c)
+        assert equivalent(c, full)[0]
+        assert all(g.qubits in {(0, 1), (1, 2)} for g in full.gates if len(g.qubits) == 2)
+        flipped = c.copy_with_gates([Gate("ecr", g.qubits[::-1]) if len(g.qubits) == 2 else g
+                                     for g in c.gates])
+        native, nf = make_native(flipped, {(0, 1), (1, 2)})
+        assert nf > 0 and equivalent(flipped, native)[0]
+        assert all(g.qubits in {(0, 1), (1, 2)} for g in native.gates if len(g.qubits) == 2)
+
+
+def test_theta_bound_is_a_valid_lower_bound():
+    try:
+        import cvxpy  # noqa: F401
+    except ImportError:
+        return
+    from mkco.coloring import conflict_graph, exact_coloring
+    from mkco.sdp_bounds import theta_bound
+    for seed in range(2):
+        g = conflict_graph(DepModel(gen.random_commuting_ccz(8, 20, seed=seed)))
+        col, proven = exact_coloring(g, time_limit=30)
+        b, _ = theta_bound(g)
+        assert proven and b <= max(col.values()) + 1
 
 
 def test_ising_expansion_matches_energy():

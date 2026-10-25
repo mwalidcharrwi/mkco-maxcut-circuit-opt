@@ -8,8 +8,9 @@ Methods
                   the mixed graph with beam search (our re-implementation)
   mkco            ours: precedence-constrained Max-k-Cut layering (+ certified bound)
   mkco_xt         ours: crosstalk-aware weighted Max-k-Cut at optimal 2q-depth
-  qiskit_o3       Qiskit transpile, optimization_level=3 (gate re-synthesis)
-  qiskit_o3+mkco  ours applied to Qiskit's output
+
+Qiskit O3 (on a device Target) and the gate-rewriting modes are added by
+run_qiskit.py, add_merge.py, add_rewrite.py and add_full.py.
 
 Usage: python experiments/run_ibm127.py [benchmark_dir] [--quick]
 """
@@ -62,23 +63,6 @@ def verify(orig, new, check_sim=True):
     return out
 
 
-def qiskit_o3(path):
-    from qiskit import qasm2, transpile
-    from qiskit.transpiler import CouplingMap
-    qc = qasm2.load(path, custom_instructions=qasm2.LEGACY_CUSTOM_INSTRUCTIONS)
-    edges = sorted({(qc.find_bit(i.qubits[0]).index, qc.find_bit(i.qubits[1]).index)
-                    for i in qc.data if i.operation.num_qubits == 2})
-    cm = CouplingMap(edges)
-    for q in range(qc.num_qubits):
-        if q not in cm.physical_qubits:
-            cm.add_physical_qubit(q)
-    t = time.time()
-    out = transpile(qc, basis_gates=["rz", "sx", "x", "ecr"], coupling_map=cm,
-                    initial_layout=list(range(qc.num_qubits)), optimization_level=3,
-                    seed_transpiler=0)
-    return parse_qasm(qasm2.dumps(out)), time.time() - t
-
-
 def run(bdir, outdir, quick=False):
     os.makedirs(outdir, exist_ok=True)
     files = sorted((os.path.join(bdir, f) for f in os.listdir(bdir) if f.endswith(".qasm")),
@@ -128,16 +112,6 @@ def run(bdir, outdir, quick=False):
         t = time.time(); xt, st = optimize_crosstalk(c, adj, time_limit=tl); tt = time.time() - t
         record("mkco_xt", xt, tt, extra={"model": st["segments"]}, sync=True,
                ver=verify(c, xt, sim_ok))
-        try:
-            q3, tq = qiskit_o3(f)
-            record("qiskit_o3", q3, tq)
-            t = time.time(); qm, rep = optimize(q3, metric="depth", time_limit=tl); tt = time.time() - t
-            record("qiskit_o3+mkco", qm, tt, extra={"lower_bound": rep["lower_bound"],
-                                                    "certified_optimal": rep["certified_optimal"]},
-                   ver=verify(q3, qm, False))
-        except Exception as e:  # keep the benchmark going if Qiskit fails on a file
-            r["methods"]["qiskit_o3"] = {"error": repr(e)}
-            print("   qiskit failed:", e, flush=True)
         results[name] = r
         with open(results_path, "w") as fh:
             json.dump(results, fh, indent=1, default=float)
