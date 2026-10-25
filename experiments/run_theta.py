@@ -1,5 +1,8 @@
 """Lovasz-theta certificates for commuting instances that the clique/Jackson
-bound left uncertified (E1 and E3).  Writes results/structured/theta.json."""
+bound left uncertified (E1 and E3).  Writes results/structured/theta.json.
+
+Instances above MAX_GATES are skipped: the interior-point SDP takes several
+minutes at 150 gates and grows steeply beyond."""
 import json
 import os
 import sys
@@ -13,6 +16,7 @@ from mkco.depmodel import DepModel                 # noqa: E402
 from mkco.sdp_bounds import theta_bound            # noqa: E402
 
 D = "results/structured"
+MAX_GATES = 150
 
 
 def main():
@@ -24,13 +28,14 @@ def main():
     for r in json.load(open(os.path.join(D, "e3.json"))):
         if r["mkco"] > r["lb"]:
             jobs.append(("e3", r, gen.random_commuting_ccz(10, r["gates"], seed=r["seed"])))
+    jobs = [j for j in jobs if j[2].size() <= MAX_GATES]
     jobs.sort(key=lambda j: j[2].size())
     for exp, r, c in jobs:
         g = conflict_graph(DepModel(c))
         t = time.time()
-        bound, val = theta_bound(g)
+        bound, val, raw = theta_bound(g, return_raw=True)
         row = {"experiment": exp, "m": r.get("m", 10), "n": r.get("n", r.get("gates")),
-               "seed": r["seed"], "clique_jackson_lb": r["lb"], "theta": val,
+               "seed": r["seed"], "clique_jackson_lb": r["lb"], "theta": val, "theta_solver": raw,
                "theta_lb": bound, "lb": max(bound, r["lb"]), "dsatur": r["dsatur"],
                "jk": r["jk"], "mkco": r["mkco"], "time_s": time.time() - t}
         row["mkco_certified_by_theta"] = row["mkco"] == row["lb"]

@@ -93,8 +93,11 @@ def main():
     th = load("theta")
     if th:
         A("\n### E7 - Lovász-theta certificates where the clique/Jackson bound left a gap\n")
-        A("theta(complement of the conflict graph) <= chromatic number (sandwich theorem), solved as an SDP.\n")
-        A("| exp. | m | gates | seed | clique/Jackson LB | theta | new LB | DSatur | JK'26 | MKCO | MKCO now proven optimal |")
+        A("theta(complement of the conflict graph) <= chromatic number (sandwich theorem), solved as an SDP. "
+          "The 'theta' column is the objective of the solver's solution after repair into an exactly "
+          "feasible point, so it is a proven lower bound on theta (and on the depth) whatever the "
+          "solver's accuracy. Open instances above 150 gates were not attempted.\n")
+        A("| exp. | m | gates | seed | clique/Jackson LB | theta (certified) | new LB | DSatur | JK'26 | MKCO | MKCO now proven optimal |")
         A("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---:|")
         for r in th:
             A(f"| {r['experiment'].upper()} | {r['m']} | {r['n']} | {r['seed']} | {r['clique_jackson_lb']} | "

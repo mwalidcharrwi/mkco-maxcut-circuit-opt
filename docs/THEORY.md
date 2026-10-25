@@ -180,3 +180,17 @@ layers down by one is therefore feasible iff `W` alone admits a
 precedence-constrained Max-k-Cut. MKCO solves these windows with exact
 enumeration (or tabu / QAOA) inside a large-neighbourhood search, with
 forward–backward justification between sweeps.
+
+## 7. An SDP bound for commuting circuits
+
+**Proposition 9 (θ certificate for commuting circuits).** For a commuting
+circuit with conflict graph `G`, every layering is a proper colouring of `G`,
+so `depth ≥ χ(G) ≥ ϑ(Ḡ) ≥ ω(G)` (Lovász sandwich theorem), where
+`ϑ(Ḡ) = max ⟨J, X⟩` over `X ⪰ 0`, `tr X = 1`, `X_ij = 0` for every
+non-adjacent pair `i ≠ j` of `G`. Any feasible `X` has `⟨J, X⟩ ≤ ϑ(Ḡ)`. A
+numerical solution `X̃` is made exactly feasible by zeroing those entries,
+adding `max(0, −λ_min)·I` (which changes only the diagonal, so the zeros stay)
+and dividing by the trace. `⌈⟨J, X⟩ − ε⌉` is then a depth lower bound that does
+not depend on the solver's accuracy; `ε` covers only floating-point error in
+`λ_min` and the sum. It can beat the clique bound: for the 5-cycle `ω = 2`,
+but `ϑ = √5` gives 3.

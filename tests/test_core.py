@@ -1,5 +1,6 @@
 """Core correctness tests.  Run:  python tests/test_core.py   (or pytest)."""
 import itertools
+import math
 import os
 import sys
 
@@ -171,6 +172,24 @@ def test_theta_bound_is_a_valid_lower_bound():
         col, proven = exact_coloring(g, time_limit=30)
         b, _ = theta_bound(g)
         assert proven and b <= max(col.values()) + 1
+
+
+def test_theta_repair_gives_feasible_point():
+    try:
+        import cvxpy  # noqa: F401
+    except ImportError:
+        return
+    import networkx as nx
+    from mkco.sdp_bounds import repair, theta_bound
+    g = nx.cycle_graph(5)                       # complement of C5 is C5: theta = sqrt(5)
+    b, val = theta_bound(g)
+    assert b == 3 and math.sqrt(5) - 1e-4 < val <= math.sqrt(5) + 1e-9
+    adj = nx.to_numpy_array(g)
+    rng = np.random.default_rng(0)
+    x = rng.normal(size=(5, 5))                 # far from feasible on purpose
+    y = repair(x, adj)
+    assert abs(np.trace(y) - 1) < 1e-12 and np.linalg.eigvalsh(y)[0] >= 0
+    assert all(y[i, j] == 0 for i in range(5) for j in range(5) if i != j and adj[i, j] == 0)
 
 
 def test_ising_expansion_matches_energy():

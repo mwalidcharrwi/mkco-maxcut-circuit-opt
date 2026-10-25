@@ -484,7 +484,10 @@ not trivially colourable.
     the proven optimum on every one.
   - **E7 – Lovász-θ certificates.** For the instances the clique/Jackson bound
     left open, the θ number of the complement graph (an SDP, solved with
-    Clarabel) raises the certified bound.
+    Clarabel) raises the certified bound. The solver's matrix is repaired into
+    an exactly feasible point (zeros imposed, diagonal shifted by the most
+    negative eigenvalue, trace rescaled to 1), so the bound does not depend on
+    solver accuracy.
     - Computed for all 15 open instances with ≤ 150 gates, it proves MKCO
       optimal on 6 more E1 circuits, raising E1's certified count from 41/60
       to **47/60**. The one open E3 circuit stays open (θ does not reach
@@ -657,15 +660,15 @@ Meets the certified bound: DSatur 24/34, JK 7/34, MKCO 34/34.
 
 ### E7 - Lovász-theta certificates where the clique/Jackson bound left a gap
 
-theta(complement of the conflict graph) <= chromatic number (sandwich theorem), solved as an SDP.
+theta(complement of the conflict graph) <= chromatic number (sandwich theorem), solved as an SDP. The 'theta' column is the objective of the solver's solution after repair into an exactly feasible point, so it is a proven lower bound on theta (and on the depth) whatever the solver's accuracy. Open instances above 150 gates were not attempted.
 
-| exp. | m | gates | seed | clique/Jackson LB | theta | new LB | DSatur | JK'26 | MKCO | MKCO now proven optimal |
+| exp. | m | gates | seed | clique/Jackson LB | theta (certified) | new LB | DSatur | JK'26 | MKCO | MKCO now proven optimal |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---:|
 | E3 | 10 | 40 | 4 | 15 | 15.000 | 15 | 18 | 19 | 16 | no |
 | E1 | 10 | 50 | 4 | 26 | 26.384 | 27 | 27 | 32 | 27 | yes |
 | E1 | 10 | 100 | 0 | 47 | 47.015 | 48 | 50 | 58 | 48 | yes |
 | E1 | 10 | 100 | 1 | 47 | 47.000 | 47 | 52 | 56 | 48 | no |
-| E1 | 10 | 100 | 4 | 48 | 48.030 | 49 | 53 | 60 | 50 | no |
+| E1 | 10 | 100 | 4 | 48 | 48.029 | 49 | 53 | 60 | 50 | no |
 | E1 | 20 | 100 | 1 | 52 | 52.318 | 53 | 53 | 62 | 53 | yes |
 | E1 | 20 | 100 | 3 | 47 | 47.000 | 47 | 48 | 58 | 48 | no |
 | E1 | 30 | 100 | 2 | 49 | 49.318 | 50 | 50 | 62 | 50 | yes |
@@ -994,6 +997,20 @@ layers down by one is therefore feasible iff `W` alone admits a
 precedence-constrained Max-k-Cut. MKCO solves these windows with exact
 enumeration (or tabu / QAOA) inside a large-neighbourhood search, with
 forward–backward justification between sweeps.
+
+### 7. An SDP bound for commuting circuits
+
+**Proposition 9 (θ certificate for commuting circuits).** For a commuting
+circuit with conflict graph `G`, every layering is a proper colouring of `G`,
+so `depth ≥ χ(G) ≥ ϑ(Ḡ) ≥ ω(G)` (Lovász sandwich theorem), where
+`ϑ(Ḡ) = max ⟨J, X⟩` over `X ⪰ 0`, `tr X = 1`, `X_ij = 0` for every
+non-adjacent pair `i ≠ j` of `G`. Any feasible `X` has `⟨J, X⟩ ≤ ϑ(Ḡ)`. A
+numerical solution `X̃` is made exactly feasible by zeroing those entries,
+adding `max(0, −λ_min)·I` (which changes only the diagonal, so the zeros stay)
+and dividing by the trace. `⌈⟨J, X⟩ − ε⌉` is then a depth lower bound that does
+not depend on the solver's accuracy; `ε` covers only floating-point error in
+`λ_min` and the sum. It can beat the clique bound: for the 5-cycle `ω = 2`,
+but `ϑ = √5` gives 3.
 
 ## Appendix B. Related-work study notes
 

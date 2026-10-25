@@ -21,7 +21,10 @@ not trivially colourable.
     the proven optimum on every one.
   - **E7 – Lovász-θ certificates.** For the instances the clique/Jackson bound
     left open, the θ number of the complement graph (an SDP, solved with
-    Clarabel) raises the certified bound.
+    Clarabel) raises the certified bound. The solver's matrix is repaired into
+    an exactly feasible point (zeros imposed, diagonal shifted by the most
+    negative eigenvalue, trace rescaled to 1), so the bound does not depend on
+    solver accuracy.
     - Computed for all 15 open instances with ≤ 150 gates, it proves MKCO
       optimal on 6 more E1 circuits, raising E1's certified count from 41/60
       to **47/60**. The one open E3 circuit stays open (θ does not reach

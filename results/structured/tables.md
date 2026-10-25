@@ -124,15 +124,15 @@ Meets the certified bound: DSatur 24/34, JK 7/34, MKCO 34/34.
 
 ### E7 - Lovász-theta certificates where the clique/Jackson bound left a gap
 
-theta(complement of the conflict graph) <= chromatic number (sandwich theorem), solved as an SDP.
+theta(complement of the conflict graph) <= chromatic number (sandwich theorem), solved as an SDP. The 'theta' column is the objective of the solver's solution after repair into an exactly feasible point, so it is a proven lower bound on theta (and on the depth) whatever the solver's accuracy. Open instances above 150 gates were not attempted.
 
-| exp. | m | gates | seed | clique/Jackson LB | theta | new LB | DSatur | JK'26 | MKCO | MKCO now proven optimal |
+| exp. | m | gates | seed | clique/Jackson LB | theta (certified) | new LB | DSatur | JK'26 | MKCO | MKCO now proven optimal |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---:|
 | E3 | 10 | 40 | 4 | 15 | 15.000 | 15 | 18 | 19 | 16 | no |
 | E1 | 10 | 50 | 4 | 26 | 26.384 | 27 | 27 | 32 | 27 | yes |
 | E1 | 10 | 100 | 0 | 47 | 47.015 | 48 | 50 | 58 | 48 | yes |
 | E1 | 10 | 100 | 1 | 47 | 47.000 | 47 | 52 | 56 | 48 | no |
-| E1 | 10 | 100 | 4 | 48 | 48.030 | 49 | 53 | 60 | 50 | no |
+| E1 | 10 | 100 | 4 | 48 | 48.029 | 49 | 53 | 60 | 50 | no |
 | E1 | 20 | 100 | 1 | 52 | 52.318 | 53 | 53 | 62 | 53 | yes |
 | E1 | 20 | 100 | 3 | 47 | 47.000 | 47 | 48 | 58 | 48 | no |
 | E1 | 30 | 100 | 2 | 49 | 49.318 | 50 | 50 | 62 | 50 | yes |
