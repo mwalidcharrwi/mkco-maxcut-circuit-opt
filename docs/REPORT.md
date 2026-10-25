@@ -29,14 +29,31 @@ MKCO turns that reduction into a **Max-k-Cut framework** that:
 5. **Goes beyond reordering when asked.** Optional single-qubit (ZSX) and
    two-qubit (KAK, native ECR direction) resynthesis feed the same Max-k-Cut
    layering. Selected by depth or by estimated execution time, this beats
-   Qiskit O3 on every benchmark.
+   Qiskit O3 on every benchmark. Commutation-aware block formation lets KAK see
+   blocks that commuting gates had split (E11).
+6. **Optimises fault-tolerant depth.** T-depth and Toffoli-depth with free
+   Clifford gates reduce to a mixed-graph colouring on the non-Clifford gates
+   (Proposition 10), solved by the same engine with a certified bound. On top
+   of PyZX it lowers T-depth by 41% on average (E8).
+7. **Routes with the same commutation structure.** A SABRE-style router whose
+   front layer is the trace-order front, followed by Max-k-Cut layering. It is
+   proven correct per output (Proposition 11) and evaluated against Qiskit O3
+   on IBM's 127-qubit heavy-hex device (E9).
+8. **Is checked against device noise.** Scoring with the ibm_brisbane
+   calibration shows that a depth-optimal reordering can be *less* faithful,
+   because qubits may idle in superposition for longer. A state-aware success
+   estimate (Proposition 12) predicts this, matching density-matrix
+   simulation, and picks the output (E10). A script for real IBM runs is
+   included.
 
 **Comparison against the related work.** Lee et al. 2026 and Jain & Kumar 2026
 are run on identical inputs:
 - rows 1–6: the 9 provided IBM-127-transpiled benchmarks (rz/sx/x/ecr,
   1.9k–358k gates);
 - rows 7–11: the paper's own experimental settings and structured commuting
-  circuits.
+  circuits;
+- rows 12–15: the extensions (fault-tolerant depth, routing, block formation,
+  noise), each against an established tool.
 
 | Question | Lee et al. 2026 | Jain & Kumar 2026 | **MKCO (ours)** |
 |---|---|---|---|
@@ -46,10 +63,15 @@ are run on identical inputs:
 | Gate rewriting vs Qiskit O3 on a device Target (all outputs executable) | – | – | MKCO-full **shallower on 9/9** (−3.4% to −25.5%) and **faster (est. time) on 9/9**; MKCO after Qiskit removes a further 0.6–5.2% |
 | Depth budget vs crosstalk (Pareto) | cannot express | cannot express | −21% to −44% pairs at +10% 2q-depth; −39% to −65% at +20% |
 | F₂ⁿ multiplier (paper §5.1), n = 2…64 | optimal at 24/34 sizes | 7/34 | **34/34 (proven)** |
-| Random multi-controlled-Z (paper §4.3), 60 circuits | 36/60 certified optimal | 0/60 | **41/60**; never worse than DSatur |
+| Random multi-controlled-Z (paper §4.3), 60 circuits | 42/60 certified optimal (36 by clique/Jackson, 6 more by θ/θ⁺) | 0/60 | **48/60** (41 + 7 more by θ/θ⁺); never worse than DSatur |
 | Random CCZ (paper App. C), 50 circuits | 20/50 certified optimal | 17/50 | **49/50** |
 | RZZ/QAOA layers (edge colouring), 18 circuits | 0/18 reach Δ | 0/18 | **14/18 reach Δ (optimal)** |
 | Ancilla fan-out (paper §5.2) | heuristic not specified | – | up to **−24%** vs fixed copy split |
+| T-depth with free Cliffords, after PyZX (17 Clifford+T circuits, E8) | – | – | **−10% to −69%** (mean −41%) vs PyZX alone; 17/17 certified optimal |
+| Toffoli-depth, GF(2ⁿ) multipliers n = 4–12 (E8) | commuting parts only | – | **−53% to −64%** vs input; 6/8 certified |
+| Routing on the 127-qubit heavy-hex device vs Qiskit O3 (13 circuits, E9) | – | – | QAOA (7): **−3.8% to −21.9% CNOTs, up to −55% depth**; Trotter shallower; QFT worse (+11–25% CNOTs) |
+| Block formation before KAK (19 logical circuits, E11) | – | – | fewer CNOTs than plain block KAK on **17/19**, never more |
+| Noise with ibm_brisbane calibration (9 circuits, E10) | – | – | state-aware ESP orders method pairs like density-matrix simulation in **97%** of cases (state-blind ESP 66%); `mkco_noise` beats Qiskit O3 on **9/9** |
 
 Every reordered output was independently verified: an exact pairwise
 commutation audit, plus state-vector simulation for ≤ 20 active qubits.
@@ -181,6 +203,32 @@ IBM Eagle device:
 Outputs with at most 20 active qubits are additionally checked by state-vector
 simulation on random inputs (global phase compared). A negative control — one
 illegal swap — fails both the audit and the simulation.
+
+**Extensions (Section 7).**
+- *T-depth / Toffoli-depth (E8).* Generated circuits (`mkco.generators`):
+  - Cuccaro ripple-carry adders;
+  - Barenco V-chain multi-controlled X;
+  - GF(2ⁿ) multipliers (trinomial reduction, ancilla register for the high
+    terms);
+  - random T phase polynomials;
+  - random Clifford+T.
+
+  Toffolis are decomposed with the 7-T circuit of Nielsen & Chuang. PyZX
+  0.10.7 runs `full_reduce` + `extract_circuit` + `basic_optimization`
+  (respectively `teleport_reduce`).
+- *Routing (E9).* IBM Eagle heavy-hex coupling graph (127 qubits, 144
+  couplers; `benchmarks/devices/ibm_eagle_127.json`, from FakeSherbrooke;
+  the same graph as ibm_brisbane), symmetric CNOTs.
+  - Qiskit: `transpile(..., coupling_map, basis_gates=[cx, rz, sx, x],
+    optimization_level=3, seed_transpiler=0)`.
+  - MKCO-route: 16 trials (8 per front scoring), 3 bidirectional layout
+    iterations each.
+- *Block formation (E11).* Logical circuits in the CX basis, all-to-all. Qiskit
+  O3 with `basis_gates=[cx, rz, sx, x]`.
+- *Noise (E10).* Calibration snapshot of ibm_brisbane (FakeBrisbane,
+  qiskit-ibm-runtime 0.51): median ECR error 0.77%, ECR 660–780 ns, sx 60 ns,
+  median T1 232 µs, T2 150 µs, median readout error 2%. Density matrices
+  are computed with qiskit-aer 0.18.
 
 **Machine.** Laptop, Intel Core i7-1068NG7 (4 cores / 8 threads, 2.3 GHz), 16 GB, Python 3.13, single
 process.
@@ -459,6 +507,78 @@ Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native
 | hhl_8 | 10 | 2330 | 44 | -21.4% | 1372.24 |
 | hhl_8 | 20 | 2339 | 34 | -39.3% | 1377.32 |
 
+### Table 10 - Noise study with the ibm_brisbane calibration snapshot (fake_brisbane)
+
+ESP = estimated success probability (state-blind, ALAP idling); sESP = state-aware ESP (idle gaps weighted by the idling qubit's state, <= 22 active qubits); sim = exact density-matrix state fidelity (<= 8 active qubits). Scale 0.1 = all error rates x0.1 and T1, T2 x10. mkco_noise = the MKCO candidate with the best sESP (ESP for larger circuits), the input included.
+
+| Circuit | score | original | qiskit_o3 | mkco | mkco_alap | mkco_full | mkco_full_alap | mkco_noise | mkco_noise picks |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---|
+| mult_8 | ESP | 0.00283 | 0.00279 | 0.0029 | **0.0029** | 0.0029 | 0.0029 | 0.00283 | original |
+| mult_8 | ESP_xt | 0.00232 | 0.00228 | 0.00234 | **0.00234** | 0.00234 | 0.00234 | 0.00232 |  |
+| mult_8 | ESP x0.1 | 0.526 | 0.525 | 0.529 | **0.529** | 0.529 | 0.529 | 0.526 |  |
+| mult_8 | sESP | **0.00222** | 0.00218 | 0.00141 | 0.0015 | 0.00141 | 0.00141 | **0.00222** |  |
+| mult_8 | sESP x0.1 | **0.543** | 0.542 | 0.519 | 0.522 | 0.519 | 0.519 | **0.543** |  |
+| mult_8 | sim F | **0.0155** | 0.0154 | 0.0126 | 0.0128 | 0.0126 | 0.0126 | **0.0155** |  |
+| mult_8 | sim F x0.1 | **0.567** | 0.566 | 0.542 | 0.545 | 0.542 | 0.542 | **0.567** |  |
+| add_17 | ESP | 1.41e-07 | 1.39e-07 | 1.37e-07 | **1.44e-07** | 1.37e-07 | **1.44e-07** | **1.44e-07** | mkco_full_alap |
+| add_17 | ESP_xt | 3.51e-08 | 3.36e-08 | 3.00e-08 | **3.58e-08** | 3.00e-08 | **3.58e-08** | **3.58e-08** |  |
+| add_17 | ESP x0.1 | 0.171 | 0.171 | 0.171 | **0.172** | 0.171 | **0.172** | **0.172** |  |
+| add_17 | sESP | 1.07e-08 | 1.09e-08 | 1.14e-08 | 1.27e-08 | 1.14e-08 | **1.27e-08** | **1.27e-08** |  |
+| add_17 | sESP x0.1 | 0.147 | 0.147 | 0.148 | **0.149** | 0.148 | **0.149** | **0.149** |  |
+| qae_17 | ESP | 3.66e-05 | 3.62e-05 | 3.78e-05 | 3.73e-05 | 3.79e-05 | **3.79e-05** | **3.79e-05** | mkco_full_alap |
+| qae_17 | ESP_xt | **1.21e-05** | 1.20e-05 | 1.13e-05 | 1.13e-05 | 1.13e-05 | 1.13e-05 | 1.13e-05 |  |
+| qae_17 | ESP x0.1 | 0.279 | 0.278 | 0.281 | 0.28 | 0.281 | **0.281** | **0.281** |  |
+| qae_17 | sESP | 1.18e-07 | 1.16e-07 | 1.30e-07 | 1.27e-07 | 1.34e-07 | **1.34e-07** | **1.34e-07** |  |
+| qae_17 | sESP x0.1 | 0.194 | 0.194 | 0.196 | 0.196 | 0.197 | **0.197** | **0.197** |  |
+| qft_16 | ESP | 5.26e-05 | 5.21e-05 | 5.46e-05 | 5.45e-05 | **5.47e-05** | 5.47e-05 | 5.45e-05 | mkco_alap |
+| qft_16 | ESP_xt | **9.81e-06** | 9.72e-06 | 9.07e-06 | 9.06e-06 | 9.09e-06 | 9.09e-06 | 9.06e-06 |  |
+| qft_16 | ESP x0.1 | 0.316 | 0.315 | 0.318 | 0.318 | **0.318** | **0.318** | 0.318 |  |
+| qft_16 | sESP | 1.10e-05 | 1.06e-05 | 1.28e-05 | **1.29e-05** | 1.29e-05 | 1.29e-05 | **1.29e-05** |  |
+| qft_16 | sESP x0.1 | 0.311 | 0.299 | 0.316 | 0.316 | 0.316 | **0.316** | 0.316 |  |
+| hubbard_8 | ESP | 5.09e-09 | 5.13e-09 | 5.17e-09 | 5.17e-09 | 5.22e-09 | **5.22e-09** | **5.22e-09** | mkco_full_alap |
+| hubbard_8 | ESP_xt | 1.39e-09 | **1.40e-09** | 1.32e-09 | 1.34e-09 | 1.32e-09 | 1.35e-09 | 1.35e-09 |  |
+| hubbard_8 | ESP x0.1 | 0.0839 | 0.084 | 0.0848 | 0.0848 | 0.085 | **0.085** | **0.085** |  |
+| hubbard_8 | sESP | 8.14e-13 | 8.40e-13 | 4.30e-13 | 1.00e-12 | 4.55e-13 | **1.06e-12** | **1.06e-12** |  |
+| hubbard_8 | sESP x0.1 | 0.0618 | 0.062 | 0.0582 | 0.0631 | 0.0586 | **0.0634** | **0.0634** |  |
+| hubbard_8 | sim F | 0.00283 | **0.00285** | 0.00252 | 0.0028 | 0.00253 | 0.0028 | 0.0028 |  |
+| hubbard_8 | sim F x0.1 | 0.0751 | 0.0753 | 0.0702 | 0.0764 | 0.0706 | **0.0767** | **0.0767** |  |
+| hhl_8 | ESP | 8.57e-21 | 6.29e-21 | 8.60e-21 | 8.60e-21 | **8.61e-21** | 8.61e-21 | **8.61e-21** | mkco_full |
+| hhl_8 | ESP_xt | **5.35e-21** | 3.93e-21 | 5.29e-21 | 5.34e-21 | 5.30e-21 | 5.30e-21 | 5.30e-21 |  |
+| hhl_8 | ESP x0.1 | 0.00256 | 0.00247 | 0.00259 | **0.0026** | 0.00259 | 0.00259 | 0.00259 |  |
+| hhl_8 | sESP | 4.10e-28 | 2.77e-28 | 7.77e-28 | 2.47e-28 | **7.78e-28** | **7.78e-28** | **7.78e-28** |  |
+| hhl_8 | sESP x0.1 | 9.54e-04 | 9.12e-04 | 0.00102 | 9.23e-04 | **0.00102** | **0.00102** | **0.00102** |  |
+| hhl_8 | sim F | 0.0056 | 0.0056 | 0.00762 | 0.00741 | 0.00762 | **0.00762** | 0.00762 |  |
+| hhl_8 | sim F x0.1 | 0.0123 | 0.0122 | 0.0138 | 0.0126 | 0.0138 | **0.0138** | 0.0138 |  |
+| heisenberg_32 | ESP | 7.47e-35 | 1.18e-34 | 7.47e-35 | 7.47e-35 | 6.84e-33 | **6.84e-33** | **6.84e-33** | mkco_full_alap |
+| heisenberg_32 | ESP_xt | 7.52e-41 | 2.72e-40 | 7.52e-41 | 7.52e-41 | 3.84e-38 | **3.84e-38** | **3.84e-38** |  |
+| heisenberg_32 | ESP x0.1 | 3.37e-05 | 3.83e-05 | 3.37e-05 | 3.37e-05 | 7.24e-05 | **7.24e-05** | **7.24e-05** |  |
+| heisenberg_32 | sESP | – | – | – | – | – | – | – |  |
+| heisenberg_32 | sESP x0.1 | – | – | – | – | – | – | – |  |
+| grover_10 | ESP | 8.41e-90 | 8.26e-90 | 8.42e-90 | 8.42e-90 | 9.43e-90 | **9.43e-90** | **9.43e-90** | mkco_full_alap |
+| grover_10 | ESP_xt | **1.28e-106** | 1.25e-106 | 4.14e-108 | 3.60e-108 | 4.64e-108 | 4.64e-108 | 4.64e-108 |  |
+| grover_10 | ESP x0.1 | 9.12e-12 | 9.10e-12 | 9.58e-12 | 9.59e-12 | **9.68e-12** | 9.68e-12 | 9.68e-12 |  |
+| grover_10 | sESP | 9.94e-151 | 9.68e-151 | 8.75e-145 | 3.69e-149 | 9.38e-145 | **9.38e-145** | **9.38e-145** |  |
+| grover_10 | sESP x0.1 | 1.98e-16 | 1.97e-16 | 9.30e-16 | 2.96e-16 | 9.36e-16 | **9.36e-16** | **9.36e-16** |  |
+| hubbard_18 | ESP | 1.22e-177 | 2.79e-180 | 1.22e-177 | 1.22e-177 | 1.79e-169 | 1.79e-169 | **2.70e-155** | mkco_full_dur |
+| hubbard_18 | ESP_xt | 1.36e-204 | 1.56e-209 | 2.02e-204 | 8.99e-205 | 4.15e-195 | 4.15e-195 | **9.82e-182** |  |
+| hubbard_18 | ESP x0.1 | 1.16e-26 | 7.36e-27 | 1.16e-26 | 1.16e-26 | 8.17e-26 | 8.17e-26 | **2.38e-24** |  |
+| hubbard_18 | sESP | – | – | – | – | – | – | – |  |
+| hubbard_18 | sESP x0.1 | – | – | – | – | – | – | – |  |
+
+### Table 11 - ECRs removed by block KAK, plain vs commutation-aware block formation
+
+| Circuit | input ECRs | plain KAK | regrouped KAK | Qiskit O3 ECRs | plain KAK on O3 | regrouped KAK on O3 |
+|---|---:|---:|---:|---:|---:|---:|
+| add_17 | 499 | 0 | 0 | 499 | 0 | 0 |
+| grover_10 | 16397 | 0 | 0 | 16397 | 0 | 0 |
+| heisenberg_32 | 3942 | 60 | 60 | 4071 | 0 | 0 |
+| hhl_8 | 2377 | 0 | 0 | 2377 | 0 | 0 |
+| hubbard_18 | 33958 | 3505 | 3505 | 33586 | 0 | 14 |
+| hubbard_8 | 1344 | 0 | 4 | 1344 | 0 | 4 |
+| mult_8 | 311 | 0 | 0 | 311 | 0 | 0 |
+| qae_17 | 541 | 0 | 0 | 541 | 0 | 0 |
+| qft_16 | 614 | 0 | 0 | 614 | 0 | 0 |
+
 ## 6. Results in the settings of Lee et al. and on structured commuting circuits
 
 These experiments reproduce the settings of Lee et al. They are the regime
@@ -469,7 +589,8 @@ not trivially colourable.
 
 - **E1 – the paper's random benchmark (Fig. 1 setting: m = 10/20/30 qubits,
   n = 50–200 multi-controlled-Z gates, 5 seeds each, 60 circuits).**
-  - MKCO is certified optimal on **41/60** (DSatur 36/60, JK 0/60). It is
+  - By the clique/Jackson bound, MKCO is certified optimal on **41/60** (DSatur
+    36/60, JK 0/60); with the θ and θ⁺ bounds of E7, 48/60 vs 42/60. It is
     strictly better than DSatur on 14 circuits and never worse.
   - Its average excess over the certified bound is 0.57 layers, against 1.23
     for DSatur and 12.2 for JK.
@@ -490,10 +611,15 @@ not trivially colourable.
     solver accuracy.
     - Computed for all 15 open instances with ≤ 150 gates, it proves MKCO
       optimal on 6 more E1 circuits, raising E1's certified count from 41/60
-      to **47/60**. The one open E3 circuit stays open (θ does not reach
+      to **47/60**. DSatur also reaches 5 of these bounds (36/60 → 41/60); JK
+      none. The one open E3 circuit stays open (θ does not reach
       MKCO's depth there).
-    - The 5 open 200-gate instances were not attempted: the interior-point SDP
-      time grows steeply with size (about 3–6 min at 150 gates on this laptop).
+    - At 200 gates the interior-point solver needs about an hour and 6 GB per
+      instance. These 5 instances were solved for θ⁺ with the first-order SCS
+      solver instead (E7b). The repair keeps the bound valid; the lower
+      accuracy can only weaken it. θ⁺ proves one more circuit optimal
+      (m = 20, seed 0: 95.03 → 96 = MKCO), so E1 ends at **48/60** (DSatur
+      42/60).
     - θ never exceeded a proven chromatic number in the sanity tests.
 
 ![F2n multiplier](figures/gf2_multiplier.png)
@@ -682,7 +808,283 @@ theta(complement of the conflict graph) <= chromatic number (sandwich theorem), 
 
 Theta closes the gap on 6 of 15 open instances.
 
-## 7. Research directions opened by the Max-Cut view
+### E7b - Szegedy theta-plus on the instances still open (incl. the 200-gate ones)
+
+theta-plus >= theta and still <= chi (docs/THEORY.md, Proposition 9); certified by the same repair.
+
+| exp. | m | gates | seed | clique/Jackson LB | theta | theta-plus (certified) | solver | new LB | MKCO | proven optimal |
+|---|---:|---:|---:|---:|---:|---:|---|---:|---:|:---:|
+| E3 | 10 | 40 | 4 | 15 | 15.000 | 15.000 | CLARABEL | 15 | 16 | no |
+| E1 | 10 | 100 | 1 | 47 | 47.000 | 47.000 | CLARABEL | 47 | 48 | no |
+| E1 | 10 | 100 | 4 | 48 | 48.029 | 48.077 | CLARABEL | 49 | 50 | no |
+| E1 | 20 | 100 | 3 | 47 | 47.000 | 47.000 | CLARABEL | 47 | 48 | no |
+| E1 | 10 | 150 | 0 | 66 | 66.000 | 66.000 | CLARABEL | 66 | 69 | no |
+| E1 | 10 | 150 | 2 | 70 | 70.000 | 70.000 | CLARABEL | 70 | 72 | no |
+| E1 | 10 | 150 | 3 | 64 | 64.000 | 64.000 | CLARABEL | 64 | 66 | no |
+| E1 | 10 | 150 | 4 | 67 | 67.000 | 67.000 | CLARABEL | 67 | 70 | no |
+| E1 | 20 | 150 | 0 | 79 | 79.000 | 79.000 | CLARABEL | 79 | 80 | no |
+| E1 | 10 | 200 | 1 | 91 | – | 90.999 | SCS | 91 | 95 | no |
+| E1 | 10 | 200 | 4 | 87 | – | 87.000 | SCS | 87 | 92 | no |
+| E1 | 20 | 200 | 0 | 95 | – | 95.033 | SCS | 96 | 96 | yes |
+| E1 | 20 | 200 | 2 | 94 | – | 94.292 | SCS | 95 | 96 | no |
+| E1 | 30 | 200 | 3 | 102 | – | 101.997 | SCS | 102 | 103 | no |
+
+Theta-plus closes 1 of 14 remaining instances.
+
+## 7. Extensions: fault-tolerant depth, routing, block formation, noise
+
+The same machinery (trace order, mixed graph, certified layering) carries
+over to four further problems. Each one is implemented, tested and evaluated
+against an established tool.
+
+### 7.1 Non-Clifford depth with free Cliffords (E8)
+
+In fault-tolerant execution, the expensive layers are those containing T
+gates (or Toffolis); Clifford gates are cheap. `mkco.nonclifford` minimises
+the *counted* depth: T-like rotations, Toffolis, or any non-Clifford rotation.
+Counted gates take one step; Clifford gates take none, but still synchronise
+their wires (the usual T-depth).
+- **Reduction (Proposition 10).** This is a mixed-graph colouring on the
+  counted gates. Its arcs come from the trace order through the free gates.
+- **Solver.** A surrogate circuit with one private virtual wire per
+  free-path pair lets the *unchanged* MKCO engine solve it, including the
+  certified Jackson bound.
+- **Merging.** Rotation merging (T·T = S) runs first.
+
+![T-depth](figures/tdepth.png)
+
+- **On its own**, MKCO-T lowers the T-depth of the GF(2ⁿ) multipliers by
+  39–44% (e.g. gf2_mult_7: 108 → 66), and of T phase polynomials by 23–30%.
+  It is certified optimal on 14 of the 17 T-depth instances; the three random
+  Clifford+T circuits stay uncertified.
+  - Ripple-carry (Cuccaro) adders are inherently sequential. MKCO proves that
+    no reordering helps (certified = original).
+  - Plain depth-minimising MKCO is worse on T-depth (e.g. cuccaro_16: 144 vs
+    128), so the objective matters.
+- **After PyZX** (full_reduce + extract), the strongest T-*count* tool we
+  could run, MKCO-T cuts PyZX's T-depth by 10–69% (mean 41%) on all 17
+  T-depth instances. Every one of these results is certified optimal.
+  Examples:
+  - gf2_mult_7: 74 → 23;
+  - T phase polynomial n=16: 26 → 13;
+  - random Clifford+T n=12: 65 → 36.
+- **Toffoli-depth** of the multipliers drops by 53–64%
+  (gf2_mult_12: 64 → 23).
+- All 103 outputs with ≤ 20 qubits pass the state-vector check.
+
+### 7.2 Commutation-aware routing + layering (E9)
+
+`mkco.route` is a SABRE-style router (bidirectional layout search, lookahead,
+decay) with one change: a gate enters the front layer as soon as the previous
+run on each of its wires has executed.
+- Mutually commuting gates (a whole QAOA cost layer) therefore all compete for
+  execution.
+- Two front scorings run as a small portfolio: the mean over front gates, and
+  each qubit's nearest front gate (gates sharing a qubit run one after another
+  anyway).
+- After routing, MKCO layers the circuit, re-synthesises blocks (KAK) and
+  layers it again. The trial with the smallest CNOTs + depth is kept.
+- Every output passes the exact `unroute` check (Proposition 11) and the
+  coupling check.
+- The comparison is Qiskit O3 (SabreLayout + SabreSwap + its optimisation
+  loop) on IBM Eagle's 127-qubit heavy-hex graph, at CNOT level.
+
+![Routing](figures/routing.png)
+
+- **QAOA** (7 instances, 16–64 qubits, degree 3–4, p = 1–2), where whole
+  cost layers commute: MKCO-route uses **3.8–21.9% fewer CNOTs** than Qiskit O3
+  on all 7, and is **up to 55% shallower**. Depth is equal on one instance.
+  - qaoa_n64_p1: 638 vs 726 CNOTs, depth 80 vs 177.
+  - qaoa_n32_p2: 449 vs 575 CNOTs, depth 96 vs 193.
+- **Trotter Ising** (CNOT–Rz–CNOT form): 2.9% fewer CNOTs and 7.9% shallower
+  at n = 16; at n = 32, equal CNOTs (+0.2%) and 25% shallower.
+- **QFT is Qiskit's case.** QFT-12 costs 11% more CNOTs (but is 14%
+  shallower); QFT-20 costs 25% more CNOTs and is 43% deeper.
+- **Phase polynomial and random Clifford+T:** within +0.6% to +5.6% CNOTs;
+  the phase polynomial is 11% shallower, the random circuit 2.6% deeper.
+- **Ablation.** With the plain gate-DAG front (standard SABRE) and everything
+  else identical, the router needs more CNOTs on **all 13** circuits
+  (e.g. qaoa_n64_p2: 1583 vs 1177). The gain therefore comes from the
+  commutation-aware front.
+  - The QFT gap is a weakness of our SABRE base relative to Qiskit's tuned
+    implementation: the ablation is even further behind there.
+- **Composition.** MKCO's post-routing passes applied to Qiskit's output
+  ("Qiskit O3 + MKCO") lower Qiskit's depth on all 13 circuits (e.g. random
+  Clifford+T 571 → 512, Trotter-16 164 → 140), at equal or lower CNOT count.
+
+### 7.3 Commutation-aware block formation for KAK (E11)
+
+Block resynthesis (here and in Qiskit's ConsolidateBlocks) only sees blocks
+that are contiguous on the gate DAG. A gate that commutes past a block still
+splits it. `regroup_pairs` applies a legal reordering (a linear extension of
+the trace order, checked) that keeps the gates of one qubit pair together, in
+a forward and a backward pass, before block KAK.
+- On 19 logical circuits it removes CNOTs on 17 relative to plain block KAK,
+  and never adds any. It is then on par with Qiskit O3 (CX basis), and its
+  outputs are shallower after MKCO layering on the Trotter, QAOA and random
+  circuits.
+- Applied after Qiskit O3, it removes further CNOTs on 5 circuits.
+- On the IBM benchmarks (Table 11) the transpiler has already merged every
+  block that commutation could join. Only hubbard_8 (4 ECRs) and Qiskit's
+  hubbard_18 output (14 ECRs) gain.
+- Qiskit's KAK decomposer silently snaps near-identity blocks (e.g. a
+  controlled phase of angle 5·10⁻⁵ in QFT-20) to cheaper, inexact circuits,
+  even with `approximate=False`. MKCO's exact check rejects those
+  replacements.
+
+### 7.4 Noise study with device calibration data (E10)
+
+The 9 benchmarks are native to ibm_brisbane: all 78 ECR directions match the
+FakeBrisbane snapshot in qiskit-ibm-runtime. Every method's output is
+therefore scored with that device's calibrated per-gate errors and durations,
+T1, T2 and readout errors (`mkco.noise`, Table 10):
+- an ESP with ALAP idling;
+- a state-aware ESP;
+- for circuits with ≤ 8 active qubits, exact density-matrix simulation at
+  calibrated noise and at 10× lower noise.
+
+![Noise validation](figures/noise_validation.png)
+
+- **Depth is not fidelity.** All reorderings of a circuit have the same gate
+  noise; switching idle noise off makes their simulated fidelities equal
+  (mult_8: 0.708 for all). The differences come from idling, mainly from
+  dephasing of qubits that wait in superposition. As a result, a
+  depth-optimal order can be less *or* more faithful than the input:
+  - mult_8: MKCO's order loses 4.4% state fidelity at 10× lower noise
+    (0.542 vs 0.567), although it is 1% shorter;
+  - hhl_8: it gains 12% (0.0138 vs 0.0123).
+- **The state-aware ESP sees this; the usual ESP does not.** Over all pairs of
+  methods on the 3 simulated circuits, the state-aware ESP orders the pair as
+  the density-matrix simulation does in **97%** of cases at 10× lower noise
+  (86% at calibrated noise, where fidelities approach the noise floor). The
+  state-blind ESP manages 66% (55%).
+- **`mkco_noise` picks the output by state-aware ESP.** Candidates are MKCO's
+  orders, their ALAP variants and the input. It never scores below the input,
+  and beats Qiskit O3 under the best available score for every circuit:
+  - simulated fidelity: +0.2% (mult_8, where it keeps the input order),
+    +2% (hubbard_8), +12% (hhl_8);
+  - state-aware ESP: +2% (add_17, qae_17), +6% (qft_16), ×4.7 (grover_10);
+  - ESP (too large to simulate): ×1.9 (heisenberg_32); ×324 (hubbard_18,
+    with 3,505 fewer ECRs than the input, 3,133 fewer than Qiskit, and a 6%
+    shorter schedule).
+- **Crosstalk mode under a timing model.** Its objective counts
+  neighbouring-coupler pairs *in the same layer*. With calibrated durations
+  and ALAP timing, ECRs of different layers overlap in time, so the layer
+  proxy does not carry over. Under ESP_xt (an extra ECR error for every
+  time-overlapping neighbouring pair), mkco_xt beats plain MKCO only on
+  hubbard_18 (×24). A duration-aware crosstalk objective is future work.
+- **On hardware.** These are model results. `run_ibm_hardware.py` submits the
+  same outputs to a real backend (with the user's own IBM Quantum account) and
+  scores the counts against the ideal distribution. It is tested end to end
+  in local mode on the FakeBrisbane noise model.
+
+### 7.5 Stronger SDP certificates (E7b)
+
+Szegedy's θ⁺ (`X_ij ≤ 0` instead of `= 0` on non-adjacent pairs) is ≥ θ and
+still ≤ χ (Proposition 9). It uses the same solver-independent repair.
+
+- **Up to 150 gates** (9 still-open instances, Clarabel), θ⁺ equals θ to
+  solver accuracy, except one instance (48.03 → 48.08). These graphs are
+  near-cliques, where the non-negativity that separates θ⁺ from θ rarely
+  binds.
+- **At 200 gates** (5 instances, SCS, a few seconds to 30 minutes each)
+  θ⁺ proves MKCO optimal on one more circuit (m = 20, seed 0: 95.03 → 96).
+  It also raises the bound of another from 94 to 95, so MKCO there is within
+  one layer of optimal.
+- With all certificates, MKCO is certified optimal on **48/60** of the
+  paper's random benchmark (DSatur 42/60, JK 0/60). Its mean excess over the
+  best bound is 0.42 layers.
+
+### E8 - Non-Clifford depth with free Cliffords (T-depth, Toffoli-depth)
+
+Cells: count / depth of the counted gates (T-like rotations, or Toffolis). \* = certified optimal for that method's own gate set (after merging). PyZX: full_reduce + extract (full) or teleport_reduce (teleport), then basic_optimization.
+
+| circuit | qubits | original | MKCO-depth | **MKCO-T** | PyZX full | **PyZX full + MKCO-T** | PyZX teleport | **PyZX tel. + MKCO-T** |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| cuccaro_4_ct (t) | 10 | 56 / 32 | 56 / 36 | 56 / 32\* | 32 / 23 | 32 / 17\* | 32 / 32 | 32 / 29\* |
+| cuccaro_8_ct (t) | 18 | 112 / 64 | 112 / 72 | 112 / 64\* | 64 / 41 | 64 / 36\* | 64 / 64 | 64 / 57\* |
+| cuccaro_16_ct (t) | 34 | 224 / 128 | 224 / 144 | 224 / 128\* | 128 / 92 | 128 / 72\* | 128 / 128 | 128 / 113\* |
+| mcx_vchain_5_ct (t) | 9 | 49 / 28 | 49 / 26 | 49 / 25\* | 31 / 22 | 31 / 19\* | 31 / 26 | 31 / 23\* |
+| mcx_vchain_8_ct (t) | 15 | 91 / 52 | 91 / 47 | 91 / 46\* | 55 / 43 | 55 / 33\* | 55 / 45 | 55 / 41\* |
+| mcx_vchain_12_ct (t) | 23 | 147 / 84 | 147 / 75 | 147 / 74\* | 87 / 58 | 87 / 52\* | 87 / 72 | 87 / 65\* |
+| gf2_mult_3_ct (t) | 11 | 84 / 36 | 84 / 25 | 84 / 22\* | 50 / 18 | 50 / 8\* | 50 / 31 | 50 / 18\* |
+| gf2_mult_4_ct (t) | 15 | 154 / 54 | 154 / 37 | 154 / 33\* | 86 / 31 | 86 / 11\* | 86 / 51 | 86 / 29\* |
+| gf2_mult_5_ct (t) | 19 | 245 / 81 | 245 / 49 | 237 / 45\* | 133 / 41 | 133 / 14\* | 133 / 69 | 133 / 37\* |
+| gf2_mult_6_ct (t) | 23 | 357 / 90 | 357 / 61 | 349 / 55\* | 189 / 55 | 189 / 20\* | 189 / 94 | 189 / 47\* |
+| gf2_mult_7_ct (t) | 27 | 490 / 108 | 490 / 73 | 482 / 66\* | 256 / 74 | 256 / 23\* | 256 / 110 | 256 / 55\* |
+| tpoly_n8_t40_s0 (t) | 8 | 27 / 22 | 27 / 17 | 27 / 17\* | 25 / 9 | 25 / 5\* | 25 / 20 | 25 / 15\* |
+| tpoly_n12_t80_s0 (t) | 12 | 52 / 40 | 52 / 29 | 52 / 28\* | 48 / 20 | 48 / 9\* | 48 / 30 | 48 / 27\* |
+| tpoly_n16_t120_s0 (t) | 16 | 79 / 47 | 79 / 37 | 79 / 33\* | 73 / 26 | 73 / 13\* | 73 / 39 | 73 / 33\* |
+| rand_cliffT_n8_g400_s0 (t) | 8 | 95 / 39 | 95 / 37 | 79 / 25 | 43 / 25 | 43 / 15\* | 43 / 20 | 43 / 13\* |
+| rand_cliffT_n10_g800_s0 (t) | 10 | 175 / 48 | 175 / 51 | 145 / 35 | 91 / 49 | 91 / 29\* | 91 / 36 | 91 / 24\* |
+| rand_cliffT_n12_g1200_s0 (t) | 12 | 247 / 69 | 247 / 64 | 215 / 45 | 143 / 65 | 143 / 36\* | 143 / 47 | 143 / 33\* |
+| cuccaro_8 (toffoli) | 18 | 16 / 16 | 16 / 16 | 16 / 16\* | – | – | – | – |
+| cuccaro_16 (toffoli) | 34 | 32 / 32 | 32 / 32 | 32 / 32\* | – | – | – | – |
+| cuccaro_32 (toffoli) | 66 | 64 / 64 | 64 / 64 | 64 / 64\* | – | – | – | – |
+| mcx_vchain_8 (toffoli) | 15 | 13 / 13 | 13 / 13 | 13 / 13\* | – | – | – | – |
+| mcx_vchain_16 (toffoli) | 31 | 29 / 29 | 29 / 29 | 29 / 29\* | – | – | – | – |
+| gf2_mult_4 (toffoli) | 15 | 22 / 15 | 22 / 8 | 22 / 7\* | – | – | – | – |
+| gf2_mult_5 (toffoli) | 19 | 35 / 23 | 35 / 10 | 35 / 10 | – | – | – | – |
+| gf2_mult_6 (toffoli) | 23 | 51 / 25 | 51 / 12 | 51 / 11\* | – | – | – | – |
+| gf2_mult_7 (toffoli) | 27 | 70 / 30 | 70 / 14 | 70 / 13\* | – | – | – | – |
+| gf2_mult_9 (toffoli) | 35 | 117 / 45 | 117 / 18 | 117 / 18 | – | – | – | – |
+| gf2_mult_10 (toffoli) | 39 | 145 / 52 | 145 / 20 | 145 / 19\* | – | – | – | – |
+| gf2_mult_11 (toffoli) | 43 | 176 / 59 | 176 / 22 | 176 / 21\* | – | – | – | – |
+| gf2_mult_12 (toffoli) | 47 | 210 / 64 | 210 / 24 | 210 / 23\* | – | – | – | – |
+
+On the 17 T-depth instances MKCO-T lowers PyZX(full)'s T-depth by 10-69% (mean 41%); 17/17 results certified. All 103 outputs with <= 20 qubits pass the state-vector check.
+
+### E9 - Commutation-aware routing + layering on the 127-qubit heavy-hex device (CNOT level)
+
+Cells: CNOTs / depth after routing and optimisation. sabre_dag is the ablation (same router, plain DAG front). Every mkco_route output passes the exact unroute check and the coupling check.
+
+| circuit | qubits | logical CNOTs | Qiskit O3 | **MKCO-route** | SWAPs | sabre_dag (ablation) | Qiskit O3 + MKCO | CNOTs vs O3 | depth vs O3 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| qaoa_n16_p1_d3 | 16 | 48 | 106 / 43 | **102 / 43** | 20 | 107 / 42 | 106 / 41 | -3.8% | +0.0% |
+| qaoa_n16_p2_d3 | 16 | 96 | 204 / 100 | **190 / 96** | 32 | 222 / 94 | 204 / 96 | -6.9% | -4.0% |
+| qaoa_n32_p1_d3 | 32 | 96 | 275 / 106 | **227 / 61** | 51 | 256 / 71 | 275 / 102 | -17.5% | -42.5% |
+| qaoa_n32_p2_d3 | 32 | 192 | 575 / 193 | **449 / 96** | 92 | 563 / 141 | 574 / 185 | -21.9% | -50.3% |
+| qaoa_n64_p1_d3 | 64 | 192 | 726 / 177 | **638 / 80** | 156 | 702 / 126 | 726 / 171 | -12.1% | -54.8% |
+| qaoa_n64_p2_d3 | 64 | 384 | 1397 / 290 | **1177 / 164** | 282 | 1583 / 251 | 1395 / 275 | -15.7% | -43.4% |
+| qaoa_n32_p1_d4 | 32 | 128 | 445 / 143 | **363 / 90** | 85 | 429 / 131 | 445 / 136 | -18.4% | -37.1% |
+| trotter_reg3_n16_s3 | 16 | 144 | 345 / 164 | **335 / 151** | 70 | 370 / 167 | 345 / 140 | -2.9% | -7.9% |
+| trotter_reg3_n32_s3 | 32 | 288 | 873 / 299 | **875 / 223** | 209 | 988 / 223 | 871 / 287 | +0.2% | -25.4% |
+| qft_12 | 12 | 132 | 221 / 221 | **245 / 191** | 49 | 247 / 240 | 219 / 199 | +10.9% | -13.6% |
+| qft_20 | 20 | 380 | 638 / 401 | **795 / 573** | 185 | 879 / 493 | 638 / 384 | +24.6% | +42.9% |
+| phasepoly_n16_t60_s0 | 16 | 266 | 907 / 542 | **958 / 484** | 264 | 1022 / 524 | 895 / 489 | +5.6% | -10.7% |
+| rand_cliffT_n16_g600_s0 | 16 | 239 | 1199 / 571 | **1206 / 586** | 350 | 1244 / 609 | 1188 / 512 | +0.6% | +2.6% |
+
+Unroute and coupling checks: all pass.
+
+### E11 - Commutation-aware block formation before KAK (logical circuits, CX basis)
+
+Cells: CNOTs / depth after MKCO layering. regroup = legal reordering that keeps gates of one pair together (forward + backward pass) before block KAK.
+
+| circuit | input CNOTs | block KAK | **regroup + KAK** | Qiskit O3 | O3 + regroup + KAK |
+|---|---:|---:|---:|---:|---:|
+| phasepoly_n8_t40_s0 | 178 | 178 / 124 | **174 / 128** | 170 / 127 | 170 / 127 |
+| phasepoly_n8_t40_s1 | 158 | 152 / 120 | **138 / 116** | 136 / 103 | 136 / 103 |
+| phasepoly_n10_t60_s0 | 266 | 266 / 157 | **262 / 162** | 262 / 157 | 262 / 157 |
+| phasepoly_n10_t60_s1 | 230 | 224 / 162 | **216 / 150** | 212 / 143 | 212 / 143 |
+| phasepoly_n12_t80_s0 | 336 | 336 / 176 | **332 / 174** | 332 / 174 | 332 / 174 |
+| phasepoly_n12_t80_s1 | 314 | 314 / 175 | **308 / 173** | 308 / 173 | 308 / 173 |
+| phasepoly_n16_t120_s0 | 500 | 496 / 217 | **480 / 208** | 480 / 208 | 480 / 208 |
+| phasepoly_n16_t120_s1 | 480 | 472 / 226 | **458 / 228** | 458 / 225 | 458 / 225 |
+| phasepoly_n20_t160_s0 | 650 | 648 / 214 | **634 / 212** | 632 / 213 | 632 / 213 |
+| phasepoly_n20_t160_s1 | 642 | 642 / 277 | **632 / 273** | 632 / 273 | 632 / 273 |
+| trotter_reg3_n10_s4 | 120 | 120 / 58 | **118 / 65** | 120 / 70 | 118 / 75 |
+| qaoa_n10_p2_d3_cx | 60 | 60 / 33 | **60 / 33** | 60 / 42 | 60 / 42 |
+| trotter_reg3_n12_s4 | 144 | 140 / 63 | **138 / 69** | 140 / 74 | 138 / 77 |
+| qaoa_n12_p2_d3_cx | 72 | 70 / 35 | **70 / 35** | 70 / 41 | 70 / 41 |
+| trotter_reg3_n16_s4 | 192 | 186 / 66 | **180 / 66** | 186 / 76 | 180 / 76 |
+| qaoa_n16_p2_d3_cx | 96 | 96 / 28 | **94 / 34** | 96 / 37 | 94 / 40 |
+| rand_cliffT_n10_g400_s0 | 157 | 153 / 88 | **149 / 86** | 148 / 99 | 148 / 99 |
+| rand_cliffT_n10_g400_s1 | 182 | 179 / 91 | **178 / 91** | 179 / 100 | 178 / 103 |
+| rand_cliffT_n10_g400_s2 | 159 | 148 / 84 | **139 / 89** | 137 / 95 | 137 / 95 |
+
+regroup + KAK uses fewer CNOTs than plain block KAK on 17/19 circuits and never more; applied after Qiskit O3 it removes CNOTs on 5/19.
+
+## 8. Research directions opened by the Max-Cut view
 
 Items marked ✅ are implemented and evaluated here; 🧪 are implemented with a
 small demonstration; ⭕ are open problems we identified.
@@ -693,8 +1095,13 @@ small demonstration; ⭕ are open problems we identified.
 2. ✅ **Certified depth bounds (Thm 7), plus Lovász-θ SDP bounds (E7).**
    Optimality is proven on all 9 IBM benchmarks and on the F₂ⁿ multiplier. The
    θ number of the complement of the conflict graph (sandwich theorem)
-   certifies additional commuting instances that the clique bound left open.
-   ⭕ Szegedy's θ⁺ and dual certificates (exact rational rounding) remain open.
+   certifies 6 more random-MCZ circuits that the clique bound left open, and the
+   certificate is made solver-independent by repairing the SDP solution into an
+   exactly feasible point (Prop. 9). Szegedy's θ⁺ is implemented the same way
+   (E7b). On these near-clique conflict graphs it equals θ up to 150 gates.
+   At 200 gates it proves one more circuit optimal, giving 48/60. ⭕ Exact
+   rational certificates and bounds that also use precedence (non-commuting
+   circuits) remain open.
 3. ✅ **Soft hardware constraints as weighted edges.** Implemented for
    crosstalk; the same mechanism extends directly to:
    - frequency collisions;
@@ -718,11 +1125,15 @@ small demonstration; ⭕ are open problems we identified.
    crosstalk. The data show real tensions (add_17: depth-optimal costs +2 ECR
    layers; crosstalk mode costs +0.8–7.6% total depth). A multi-objective
    Max-k-Cut (weights per objective) is the natural tool.
-8. ⭕ **T-depth / Toffoli-depth with free Cliffords.** This needs
-   zero-duration multi-qubit gates, i.e. cross-wire transparent nodes in the
-   run structure.
-9. ⭕ **Joint routing + layering.** Treat SWAP insertion as extra gates whose
-   placement is a Max-k-Cut variable on hardware with restricted connectivity.
+8. ✅ **T-depth / Toffoli-depth with free Cliffords (E8, Prop. 10).** The
+   counted gates form a mixed graph whose arcs run through free gates; a
+   surrogate circuit with private virtual wires lets the unchanged engine solve
+   it with a certified bound. It composes with PyZX. ⭕ Coupling it with
+   phase-polynomial resynthesis (T-par) is open.
+9. ✅ **Joint routing + layering (E9, Prop. 11).** The router's front layer is
+   the trace-order front of the layering engine. Every output is proven correct
+   by `unroute`. ⭕ Placing SWAPs inside the Max-k-Cut itself (SWAPs as
+   optional gates) is open.
 10. ⭕ **Min-cut / Max-cut duality for distributed QC.** Partitioning qubits
     across QPUs is a min-cut; layering is a max-cut; a joint QUBO couples them.
 11. ⭕ **Learned warm starts.** Jain & Kumar's learned independent-set generator
@@ -734,11 +1145,19 @@ small demonstration; ⭕ are open problems we identified.
     Finding: transpiled blocks are already ECR-optimal on 7 of 9 benchmarks
     (Table 8). Where KAK does find cheaper blocks (heisenberg_32, hubbard_18),
     locally cheaper blocks can *increase* global depth, because they destroy the
-    cross-block rotation merging that MKCO's commutation runs enable. ⭕ A
-    run-aware KAK that scores blocks by their effect on the global Max-k-Cut
-    layering is an open problem.
+    cross-block rotation merging that MKCO's commutation runs enable. 🧪
+    Commutation-aware block formation (E11) lets KAK see blocks that commuting
+    gates had split. It removes CNOTs on 17/19 logical circuits, and ECRs that
+    block KAK misses on hubbard_8 and on Qiskit's hubbard_18 output. ⭕ Scoring
+    blocks by their effect on the global layering is still open.
+14. ✅ **State-dependent idle noise (E10, Prop. 12).** A depth-optimal
+    reordering can be *less* faithful on hardware, because qubits may wait in
+    superposition for longer. The state-aware ESP predicts this, matching
+    density-matrix simulation, and selects among MKCO candidates (`mkco_noise`).
+    ⭕ Real-device runs: `experiments/run_ibm_hardware.py` is ready, but needs an
+    IBM Quantum account.
 
-## 8. Limitations and threats to validity
+## 9. Limitations and threats to validity
 
 - **Benchmark difficulty.** On the 9 transpiled benchmarks, commutation-aware
   list scheduling already meets the certified bound. Every layering method that
@@ -758,12 +1177,26 @@ small demonstration; ⭕ are open problems we identified.
   seeds, optimization levels or Qiskit's approximation degree could change its
   numbers somewhat. Qiskit re-synthesises gates, so it is compared with MKCO's
   rewrite modes, not with reorder-only methods.
-- **Durations** are nominal Eagle values, not device calibrations.
+- **Durations** in Tables 1–9 are nominal Eagle values. The noise study (E10)
+  uses the ibm_brisbane calibration snapshot from qiskit-ibm-runtime
+  (ECR 660–780 ns, sx 60 ns). The ranking of methods there comes from a noise
+  *model*, not from hardware.
+- **Noise model.** Depolarizing gate errors, thermal relaxation while idling,
+  symmetric readout errors. No crosstalk, leakage, coherent errors or
+  dynamical decoupling. ESP_xt is a sensitivity analysis with an assumed extra
+  ECR error per overlapping neighbouring pair.
+- **Routing study.** CNOT level with symmetric couplers, as is usual in routing
+  papers. One Qiskit seed, our router with 16 trials. Our SABRE base is weaker
+  than Qiskit's on QFT, where it inserts more SWAPs even without commutation
+  awareness (ablation column).
+- **T-depth study.** PyZX is a T-*count* optimiser. The comparison shows that
+  MKCO-T composes with it, not that MKCO beats phase-polynomial T-depth
+  methods (T-par, TODD), which re-synthesise the circuit.
 - **Runtimes** are single-process Python on a laptop, measured while other
   experiments shared the machine, so treat them as indicative. MKCO stops early
   when the bound is met.
 
-## 9. Reproducing everything
+## 10. Reproducing everything
 
 ```bash
 python experiments/run_ibm127.py benchmarks/ibm127     # all methods, verification, QASM outputs
@@ -773,8 +1206,14 @@ python experiments/run_blocks.py && python experiments/run_pareto.py && python e
 python experiments/summarize_ibm127.py                 # tables -> results/ibm127/tables.md
 python experiments/run_structured.py                   # E1-E6 -> results/structured/*.json
 python experiments/summarize_structured.py
+python experiments/run_theta_plus.py                   # E7b theta-plus certificates
+python experiments/run_tdepth.py                       # E8 T-depth / Toffoli-depth (needs pyzx)
+python experiments/run_routing.py                      # E9 routing on heavy-hex (needs qiskit)
+python experiments/run_regroup.py                      # E11 commutation-aware block formation
+python experiments/run_noise.py                        # E10 noise study (needs qiskit-aer, qiskit-ibm-runtime)
+python experiments/run_ibm_hardware.py submit --fake   # hardware script, local dry run
 python experiments/plots.py                            # figures -> docs/figures
-python tests/test_core.py && python tests/test_gates_vs_qiskit.py
+pytest -q
 ```
 
 Every optimized circuit is saved as
@@ -813,6 +1252,32 @@ Every optimized circuit is saved as
 29. Automatic quantum function parallelization and memory management in Qrisp. [arXiv:2606.31837](https://arxiv.org/abs/2606.31837)
 30. A mixed-integer program for circuit execution time minimization with precedence constraints. [arXiv:2504.09268](https://arxiv.org/abs/2504.09268)
 31. ISAAQ: Ising machine assisted quantum compiler. [arXiv:2303.02830](https://arxiv.org/abs/2303.02830)
+
+32. L. Lovász. On the Shannon capacity of a graph. *IEEE Trans. Inf. Theory* 25(1) (1979).
+33. A. Schrijver. A comparison of the Delsarte and Lovász bounds. *IEEE Trans. Inf. Theory* 25(4) (1979).
+34. M. Szegedy. A note on the θ number of Lovász and the generalized Delsarte bound. FOCS (1994).
+35. I. Dukanovic, F. Rendl. Semidefinite programming relaxations for graph coloring and maximal clique problems. *Math. Program.* 109 (2007).
+36. M. Amy, D. Maslov, M. Mosca, M. Roetteler. A meet-in-the-middle algorithm for fast synthesis of depth-optimal quantum circuits. *IEEE TCAD* 32(6) (2013).
+37. M. Amy, D. Maslov, M. Mosca. Polynomial-time T-depth optimization of Clifford+T circuits via matroid partitioning. *IEEE TCAD* 33(10) (2014).
+38. P. Selinger. Quantum circuits of T-depth one. *Phys. Rev. A* 87, 042302 (2013).
+39. L. E. Heyfron, E. T. Campbell. An efficient quantum compiler that reduces T count. *Quantum Sci. Technol.* 4, 015004 (2018).
+40. R. Duncan, A. Kissinger, S. Perdrix, J. van de Wetering. Graph-theoretic simplification of quantum circuits with the ZX-calculus. *Quantum* 4, 279 (2020).
+41. A. Kissinger, J. van de Wetering. Reducing the number of non-Clifford gates in quantum circuits. *Phys. Rev. A* 102, 022406 (2020).
+42. S. A. Cuccaro, T. G. Draper, S. A. Kutin, D. P. Moulton. A new quantum ripple-carry addition circuit. [quant-ph/0410184](https://arxiv.org/abs/quant-ph/0410184)
+43. A. Barenco et al. Elementary gates for quantum computation. *Phys. Rev. A* 52, 3457 (1995).
+44. F. Vatan, C. Williams. Optimal quantum circuits for general two-qubit gates. *Phys. Rev. A* 69, 032315 (2004).
+45. G. Li, Y. Ding, Y. Xie. Tackling the qubit mapping problem for NISQ-era quantum devices. ASPLOS (2019).
+46. H. Zou, M. Treinish, K. Hartman, A. Ivrii, J. Lishman. LightSABRE: a lightweight and enhanced SABRE algorithm. [arXiv:2409.08368](https://arxiv.org/abs/2409.08368)
+47. A. Zulehner, A. Paler, R. Wille. An efficient methodology for mapping quantum circuits to the IBM QX architectures. *IEEE TCAD* 38(7) (2019).
+48. T. Itoko, R. Raymond, T. Imamichi, A. Matsuo. Optimization of quantum circuit mapping using gate transformation and commutation. *Integration* 70 (2020).
+49. M. Alam, A. Ash-Saki, S. Ghosh. Circuit compilation methodologies for quantum approximate optimization algorithm. MICRO (2020).
+50. L. Lao, C. G. Almudever. 2QAN: a quantum compiler for 2-local qubit Hamiltonian simulation algorithms. ISCA (2022).
+51. J. Weidenfeller et al. Scaling of the quantum approximate optimization algorithm on superconducting qubit based hardware. *Quantum* 6, 870 (2022).
+52. P. Murali, J. M. Baker, A. Javadi-Abhari, F. T. Chong, M. Martonosi. Noise-adaptive compiler mappings for noisy intermediate-scale quantum computers. ASPLOS (2019).
+53. S. S. Tannu, M. K. Qureshi. Not all qubits are created equal. ASPLOS (2019).
+54. S. Nishio, Y. Pan, T. Satoh, H. Amano, R. Van Meter. Extracting success from IBM's 20-qubit machines using error-aware compilation. *ACM JETC* 16(3) (2020).
+55. P. Das, S. Tannu, S. Dangwal, M. Qureshi. ADAPT: mitigating idling errors in qubits via adaptive dynamical decoupling. MICRO (2021).
+56. A. Kissinger, J. van de Wetering. PyZX: large scale automated diagrammatic reasoning. *EPTCS* 318 (2020).
 
 ## Appendix A. Theory: statements and proofs
 
@@ -1012,6 +1477,94 @@ not depend on the solver's accuracy; `ε` covers only floating-point error in
 `λ_min` and the sum. It can beat the clique bound: for the 5-cycle `ω = 2`,
 but `ϑ = √5` gives 3.
 
+*Szegedy's θ⁺.* Relaxing the zero constraints to `X_ij ≤ 0` gives
+`ϑ⁺(Ḡ) ≥ ϑ(Ḡ)`, and still `ϑ⁺(Ḡ) ≤ χ(G)`. *Proof:* for a proper
+`k`-colouring with classes `C_1..C_k`, the matrix
+`Y = k Σ_c 1_{C_c} 1_{C_c}ᵀ − J` is PSD by Cauchy–Schwarz
+(`xᵀYx = k Σ_c s_c² − (Σ_c s_c)²`). It equals `kI + M − J`, where `M ≥ 0` is
+supported on non-adjacent pairs of `G`. So `(λ = k, M)` is dual-feasible, and
+weak duality gives `⟨J, X⟩ ≤ k` for every feasible `X`. The repair is the same,
+except that positive entries on non-adjacent pairs are cut to zero and
+negative ones are kept. ∎
+
+### 8. Non-Clifford depth with free Cliffords
+
+Fix a set `C` of *counted* gates (T-like rotations, Toffolis, or non-Clifford
+rotations). Every other gate is *free*. The counted depth of a gate sequence
+is its ASAP depth when counted gates take one step and free gates take none
+but still synchronise their wires (the usual T-depth).
+
+**Proposition 10.** Over all commutation-equivalent reorderings, the minimum
+counted depth equals the chromatic number of the mixed graph on `C` with
+- arcs `u → v` for `u ≺ v` (trace order of Lemma 2);
+- edges for incomparable counted gates that share a qubit.
+
+*Proof.* (≥) Take any reordering and give each counted gate its ASAP level.
+Along a chain `u ≺ … ≺ v`, levels never decrease at free gates and increase
+at counted ones, so `level(u) < level(v)`. Two counted gates on one wire get
+distinct levels. So the levels form a feasible colouring.
+
+(≤) Take a feasible colouring `L`. Give every free gate `f` the gap
+`g(f) = max L(u)` over its counted ancestors (−1 if none), and sort all gates by
+`(2L(c) or 2g(f)+1, original index)`. The key never decreases along `≺`:
+- counted `u ≺` counted `v`: `L(u) < L(v)`;
+- counted `u ≺` free `f`: `g(f) ≥ L(u)`;
+- free `f ≺` counted `v`: every counted ancestor of `f` is one of `v`, so
+  `L(v) > g(f)`;
+- free `f ≺` free `f'`: the ancestor sets are nested.
+
+So the sorted order is a linear extension of `≺`, hence equivalent (Lemma 2).
+Its counted depth is at most the number of colours. ∎
+
+The mixed graph is not built explicitly. A *surrogate circuit* keeps the
+counted gates with their real qubits and per-qubit axes. Every pair `(u, v)`
+joined by a path whose interior gates are all free gets a private virtual wire,
+on which `u` and `v` have non-commuting axes. The transitive closure of these
+pairs is `≺` restricted to `C`; real wires only add pairs that are already
+ordered; virtual wires only add conflicts between ordered pairs. The
+surrogate's feasible layerings are therefore exactly the colourings of
+Proposition 10. The unchanged MKCO engine solves it, and Theorem 7 applied to
+the surrogate is a certified bound on the counted depth.
+
+### 9. Commutation-aware routing
+
+**Proposition 11.** Let `R` be a routed circuit: gates on physical qubits, plus
+SWAPs, starting from layout `π₀`. Track the layout through the SWAPs and map
+every non-SWAP gate back to logical qubits. If the resulting logical sequence
+is a linear extension of the input's trace order, `R` implements the input
+followed by the final permutation `π_f`.
+
+*Proof.* A SWAP only relabels which physical qubit holds which logical state.
+So `R` equals the logical sequence, conjugated by the layout permutations.
+Lemma 2 makes that sequence equivalent to the input. ∎
+
+The router lets a gate enter the front layer once the previous run on each of
+its wires has been executed: exactly the gates that may come next in some
+linear extension. This is why every routed output passes the exact `unroute`
+check of Proposition 11.
+
+### 10. State-dependent idle noise
+
+**Proposition 12.** Let a qubit `q` of a pure state `|ψ⟩` idle for time `t`
+under amplitude damping `γ = 1 − e^{−t/T₁}` followed by dephasing
+`p = (1 − e^{−t/T_φ})/2` (with `1/T_φ = 1/T₂ − 1/(2T₁)`). Then, to first order,
+the fidelity with `|ψ⟩` drops by
+
+`γ (P₁ − |⟨σ⁻⟩|²) + p (1 − ⟨Z⟩²)`,
+
+where `P₁`, `⟨σ⁻⟩` and `⟨Z⟩` are the reduced quantities of `q` in `|ψ⟩`.
+
+*Proof.* For the damping Kraus pair `K₀ = |0⟩⟨0| + √(1−γ)|1⟩⟨1|` and
+`K₁ = √γ |0⟩⟨1|`: `|⟨ψ|K₀|ψ⟩|² = 1 − γP₁ + O(γ²)` and
+`|⟨ψ|K₁|ψ⟩|² = γ|⟨σ⁻⟩|²`. For a Z error with probability `p`:
+`F = 1 − p + p⟨Z⟩²`. ∎
+
+A qubit idling in `|0⟩` loses nothing; one idling in an equal superposition
+dephases fully. Two reorderings with the same depth and total idle time can
+therefore differ in fidelity. A state-blind ESP cannot see this; the
+state-aware ESP of mkco.noise (Proposition 12 summed over all idle gaps of the
+ALAP schedule) can.
+
 ## Appendix B. Related-work study notes
 
 
@@ -1106,6 +1659,62 @@ DAG depth of the given order. No code or numbers are public, so
   quant-ph/9804034).
 - Recent depth-optimal diagonal synthesis on grids (arXiv:2606.17589).
 
+### Work related to the extensions (E7–E11)
+- **SDP lower bounds for colouring.**
+  - Lovász θ (IEEE Trans. Inf. Theory 1979) and the sandwich theorem.
+  - Schrijver's θ′ (IEEE Trans. Inf. Theory 1979) is smaller than θ.
+    Szegedy's θ⁺ (FOCS 1994) is larger and still at most χ, so it is the
+    stronger colouring bound.
+  - Dukanovic & Rendl (Math. Program. 2007) study these relaxations for colouring.
+  - None of these is used to *certify* circuit layerings in the compilation
+    literature we found.
+- **T-depth and non-Clifford optimisation.**
+  - Exact T-depth search: meet-in-the-middle (Amy, Maslov, Mosca & Roetteler,
+    IEEE TCAD 2013).
+  - T-par, matroid partitioning of phase polynomials (Amy, Maslov & Mosca,
+    IEEE TCAD 2014).
+  - T-depth one with ancillas (Selinger, PRA 2013).
+  - TODD T-count reduction (Heyfron & Campbell, QST 2018).
+  - Rotation merging and phase folding (Nam et al., npj QI 2018).
+  - ZX-calculus: graph-theoretic simplification (Duncan, Kissinger, Perdrix &
+    van de Wetering, *Quantum* 2020) and phase teleportation (Kissinger &
+    van de Wetering, PRA 2020), both in PyZX.
+
+  These reduce the T-*count* or re-synthesise phase polynomials. MKCO's
+  non-Clifford mode is complementary. It keeps the gates (after merging) and
+  finds the depth-optimal commutation-equivalent layering of the counted
+  gates, with a certified bound. It composes with PyZX (E8).
+- **Two-qubit block resynthesis.**
+  - Optimal two-qubit circuits / KAK (Vatan & Williams, PRA 2004).
+  - Qiskit's Collect2qBlocks + ConsolidateBlocks collect blocks on the gate
+    DAG, so a block ends at the first gate on one of its qubits, even when that
+    gate commutes past.
+  - Commutation-aware block formation (regroup_pairs) instead uses the trace
+    order, so commuting interlopers no longer split blocks (E11).
+- **Qubit routing.**
+  - SABRE (Li, Ding & Xie, ASPLOS 2019) and LightSABRE (Zou et al.,
+    arXiv:2409.08368) route on the gate DAG.
+  - A* mapping (Zulehner, Paler & Wille, IEEE TCAD 2019).
+  - Commutation-aware routing:
+    - gate transformation and commutation in mapping (Itoko et al.,
+      Integration 2020);
+    - QAOA-specific compilation (Alam, Ash-Saki & Ghosh, MICRO 2020);
+    - 2QAN for 2-local Hamiltonians (Lao & Almudever, ISCA 2022);
+    - swap strategies for commuting 2q blocks (Weidenfeller et al., *Quantum* 2022).
+  - These are specialised to particular circuit families. MKCO's router takes
+    its front layer from the same run structure as the layering engine, for
+    any circuit. An exact `unroute` check proves each routed circuit
+    equivalent up to the final qubit permutation (E9).
+- **Noise-aware compilation.**
+  - Noise-adaptive mapping (Murali et al., ASPLOS 2019).
+  - Variation-aware mapping (Tannu & Qureshi, ASPLOS 2019).
+  - Estimated success probability (Nishio et al., ACM JETC 2020).
+  - Adaptive dynamical decoupling against idling errors (Das et al., MICRO 2021).
+
+  ESP-style scores ignore the state a qubit idles in. E10 shows this can rank
+  reorderings wrongly. The state-aware ESP of mkco.noise weights each idle gap
+  by the idling qubit's ideal state, and matches density-matrix simulation.
+
 ### Positioning of MKCO
 | Capability | Lee'26 | JK'26 | MKCO |
 |---|:---:|:---:|:---:|
@@ -1118,3 +1727,7 @@ DAG depth of the given order. No code or numbers are public, so
 | Quantum-native solver path (Ising, log encoding) | – | – | ✓ (Prop 6) |
 | Memory | explicit O(n²) graph | explicit mixed graph | O(Σ arity), no edge list |
 | Independent equivalence audit | – | – | ✓ |
+| SDP (θ, θ⁺) optimality certificates, solver-independent | – | – | ✓ (Prop 9) |
+| Non-Clifford (T / Toffoli) depth with free Cliffords | partial (Toffoli, commuting) | – | ✓ (Prop 10) |
+| Commutation-aware routing + layering | – | – | ✓ (Prop 11) |
+| State-aware idle-noise scoring | – | – | ✓ (Prop 12) |

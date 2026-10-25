@@ -26,6 +26,9 @@ parts = [
     "\n" + read(os.path.join(R, "ibm127", "tables.md")),
     "## 6. Results in the settings of Lee et al. and on structured commuting circuits\n\n" +
     read(os.path.join(D, "REPORT_STRUCTURED.md")) + "\n" + read(os.path.join(R, "structured", "tables.md")),
+    "## 7. Extensions: fault-tolerant depth, routing, block formation, noise\n\n" +
+    read(os.path.join(D, "REPORT_EXTENSIONS.md")) + "\n" +
+    read(os.path.join(R, "structured", "tables_ext.md")),
     read(os.path.join(D, "REPORT_TAIL.md")),
     "## Appendix A. Theory: statements and proofs\n\n" +
     demote(read(os.path.join(D, "THEORY.md")).split("\n", 1)[1]),

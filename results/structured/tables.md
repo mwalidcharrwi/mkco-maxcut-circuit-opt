@@ -145,3 +145,27 @@ theta(complement of the conflict graph) <= chromatic number (sandwich theorem), 
 | E1 | 30 | 150 | 0 | 89 | 89.318 | 90 | 90 | 101 | 90 | yes |
 
 Theta closes the gap on 6 of 15 open instances.
+
+### E7b - Szegedy theta-plus on the instances still open (incl. the 200-gate ones)
+
+theta-plus >= theta and still <= chi (docs/THEORY.md, Proposition 9); certified by the same repair.
+
+| exp. | m | gates | seed | clique/Jackson LB | theta | theta-plus (certified) | solver | new LB | MKCO | proven optimal |
+|---|---:|---:|---:|---:|---:|---:|---|---:|---:|:---:|
+| E3 | 10 | 40 | 4 | 15 | 15.000 | 15.000 | CLARABEL | 15 | 16 | no |
+| E1 | 10 | 100 | 1 | 47 | 47.000 | 47.000 | CLARABEL | 47 | 48 | no |
+| E1 | 10 | 100 | 4 | 48 | 48.029 | 48.077 | CLARABEL | 49 | 50 | no |
+| E1 | 20 | 100 | 3 | 47 | 47.000 | 47.000 | CLARABEL | 47 | 48 | no |
+| E1 | 10 | 150 | 0 | 66 | 66.000 | 66.000 | CLARABEL | 66 | 69 | no |
+| E1 | 10 | 150 | 2 | 70 | 70.000 | 70.000 | CLARABEL | 70 | 72 | no |
+| E1 | 10 | 150 | 3 | 64 | 64.000 | 64.000 | CLARABEL | 64 | 66 | no |
+| E1 | 10 | 150 | 4 | 67 | 67.000 | 67.000 | CLARABEL | 67 | 70 | no |
+| E1 | 20 | 150 | 0 | 79 | 79.000 | 79.000 | CLARABEL | 79 | 80 | no |
+| E1 | 10 | 200 | 1 | 91 | – | 90.999 | SCS | 91 | 95 | no |
+| E1 | 10 | 200 | 4 | 87 | – | 87.000 | SCS | 87 | 92 | no |
+| E1 | 20 | 200 | 0 | 95 | – | 95.033 | SCS | 96 | 96 | yes |
+| E1 | 20 | 200 | 2 | 94 | – | 94.292 | SCS | 95 | 96 | no |
+| E1 | 30 | 200 | 3 | 102 | – | 101.997 | SCS | 102 | 103 | no |
+
+Theta-plus closes 1 of 14 remaining instances.
+

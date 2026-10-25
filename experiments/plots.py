@@ -194,7 +194,11 @@ def fig_gf2(rows):
 
 
 def fig_e1(rows, theta):
-    lbx = {(t["m"], t["n"], t["seed"]): t["lb"] for t in (theta or []) if t["experiment"] == "e1"}
+    lbx = {}
+    for t in theta or []:                       # theta and theta-plus certificates
+        if t["experiment"] == "e1":
+            k = (t["m"], t["n"], t["seed"])
+            lbx[k] = max(lbx.get(k, 0), t["lb"])
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.8), sharey=True)
     for ax, m in zip(axes, (10, 20, 30)):
         g = defaultdict(list)
@@ -295,7 +299,7 @@ def fig_routing(rows):
         ax.set_xticklabels(names, fontsize=8, color=INK2, rotation=40, ha="right")
         ax.axhline(0, color=INK2, linewidth=0.8)
         style(ax, title, "change (%) — below 0 is better")
-    axes[0].legend(frameon=False, fontsize=8.5, labelcolor=INK2, loc="lower left")
+    axes[0].legend(frameon=False, fontsize=8.5, labelcolor=INK2, loc="upper left")
     fig.suptitle("Routing on the 127-qubit heavy-hex device", x=0.01, ha="left", color=INK, fontsize=12)
     save(fig, "routing.png")
 
@@ -348,7 +352,7 @@ if __name__ == "__main__":
     if load(f"{S}/e2.json"):
         fig_gf2(load(f"{S}/e2.json"))
     if load(f"{S}/e1.json"):
-        fig_e1(load(f"{S}/e1.json"), load(f"{S}/theta.json"))
+        fig_e1(load(f"{S}/e1.json"), (load(f"{S}/theta.json") or []) + (load(f"{S}/theta_plus.json") or []))
     if load(f"{S}/e3.json"):
         fig_e3(load(f"{S}/e3.json"))
     if load(f"{S}/e4.json"):

@@ -1,4 +1,4 @@
-## 7. Research directions opened by the Max-Cut view
+## 8. Research directions opened by the Max-Cut view
 
 Items marked ✅ are implemented and evaluated here; 🧪 are implemented with a
 small demonstration; ⭕ are open problems we identified.
@@ -9,8 +9,13 @@ small demonstration; ⭕ are open problems we identified.
 2. ✅ **Certified depth bounds (Thm 7), plus Lovász-θ SDP bounds (E7).**
    Optimality is proven on all 9 IBM benchmarks and on the F₂ⁿ multiplier. The
    θ number of the complement of the conflict graph (sandwich theorem)
-   certifies additional commuting instances that the clique bound left open.
-   ⭕ Szegedy's θ⁺ and dual certificates (exact rational rounding) remain open.
+   certifies 6 more random-MCZ circuits that the clique bound left open, and the
+   certificate is made solver-independent by repairing the SDP solution into an
+   exactly feasible point (Prop. 9). Szegedy's θ⁺ is implemented the same way
+   (E7b). On these near-clique conflict graphs it equals θ up to 150 gates.
+   At 200 gates it proves one more circuit optimal, giving 48/60. ⭕ Exact
+   rational certificates and bounds that also use precedence (non-commuting
+   circuits) remain open.
 3. ✅ **Soft hardware constraints as weighted edges.** Implemented for
    crosstalk; the same mechanism extends directly to:
    - frequency collisions;
@@ -34,11 +39,15 @@ small demonstration; ⭕ are open problems we identified.
    crosstalk. The data show real tensions (add_17: depth-optimal costs +2 ECR
    layers; crosstalk mode costs +0.8–7.6% total depth). A multi-objective
    Max-k-Cut (weights per objective) is the natural tool.
-8. ⭕ **T-depth / Toffoli-depth with free Cliffords.** This needs
-   zero-duration multi-qubit gates, i.e. cross-wire transparent nodes in the
-   run structure.
-9. ⭕ **Joint routing + layering.** Treat SWAP insertion as extra gates whose
-   placement is a Max-k-Cut variable on hardware with restricted connectivity.
+8. ✅ **T-depth / Toffoli-depth with free Cliffords (E8, Prop. 10).** The
+   counted gates form a mixed graph whose arcs run through free gates; a
+   surrogate circuit with private virtual wires lets the unchanged engine solve
+   it with a certified bound. It composes with PyZX. ⭕ Coupling it with
+   phase-polynomial resynthesis (T-par) is open.
+9. ✅ **Joint routing + layering (E9, Prop. 11).** The router's front layer is
+   the trace-order front of the layering engine. Every output is proven correct
+   by `unroute`. ⭕ Placing SWAPs inside the Max-k-Cut itself (SWAPs as
+   optional gates) is open.
 10. ⭕ **Min-cut / Max-cut duality for distributed QC.** Partitioning qubits
     across QPUs is a min-cut; layering is a max-cut; a joint QUBO couples them.
 11. ⭕ **Learned warm starts.** Jain & Kumar's learned independent-set generator
@@ -50,11 +59,19 @@ small demonstration; ⭕ are open problems we identified.
     Finding: transpiled blocks are already ECR-optimal on 7 of 9 benchmarks
     (Table 8). Where KAK does find cheaper blocks (heisenberg_32, hubbard_18),
     locally cheaper blocks can *increase* global depth, because they destroy the
-    cross-block rotation merging that MKCO's commutation runs enable. ⭕ A
-    run-aware KAK that scores blocks by their effect on the global Max-k-Cut
-    layering is an open problem.
+    cross-block rotation merging that MKCO's commutation runs enable. 🧪
+    Commutation-aware block formation (E11) lets KAK see blocks that commuting
+    gates had split. It removes CNOTs on 17/19 logical circuits, and ECRs that
+    block KAK misses on hubbard_8 and on Qiskit's hubbard_18 output. ⭕ Scoring
+    blocks by their effect on the global layering is still open.
+14. ✅ **State-dependent idle noise (E10, Prop. 12).** A depth-optimal
+    reordering can be *less* faithful on hardware, because qubits may wait in
+    superposition for longer. The state-aware ESP predicts this, matching
+    density-matrix simulation, and selects among MKCO candidates (`mkco_noise`).
+    ⭕ Real-device runs: `experiments/run_ibm_hardware.py` is ready, but needs an
+    IBM Quantum account.
 
-## 8. Limitations and threats to validity
+## 9. Limitations and threats to validity
 
 - **Benchmark difficulty.** On the 9 transpiled benchmarks, commutation-aware
   list scheduling already meets the certified bound. Every layering method that
@@ -74,12 +91,26 @@ small demonstration; ⭕ are open problems we identified.
   seeds, optimization levels or Qiskit's approximation degree could change its
   numbers somewhat. Qiskit re-synthesises gates, so it is compared with MKCO's
   rewrite modes, not with reorder-only methods.
-- **Durations** are nominal Eagle values, not device calibrations.
+- **Durations** in Tables 1–9 are nominal Eagle values. The noise study (E10)
+  uses the ibm_brisbane calibration snapshot from qiskit-ibm-runtime
+  (ECR 660–780 ns, sx 60 ns). The ranking of methods there comes from a noise
+  *model*, not from hardware.
+- **Noise model.** Depolarizing gate errors, thermal relaxation while idling,
+  symmetric readout errors. No crosstalk, leakage, coherent errors or
+  dynamical decoupling. ESP_xt is a sensitivity analysis with an assumed extra
+  ECR error per overlapping neighbouring pair.
+- **Routing study.** CNOT level with symmetric couplers, as is usual in routing
+  papers. One Qiskit seed, our router with 16 trials. Our SABRE base is weaker
+  than Qiskit's on QFT, where it inserts more SWAPs even without commutation
+  awareness (ablation column).
+- **T-depth study.** PyZX is a T-*count* optimiser. The comparison shows that
+  MKCO-T composes with it, not that MKCO beats phase-polynomial T-depth
+  methods (T-par, TODD), which re-synthesise the circuit.
 - **Runtimes** are single-process Python on a laptop, measured while other
   experiments shared the machine, so treat them as indicative. MKCO stops early
   when the bound is met.
 
-## 9. Reproducing everything
+## 10. Reproducing everything
 
 ```bash
 python experiments/run_ibm127.py benchmarks/ibm127     # all methods, verification, QASM outputs
@@ -89,8 +120,14 @@ python experiments/run_blocks.py && python experiments/run_pareto.py && python e
 python experiments/summarize_ibm127.py                 # tables -> results/ibm127/tables.md
 python experiments/run_structured.py                   # E1-E6 -> results/structured/*.json
 python experiments/summarize_structured.py
+python experiments/run_theta_plus.py                   # E7b theta-plus certificates
+python experiments/run_tdepth.py                       # E8 T-depth / Toffoli-depth (needs pyzx)
+python experiments/run_routing.py                      # E9 routing on heavy-hex (needs qiskit)
+python experiments/run_regroup.py                      # E11 commutation-aware block formation
+python experiments/run_noise.py                        # E10 noise study (needs qiskit-aer, qiskit-ibm-runtime)
+python experiments/run_ibm_hardware.py submit --fake   # hardware script, local dry run
 python experiments/plots.py                            # figures -> docs/figures
-python tests/test_core.py && python tests/test_gates_vs_qiskit.py
+pytest -q
 ```
 
 Every optimized circuit is saved as
@@ -129,3 +166,29 @@ Every optimized circuit is saved as
 29. Automatic quantum function parallelization and memory management in Qrisp. [arXiv:2606.31837](https://arxiv.org/abs/2606.31837)
 30. A mixed-integer program for circuit execution time minimization with precedence constraints. [arXiv:2504.09268](https://arxiv.org/abs/2504.09268)
 31. ISAAQ: Ising machine assisted quantum compiler. [arXiv:2303.02830](https://arxiv.org/abs/2303.02830)
+
+32. L. Lovász. On the Shannon capacity of a graph. *IEEE Trans. Inf. Theory* 25(1) (1979).
+33. A. Schrijver. A comparison of the Delsarte and Lovász bounds. *IEEE Trans. Inf. Theory* 25(4) (1979).
+34. M. Szegedy. A note on the θ number of Lovász and the generalized Delsarte bound. FOCS (1994).
+35. I. Dukanovic, F. Rendl. Semidefinite programming relaxations for graph coloring and maximal clique problems. *Math. Program.* 109 (2007).
+36. M. Amy, D. Maslov, M. Mosca, M. Roetteler. A meet-in-the-middle algorithm for fast synthesis of depth-optimal quantum circuits. *IEEE TCAD* 32(6) (2013).
+37. M. Amy, D. Maslov, M. Mosca. Polynomial-time T-depth optimization of Clifford+T circuits via matroid partitioning. *IEEE TCAD* 33(10) (2014).
+38. P. Selinger. Quantum circuits of T-depth one. *Phys. Rev. A* 87, 042302 (2013).
+39. L. E. Heyfron, E. T. Campbell. An efficient quantum compiler that reduces T count. *Quantum Sci. Technol.* 4, 015004 (2018).
+40. R. Duncan, A. Kissinger, S. Perdrix, J. van de Wetering. Graph-theoretic simplification of quantum circuits with the ZX-calculus. *Quantum* 4, 279 (2020).
+41. A. Kissinger, J. van de Wetering. Reducing the number of non-Clifford gates in quantum circuits. *Phys. Rev. A* 102, 022406 (2020).
+42. S. A. Cuccaro, T. G. Draper, S. A. Kutin, D. P. Moulton. A new quantum ripple-carry addition circuit. [quant-ph/0410184](https://arxiv.org/abs/quant-ph/0410184)
+43. A. Barenco et al. Elementary gates for quantum computation. *Phys. Rev. A* 52, 3457 (1995).
+44. F. Vatan, C. Williams. Optimal quantum circuits for general two-qubit gates. *Phys. Rev. A* 69, 032315 (2004).
+45. G. Li, Y. Ding, Y. Xie. Tackling the qubit mapping problem for NISQ-era quantum devices. ASPLOS (2019).
+46. H. Zou, M. Treinish, K. Hartman, A. Ivrii, J. Lishman. LightSABRE: a lightweight and enhanced SABRE algorithm. [arXiv:2409.08368](https://arxiv.org/abs/2409.08368)
+47. A. Zulehner, A. Paler, R. Wille. An efficient methodology for mapping quantum circuits to the IBM QX architectures. *IEEE TCAD* 38(7) (2019).
+48. T. Itoko, R. Raymond, T. Imamichi, A. Matsuo. Optimization of quantum circuit mapping using gate transformation and commutation. *Integration* 70 (2020).
+49. M. Alam, A. Ash-Saki, S. Ghosh. Circuit compilation methodologies for quantum approximate optimization algorithm. MICRO (2020).
+50. L. Lao, C. G. Almudever. 2QAN: a quantum compiler for 2-local qubit Hamiltonian simulation algorithms. ISCA (2022).
+51. J. Weidenfeller et al. Scaling of the quantum approximate optimization algorithm on superconducting qubit based hardware. *Quantum* 6, 870 (2022).
+52. P. Murali, J. M. Baker, A. Javadi-Abhari, F. T. Chong, M. Martonosi. Noise-adaptive compiler mappings for noisy intermediate-scale quantum computers. ASPLOS (2019).
+53. S. S. Tannu, M. K. Qureshi. Not all qubits are created equal. ASPLOS (2019).
+54. S. Nishio, Y. Pan, T. Satoh, H. Amano, R. Van Meter. Extracting success from IBM's 20-qubit machines using error-aware compilation. *ACM JETC* 16(3) (2020).
+55. P. Das, S. Tannu, S. Dangwal, M. Qureshi. ADAPT: mitigating idling errors in qubits via adaptive dynamical decoupling. MICRO (2021).
+56. A. Kissinger, J. van de Wetering. PyZX: large scale automated diagrammatic reasoning. *EPTCS* 318 (2020).

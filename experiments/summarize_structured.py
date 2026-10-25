@@ -108,12 +108,13 @@ def main():
     if tp:
         A("\n### E7b - Szegedy theta-plus on the instances still open (incl. the 200-gate ones)\n")
         A("theta-plus >= theta and still <= chi (docs/THEORY.md, Proposition 9); certified by the same repair.\n")
-        A("| exp. | m | gates | seed | clique/Jackson LB | theta | theta-plus | new LB | MKCO | proven optimal |")
-        A("|---|---:|---:|---:|---:|---:|---:|---:|---:|:---:|")
+        A("| exp. | m | gates | seed | clique/Jackson LB | theta | theta-plus (certified) | solver | new LB | MKCO | proven optimal |")
+        A("|---|---:|---:|---:|---:|---:|---:|---|---:|---:|:---:|")
         for r in tp:
             th_ = "–" if r["theta"] is None else f"{r['theta']:.3f}"
             A(f"| {r['experiment'].upper()} | {r['m']} | {r['n']} | {r['seed']} | {r['clique_jackson_lb']} | "
-              f"{th_} | {r['theta_plus']:.3f} | {r['lb']} | {r['mkco']} | {'yes' if r['mkco_certified'] else 'no'} |")
+              f"{th_} | {r['theta_plus']:.3f} | {r.get('solver', 'CLARABEL')} | {r['lb']} | {r['mkco']} | "
+              f"{'yes' if r['mkco_certified'] else 'no'} |")
         A(f"\nTheta-plus closes {sum(r['mkco_certified'] for r in tp)} of {len(tp)} remaining instances.")
     td = load("tdepth")
     if td:

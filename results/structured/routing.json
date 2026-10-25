@@ -1,0 +1,535 @@
+[
+ {
+  "circuit": "qaoa_n16_p1_d3",
+  "qubits": 16,
+  "cx_logical": 48,
+  "qiskit_o3": {
+   "cx": 106,
+   "depth": 43,
+   "depth_2q": 25,
+   "time_s": 0.1
+  },
+  "mkco_route": {
+   "cx": 102,
+   "depth": 43,
+   "depth_2q": 25,
+   "time_s": 3.9,
+   "swaps": 20,
+   "front_mode": "nearest",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "sabre_dag": {
+   "cx": 107,
+   "depth": 42,
+   "depth_2q": 27,
+   "time_s": 12.9,
+   "swaps": 21,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "qiskit_o3+mkco": {
+   "cx": 106,
+   "depth": 41,
+   "depth_2q": 26,
+   "time_s": 0.7,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  }
+ },
+ {
+  "circuit": "qaoa_n16_p2_d3",
+  "qubits": 16,
+  "cx_logical": 96,
+  "qiskit_o3": {
+   "cx": 204,
+   "depth": 100,
+   "depth_2q": 58,
+   "time_s": 0.1
+  },
+  "mkco_route": {
+   "cx": 190,
+   "depth": 96,
+   "depth_2q": 62,
+   "time_s": 6.9,
+   "swaps": 32,
+   "front_mode": "mean",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "sabre_dag": {
+   "cx": 222,
+   "depth": 94,
+   "depth_2q": 60,
+   "time_s": 9.1,
+   "swaps": 48,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "qiskit_o3+mkco": {
+   "cx": 204,
+   "depth": 96,
+   "depth_2q": 57,
+   "time_s": 1.5,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  }
+ },
+ {
+  "circuit": "qaoa_n32_p1_d3",
+  "qubits": 32,
+  "cx_logical": 96,
+  "qiskit_o3": {
+   "cx": 275,
+   "depth": 106,
+   "depth_2q": 63,
+   "time_s": 0.1
+  },
+  "mkco_route": {
+   "cx": 227,
+   "depth": 61,
+   "depth_2q": 33,
+   "time_s": 13.2,
+   "swaps": 51,
+   "front_mode": "mean",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "sabre_dag": {
+   "cx": 256,
+   "depth": 71,
+   "depth_2q": 48,
+   "time_s": 9.0,
+   "swaps": 56,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "qiskit_o3+mkco": {
+   "cx": 275,
+   "depth": 102,
+   "depth_2q": 63,
+   "time_s": 0.5,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  }
+ },
+ {
+  "circuit": "qaoa_n32_p2_d3",
+  "qubits": 32,
+  "cx_logical": 192,
+  "qiskit_o3": {
+   "cx": 575,
+   "depth": 193,
+   "depth_2q": 122,
+   "time_s": 0.3
+  },
+  "mkco_route": {
+   "cx": 449,
+   "depth": 96,
+   "depth_2q": 64,
+   "time_s": 23.1,
+   "swaps": 92,
+   "front_mode": "nearest",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "sabre_dag": {
+   "cx": 563,
+   "depth": 141,
+   "depth_2q": 97,
+   "time_s": 20.3,
+   "swaps": 137,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "qiskit_o3+mkco": {
+   "cx": 574,
+   "depth": 185,
+   "depth_2q": 123,
+   "time_s": 1.2,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  }
+ },
+ {
+  "circuit": "qaoa_n64_p1_d3",
+  "qubits": 64,
+  "cx_logical": 192,
+  "qiskit_o3": {
+   "cx": 726,
+   "depth": 177,
+   "depth_2q": 131,
+   "time_s": 0.2
+  },
+  "mkco_route": {
+   "cx": 638,
+   "depth": 80,
+   "depth_2q": 58,
+   "time_s": 90.8,
+   "swaps": 156,
+   "front_mode": "mean",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "sabre_dag": {
+   "cx": 702,
+   "depth": 126,
+   "depth_2q": 91,
+   "time_s": 56.0,
+   "swaps": 182,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "qiskit_o3+mkco": {
+   "cx": 726,
+   "depth": 171,
+   "depth_2q": 133,
+   "time_s": 0.9,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  }
+ },
+ {
+  "circuit": "qaoa_n64_p2_d3",
+  "qubits": 64,
+  "cx_logical": 384,
+  "qiskit_o3": {
+   "cx": 1397,
+   "depth": 290,
+   "depth_2q": 193,
+   "time_s": 0.5
+  },
+  "mkco_route": {
+   "cx": 1177,
+   "depth": 164,
+   "depth_2q": 118,
+   "time_s": 214.1,
+   "swaps": 282,
+   "front_mode": "mean",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "sabre_dag": {
+   "cx": 1583,
+   "depth": 251,
+   "depth_2q": 196,
+   "time_s": 101.5,
+   "swaps": 422,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "qiskit_o3+mkco": {
+   "cx": 1395,
+   "depth": 275,
+   "depth_2q": 194,
+   "time_s": 4.6,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  }
+ },
+ {
+  "circuit": "qaoa_n32_p1_d4",
+  "qubits": 32,
+  "cx_logical": 128,
+  "qiskit_o3": {
+   "cx": 445,
+   "depth": 143,
+   "depth_2q": 108,
+   "time_s": 0.5
+  },
+  "mkco_route": {
+   "cx": 363,
+   "depth": 90,
+   "depth_2q": 67,
+   "time_s": 32.2,
+   "swaps": 85,
+   "front_mode": "mean",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "sabre_dag": {
+   "cx": 429,
+   "depth": 131,
+   "depth_2q": 97,
+   "time_s": 19.1,
+   "swaps": 107,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "qiskit_o3+mkco": {
+   "cx": 445,
+   "depth": 136,
+   "depth_2q": 108,
+   "time_s": 1.2,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  }
+ },
+ {
+  "circuit": "trotter_reg3_n16_s3",
+  "qubits": 16,
+  "cx_logical": 144,
+  "qiskit_o3": {
+   "cx": 345,
+   "depth": 164,
+   "depth_2q": 104,
+   "time_s": 0.1
+  },
+  "mkco_route": {
+   "cx": 335,
+   "depth": 151,
+   "depth_2q": 103,
+   "time_s": 15.7,
+   "swaps": 70,
+   "front_mode": "nearest",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "sabre_dag": {
+   "cx": 370,
+   "depth": 167,
+   "depth_2q": 115,
+   "time_s": 21.2,
+   "swaps": 81,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "qiskit_o3+mkco": {
+   "cx": 345,
+   "depth": 140,
+   "depth_2q": 98,
+   "time_s": 2.3,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  }
+ },
+ {
+  "circuit": "trotter_reg3_n32_s3",
+  "qubits": 32,
+  "cx_logical": 288,
+  "qiskit_o3": {
+   "cx": 873,
+   "depth": 299,
+   "depth_2q": 192,
+   "time_s": 0.2
+  },
+  "mkco_route": {
+   "cx": 875,
+   "depth": 223,
+   "depth_2q": 152,
+   "time_s": 34.2,
+   "swaps": 209,
+   "front_mode": "nearest",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "sabre_dag": {
+   "cx": 988,
+   "depth": 223,
+   "depth_2q": 172,
+   "time_s": 42.7,
+   "swaps": 248,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "qiskit_o3+mkco": {
+   "cx": 871,
+   "depth": 287,
+   "depth_2q": 192,
+   "time_s": 2.1,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  }
+ },
+ {
+  "circuit": "qft_12",
+  "qubits": 12,
+  "cx_logical": 132,
+  "qiskit_o3": {
+   "cx": 221,
+   "depth": 221,
+   "depth_2q": 120,
+   "time_s": 0.1
+  },
+  "mkco_route": {
+   "cx": 245,
+   "depth": 191,
+   "depth_2q": 121,
+   "time_s": 11.7,
+   "swaps": 49,
+   "front_mode": "mean",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "sabre_dag": {
+   "cx": 247,
+   "depth": 240,
+   "depth_2q": 129,
+   "time_s": 8.7,
+   "swaps": 57,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "qiskit_o3+mkco": {
+   "cx": 219,
+   "depth": 199,
+   "depth_2q": 114,
+   "time_s": 0.8,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  }
+ },
+ {
+  "circuit": "qft_20",
+  "qubits": 20,
+  "cx_logical": 380,
+  "qiskit_o3": {
+   "cx": 638,
+   "depth": 401,
+   "depth_2q": 196,
+   "time_s": 0.3
+  },
+  "mkco_route": {
+   "cx": 795,
+   "depth": 573,
+   "depth_2q": 349,
+   "time_s": 35.7,
+   "swaps": 185,
+   "front_mode": "nearest",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  },
+  "sabre_dag": {
+   "cx": 879,
+   "depth": 493,
+   "depth_2q": 315,
+   "time_s": 121.7,
+   "swaps": 233,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "qiskit_o3+mkco": {
+   "cx": 638,
+   "depth": 384,
+   "depth_2q": 192,
+   "time_s": 2.2,
+   "coupling_ok": true,
+   "post_statevector_ok": null
+  }
+ },
+ {
+  "circuit": "phasepoly_n16_t60_s0",
+  "qubits": 16,
+  "cx_logical": 266,
+  "qiskit_o3": {
+   "cx": 907,
+   "depth": 542,
+   "depth_2q": 359,
+   "time_s": 0.2
+  },
+  "mkco_route": {
+   "cx": 958,
+   "depth": 484,
+   "depth_2q": 388,
+   "time_s": 44.0,
+   "swaps": 264,
+   "front_mode": "nearest",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "sabre_dag": {
+   "cx": 1022,
+   "depth": 524,
+   "depth_2q": 430,
+   "time_s": 43.1,
+   "swaps": 288,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "qiskit_o3+mkco": {
+   "cx": 895,
+   "depth": 489,
+   "depth_2q": 351,
+   "time_s": 4.1,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  }
+ },
+ {
+  "circuit": "rand_cliffT_n16_g600_s0",
+  "qubits": 16,
+  "cx_logical": 239,
+  "qiskit_o3": {
+   "cx": 1199,
+   "depth": 571,
+   "depth_2q": 451,
+   "time_s": 0.2
+  },
+  "mkco_route": {
+   "cx": 1206,
+   "depth": 586,
+   "depth_2q": 467,
+   "time_s": 28.3,
+   "swaps": 350,
+   "front_mode": "nearest",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "sabre_dag": {
+   "cx": 1244,
+   "depth": 609,
+   "depth_2q": 489,
+   "time_s": 38.5,
+   "swaps": 367,
+   "front_mode": "dag",
+   "unroute_ok": true,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  },
+  "qiskit_o3+mkco": {
+   "cx": 1188,
+   "depth": 512,
+   "depth_2q": 432,
+   "time_s": 5.2,
+   "coupling_ok": true,
+   "post_statevector_ok": true
+  }
+ }
+]

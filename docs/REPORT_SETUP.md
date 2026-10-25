@@ -66,5 +66,31 @@ Outputs with at most 20 active qubits are additionally checked by state-vector
 simulation on random inputs (global phase compared). A negative control — one
 illegal swap — fails both the audit and the simulation.
 
+**Extensions (Section 7).**
+- *T-depth / Toffoli-depth (E8).* Generated circuits (`mkco.generators`):
+  - Cuccaro ripple-carry adders;
+  - Barenco V-chain multi-controlled X;
+  - GF(2ⁿ) multipliers (trinomial reduction, ancilla register for the high
+    terms);
+  - random T phase polynomials;
+  - random Clifford+T.
+
+  Toffolis are decomposed with the 7-T circuit of Nielsen & Chuang. PyZX
+  0.10.7 runs `full_reduce` + `extract_circuit` + `basic_optimization`
+  (respectively `teleport_reduce`).
+- *Routing (E9).* IBM Eagle heavy-hex coupling graph (127 qubits, 144
+  couplers; `benchmarks/devices/ibm_eagle_127.json`, from FakeSherbrooke;
+  the same graph as ibm_brisbane), symmetric CNOTs.
+  - Qiskit: `transpile(..., coupling_map, basis_gates=[cx, rz, sx, x],
+    optimization_level=3, seed_transpiler=0)`.
+  - MKCO-route: 16 trials (8 per front scoring), 3 bidirectional layout
+    iterations each.
+- *Block formation (E11).* Logical circuits in the CX basis, all-to-all. Qiskit
+  O3 with `basis_gates=[cx, rz, sx, x]`.
+- *Noise (E10).* Calibration snapshot of ibm_brisbane (FakeBrisbane,
+  qiskit-ibm-runtime 0.51): median ECR error 0.77%, ECR 660–780 ns, sx 60 ns,
+  median T1 232 µs, T2 150 µs, median readout error 2%. Density matrices
+  are computed with qiskit-aer 0.18.
+
 **Machine.** Laptop, Intel Core i7-1068NG7 (4 cores / 8 threads, 2.3 GHz), 16 GB, Python 3.13, single
 process.

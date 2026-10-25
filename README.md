@@ -37,13 +37,34 @@ Full tables in [docs/REPORT.md](docs/REPORT.md) and
       Qiskit on 9/9 (see the hardware-time table in the report).
   - **Depth budgets:** with 20% two-qubit-depth slack, the weighted Max-k-Cut
     removes 39–65% of crosstalk-prone pairs (Pareto fronts in the report).
+- **Extensions** (report Section 7):
+  - **T-depth with free Cliffords:** on top of PyZX, 10–69% lower T-depth
+    (mean 41%) on 17 Clifford+T circuits, all certified optimal; Toffoli-depth
+    of GF(2ⁿ) multipliers −53% to −64%.
+  - **Commutation-aware routing on IBM's 127-qubit heavy-hex:** on QAOA,
+    3.8–21.9% fewer CNOTs than Qiskit O3 and up to 55% less depth. Each output
+    is proven correct by an exact `unroute` check. QFT remains Qiskit's case.
+  - **Noise study with ibm_brisbane calibration data:** a depth-optimal
+    reordering can lose fidelity, because qubits may idle in superposition. A
+    state-aware success estimate predicts this (97% pairwise agreement with
+    density-matrix simulation vs 66% for the usual ESP) and picks the output.
+    The picked output beats Qiskit O3 on all 9 benchmarks under the model.
+  - **Commutation-aware block formation** gives KAK larger blocks: fewer CNOTs
+    on 17 of 19 logical circuits.
 - **The paper's own settings:**
   - F₂ⁿ multiplier: optimal at all 34 sizes (DSatur 24/34).
-  - Random multi-controlled-Z circuits: 41/60 certified optimal (DSatur 36/60).
+  - Random multi-controlled-Z circuits: 48/60 certified optimal (DSatur 42/60), using the
+    clique/Jackson and Lovász-θ / θ⁺ bounds.
   - Random CCZ circuits: 49/50 (DSatur 20/50).
   - QAOA-style RZZ layers: 14/18 reach the degree bound (DSatur 0/18).
-  - Lovász-θ SDP bounds certify 6 more random-MCZ circuits the clique bound
-    left open (47/60 certified optimal in total).
+  - Lovász-θ / θ⁺ SDP certificates are solver-independent (repaired feasible points).
+
+## Real hardware
+`experiments/run_ibm_hardware.py` submits chosen outputs to an IBM Quantum
+backend and scores the counts by Hellinger fidelity against the ideal output.
+It needs your own account, saved beforehand with
+`QiskitRuntimeService.save_account(...)`; the script never handles tokens.
+`submit --fake` runs the same pipeline locally on the FakeBrisbane noise model.
 
 ## Layout
 ```
@@ -58,20 +79,26 @@ mkco/
   hmc.py          hierarchical Max-Cut: Ising splits, SA / Burer–Monteiro-GW / QAOA / exact
   crosstalk.py    crosstalk-aware layering (soft edges) with anchor barriers
   resynth.py      rewrite mode: single-qubit ZSX resynthesis + rotation merging
-  blocks.py       two-qubit block (KAK) resynthesis in the native ECR direction; ECR re-orientation
+  blocks.py       two-qubit block (KAK) resynthesis (native direction), commutation-aware
+                  block formation (regroup), ECR re-orientation
   merge.py        run-based same-axis rotation merging
   fanout.py       ancilla fan-out depth/qubit trade-offs (capacitated Max-k-Cut)
   bounds.py       certified lower bounds (run-serialised Jackson)
-  sdp_bounds.py   Lovász-theta SDP lower bound for commuting circuits (needs cvxpy)
+  sdp_bounds.py   Lovász-theta / Szegedy theta-plus SDP bounds, solver-independent (needs cvxpy)
+  nonclifford.py  T-depth / Toffoli-depth with free Cliffords (reduced mixed graph, surrogate circuit)
+  route.py        commutation-aware SABRE-style routing + exact `unroute` check
+  noise.py        calibration-based ESP, state-aware ESP, density-matrix noisy simulation
   coloring.py     Lee et al. baseline (DSatur / backtracking / block-wise extension)
   jk.py           Jain & Kumar baseline (mixed-graph independent sets + beam search)
   verify.py       independent commutation audit, state-vector check
   exact.py        optional CP-SAT reference solver (needs ortools)
 benchmarks/ibm127/  the 9 IBM-127-transpiled input circuits
+benchmarks/devices/  IBM Eagle 127-qubit coupling map (heavy-hex)
 experiments/      run_ibm127.py, run_qiskit.py, add_merge.py, add_rewrite.py, add_full.py,
                   add_full_duration.py, run_blocks.py, run_pareto.py, run_theta.py,
-                  run_structured.py, summarize_*.py, plots.py
-tests/            test_core.py, test_gates_vs_qiskit.py
+                  run_theta_plus.py, run_structured.py, run_tdepth.py, run_routing.py,
+                  run_regroup.py, run_noise.py, run_ibm_hardware.py, summarize_*.py, plots.py
+tests/            test_core.py, test_gates_vs_qiskit.py, test_extensions.py
 docs/             REPORT.md (full report), THEORY.md, RELATED_WORK.md, figures/
 results/          JSON, tables and logs (optimized QASM outputs are regenerated, not committed)
 ```
@@ -80,6 +107,7 @@ results/          JSON, tables and logs (optimized QASM outputs are regenerated,
 ```bash
 pip install -e .              # core: numpy, scipy, networkx
 pip install -e ".[dev]"       # + qiskit, ortools, cvxpy, matplotlib, pytest
+pip install -e ".[noise,zx]"  # + qiskit-aer, qiskit-ibm-runtime (noise study, IBM runs), pyzx
 ```
 
 ```bash
@@ -88,6 +116,9 @@ python -m mkco opt in.qasm out.qasm --metric 2q                 # two-qubit dept
 python -m mkco opt in.qasm out.qasm --rewrite                   # 1q resynthesis + reorder
 python -m mkco opt in.qasm out.qasm --full                      # + 2q KAK blocks (needs qiskit)
 python -m mkco opt in.qasm out.qasm --xt                        # crosstalk-aware layering
+python -m mkco opt in.qasm out.qasm --alap                      # same depth, gates as late as possible
+python -m mkco opt in.qasm out.qasm --nc t                      # T-depth with free Cliffords (or toffoli)
+python -m mkco route logical.qasm routed.qasm                   # route onto IBM Eagle heavy-hex
 ```
 
 ```python
@@ -105,6 +136,12 @@ python experiments/add_full.py && python experiments/add_full_duration.py
 python experiments/run_blocks.py && python experiments/run_pareto.py
 python experiments/summarize_ibm127.py
 python experiments/run_structured.py && python experiments/run_theta.py && python experiments/summarize_structured.py
+python experiments/run_theta_plus.py && python experiments/run_tdepth.py
+python experiments/run_routing.py && python experiments/run_regroup.py && python experiments/run_noise.py
+python experiments/summarize_ibm127.py && python experiments/summarize_structured.py
 python experiments/plots.py && python docs/build_report.py
 pytest -q
 ```
+
+## License
+MIT (see [LICENSE](LICENSE)).

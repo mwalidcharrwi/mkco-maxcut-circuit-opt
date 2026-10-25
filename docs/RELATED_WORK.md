@@ -91,6 +91,62 @@ DAG depth of the given order. No code or numbers are public, so
   quant-ph/9804034).
 - Recent depth-optimal diagonal synthesis on grids (arXiv:2606.17589).
 
+## Work related to the extensions (E7–E11)
+- **SDP lower bounds for colouring.**
+  - Lovász θ (IEEE Trans. Inf. Theory 1979) and the sandwich theorem.
+  - Schrijver's θ′ (IEEE Trans. Inf. Theory 1979) is smaller than θ.
+    Szegedy's θ⁺ (FOCS 1994) is larger and still at most χ, so it is the
+    stronger colouring bound.
+  - Dukanovic & Rendl (Math. Program. 2007) study these relaxations for colouring.
+  - None of these is used to *certify* circuit layerings in the compilation
+    literature we found.
+- **T-depth and non-Clifford optimisation.**
+  - Exact T-depth search: meet-in-the-middle (Amy, Maslov, Mosca & Roetteler,
+    IEEE TCAD 2013).
+  - T-par, matroid partitioning of phase polynomials (Amy, Maslov & Mosca,
+    IEEE TCAD 2014).
+  - T-depth one with ancillas (Selinger, PRA 2013).
+  - TODD T-count reduction (Heyfron & Campbell, QST 2018).
+  - Rotation merging and phase folding (Nam et al., npj QI 2018).
+  - ZX-calculus: graph-theoretic simplification (Duncan, Kissinger, Perdrix &
+    van de Wetering, *Quantum* 2020) and phase teleportation (Kissinger &
+    van de Wetering, PRA 2020), both in PyZX.
+
+  These reduce the T-*count* or re-synthesise phase polynomials. MKCO's
+  non-Clifford mode is complementary. It keeps the gates (after merging) and
+  finds the depth-optimal commutation-equivalent layering of the counted
+  gates, with a certified bound. It composes with PyZX (E8).
+- **Two-qubit block resynthesis.**
+  - Optimal two-qubit circuits / KAK (Vatan & Williams, PRA 2004).
+  - Qiskit's Collect2qBlocks + ConsolidateBlocks collect blocks on the gate
+    DAG, so a block ends at the first gate on one of its qubits, even when that
+    gate commutes past.
+  - Commutation-aware block formation (regroup_pairs) instead uses the trace
+    order, so commuting interlopers no longer split blocks (E11).
+- **Qubit routing.**
+  - SABRE (Li, Ding & Xie, ASPLOS 2019) and LightSABRE (Zou et al.,
+    arXiv:2409.08368) route on the gate DAG.
+  - A* mapping (Zulehner, Paler & Wille, IEEE TCAD 2019).
+  - Commutation-aware routing:
+    - gate transformation and commutation in mapping (Itoko et al.,
+      Integration 2020);
+    - QAOA-specific compilation (Alam, Ash-Saki & Ghosh, MICRO 2020);
+    - 2QAN for 2-local Hamiltonians (Lao & Almudever, ISCA 2022);
+    - swap strategies for commuting 2q blocks (Weidenfeller et al., *Quantum* 2022).
+  - These are specialised to particular circuit families. MKCO's router takes
+    its front layer from the same run structure as the layering engine, for
+    any circuit. An exact `unroute` check proves each routed circuit
+    equivalent up to the final qubit permutation (E9).
+- **Noise-aware compilation.**
+  - Noise-adaptive mapping (Murali et al., ASPLOS 2019).
+  - Variation-aware mapping (Tannu & Qureshi, ASPLOS 2019).
+  - Estimated success probability (Nishio et al., ACM JETC 2020).
+  - Adaptive dynamical decoupling against idling errors (Das et al., MICRO 2021).
+
+  ESP-style scores ignore the state a qubit idles in. E10 shows this can rank
+  reorderings wrongly. The state-aware ESP of mkco.noise weights each idle gap
+  by the idling qubit's ideal state, and matches density-matrix simulation.
+
 ## Positioning of MKCO
 | Capability | Lee'26 | JK'26 | MKCO |
 |---|:---:|:---:|:---:|
@@ -103,3 +159,7 @@ DAG depth of the given order. No code or numbers are public, so
 | Quantum-native solver path (Ising, log encoding) | – | – | ✓ (Prop 6) |
 | Memory | explicit O(n²) graph | explicit mixed graph | O(Σ arity), no edge list |
 | Independent equivalence audit | – | – | ✓ |
+| SDP (θ, θ⁺) optimality certificates, solver-independent | – | – | ✓ (Prop 9) |
+| Non-Clifford (T / Toffoli) depth with free Cliffords | partial (Toffoli, commuting) | – | ✓ (Prop 10) |
+| Commutation-aware routing + layering | – | – | ✓ (Prop 11) |
+| State-aware idle-noise scoring | – | – | ✓ (Prop 12) |

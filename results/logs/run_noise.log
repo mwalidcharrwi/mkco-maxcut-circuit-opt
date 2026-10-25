@@ -1,0 +1,108 @@
+mult_8 original {'esp': 0.00283, 'duration_us': 203.58, 'sesp_scale1.0': 0.00222, 'sesp_scale0.1': 0.54332} {'sim_scale1.0': 0.01552, 'sim_scale0.1': 0.56694}
+mult_8 lee2026 {'esp': 0.00283, 'duration_us': 203.58, 'sesp_scale1.0': 0.00222, 'sesp_scale0.1': 0.54332} {'sim_scale1.0': 0.01552, 'sim_scale0.1': 0.56694}
+mult_8 jk2026 {'esp': 0.0029, 'duration_us': 201.54, 'sesp_scale1.0': 0.00141, 'sesp_scale0.1': 0.5189} {'sim_scale1.0': 0.01262, 'sim_scale0.1': 0.54227}
+mult_8 mkco {'esp': 0.0029, 'duration_us': 201.54, 'sesp_scale1.0': 0.00141, 'sesp_scale0.1': 0.51885} {'sim_scale1.0': 0.01262, 'sim_scale0.1': 0.54222}
+mult_8 mkco_xt {'esp': 0.0028, 'duration_us': 204.42, 'sesp_scale1.0': 0.00136, 'sesp_scale0.1': 0.5176} {'sim_scale1.0': 0.01139, 'sim_scale0.1': 0.54}
+mult_8 mkco_rewrite {'esp': 0.0029, 'duration_us': 201.54, 'sesp_scale1.0': 0.00141, 'sesp_scale0.1': 0.51886} {'sim_scale1.0': 0.01262, 'sim_scale0.1': 0.54222}
+mult_8 mkco_full {'esp': 0.0029, 'duration_us': 201.54, 'sesp_scale1.0': 0.00141, 'sesp_scale0.1': 0.51886} {'sim_scale1.0': 0.01262, 'sim_scale0.1': 0.54222}
+mult_8 mkco_full_dur {'esp': 0.0029, 'duration_us': 201.54, 'sesp_scale1.0': 0.00141, 'sesp_scale0.1': 0.51886} {'sim_scale1.0': 0.01262, 'sim_scale0.1': 0.54222}
+mult_8 qiskit_o3 {'esp': 0.00279, 'duration_us': 204.24, 'sesp_scale1.0': 0.00218, 'sesp_scale0.1': 0.5423} {'sim_scale1.0': 0.01541, 'sim_scale0.1': 0.56585}
+mult_8 qiskit_o3+mkco_rewrite {'esp': 0.00286, 'duration_us': 202.14, 'sesp_scale1.0': 0.00139, 'sesp_scale0.1': 0.51792} {'sim_scale1.0': 0.01253, 'sim_scale0.1': 0.54122}
+mult_8 mkco_alap {'esp': 0.0029, 'duration_us': 201.48, 'sesp_scale1.0': 0.0015, 'sesp_scale0.1': 0.52198} {'sim_scale1.0': 0.01279, 'sim_scale0.1': 0.54549}
+mult_8 mkco_full_alap {'esp': 0.0029, 'duration_us': 201.54, 'sesp_scale1.0': 0.00141, 'sesp_scale0.1': 0.51886} {'sim_scale1.0': 0.01262, 'sim_scale0.1': 0.54222}
+add_17 original {'esp': 0.0, 'duration_us': 186.42, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14685} {}
+add_17 lee2026 {'esp': 0.0, 'duration_us': 186.42, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14685} {}
+add_17 jk2026 {'esp': 0.0, 'duration_us': 185.64, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14775} {}
+add_17 mkco {'esp': 0.0, 'duration_us': 185.64, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14776} {}
+add_17 mkco_xt {'esp': 0.0, 'duration_us': 186.54, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14617} {}
+add_17 mkco_rewrite {'esp': 0.0, 'duration_us': 185.64, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14776} {}
+add_17 mkco_full {'esp': 0.0, 'duration_us': 185.64, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14776} {}
+add_17 mkco_full_dur {'esp': 0.0, 'duration_us': 185.64, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14776} {}
+add_17 qiskit_o3 {'esp': 0.0, 'duration_us': 186.72, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.147} {}
+add_17 qiskit_o3+mkco_rewrite {'esp': 0.0, 'duration_us': 185.28, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14975} {}
+add_17 mkco_alap {'esp': 0.0, 'duration_us': 185.46, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14942} {}
+add_17 mkco_full_alap {'esp': 0.0, 'duration_us': 185.46, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.14942} {}
+qae_17 original {'esp': 4e-05, 'duration_us': 200.16, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19422} {}
+qae_17 lee2026 {'esp': 4e-05, 'duration_us': 200.16, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19422} {}
+qae_17 jk2026 {'esp': 4e-05, 'duration_us': 198.72, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19629} {}
+qae_17 mkco {'esp': 4e-05, 'duration_us': 198.72, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19631} {}
+qae_17 mkco_xt {'esp': 4e-05, 'duration_us': 200.4, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19441} {}
+qae_17 mkco_rewrite {'esp': 4e-05, 'duration_us': 198.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19694} {}
+qae_17 mkco_full {'esp': 4e-05, 'duration_us': 198.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19694} {}
+qae_17 mkco_full_dur {'esp': 4e-05, 'duration_us': 198.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19694} {}
+qae_17 qiskit_o3 {'esp': 4e-05, 'duration_us': 200.46, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19375} {}
+qae_17 qiskit_o3+mkco_rewrite {'esp': 4e-05, 'duration_us': 198.9, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19649} {}
+qae_17 mkco_alap {'esp': 4e-05, 'duration_us': 199.2, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19584} {}
+qae_17 mkco_full_alap {'esp': 4e-05, 'duration_us': 198.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.19694} {}
+qft_16 original {'esp': 5e-05, 'duration_us': 189.24, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.31065} {}
+qft_16 lee2026 {'esp': 5e-05, 'duration_us': 189.24, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.31065} {}
+qft_16 jk2026 {'esp': 5e-05, 'duration_us': 187.74, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.31582} {}
+qft_16 mkco {'esp': 5e-05, 'duration_us': 187.74, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.31583} {}
+qft_16 mkco_xt {'esp': 5e-05, 'duration_us': 189.66, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.2969} {}
+qft_16 mkco_rewrite {'esp': 5e-05, 'duration_us': 187.74, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.31592} {}
+qft_16 mkco_full {'esp': 5e-05, 'duration_us': 187.74, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.31592} {}
+qft_16 mkco_full_dur {'esp': 5e-05, 'duration_us': 187.74, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.31592} {}
+qft_16 qiskit_o3 {'esp': 5e-05, 'duration_us': 189.48, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.29865} {}
+qft_16 qiskit_o3+mkco_rewrite {'esp': 5e-05, 'duration_us': 187.98, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.30402} {}
+qft_16 mkco_alap {'esp': 5e-05, 'duration_us': 187.92, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.31585} {}
+qft_16 mkco_full_alap {'esp': 5e-05, 'duration_us': 187.74, 'sesp_scale1.0': 1e-05, 'sesp_scale0.1': 0.31592} {}
+hubbard_8 original {'esp': 0.0, 'duration_us': 810.06, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.06177} {'sim_scale1.0': 0.00283, 'sim_scale0.1': 0.07513}
+hubbard_8 lee2026 {'esp': 0.0, 'duration_us': 810.06, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.06177} {'sim_scale1.0': 0.00283, 'sim_scale0.1': 0.07513}
+hubbard_8 jk2026 {'esp': 0.0, 'duration_us': 804.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.05823} {'sim_scale1.0': 0.00252, 'sim_scale0.1': 0.07022}
+hubbard_8 mkco {'esp': 0.0, 'duration_us': 804.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.05822} {'sim_scale1.0': 0.00252, 'sim_scale0.1': 0.07022}
+hubbard_8 mkco_xt {'esp': 0.0, 'duration_us': 809.46, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.05689} {'sim_scale1.0': 0.00292, 'sim_scale0.1': 0.06896}
+hubbard_8 mkco_rewrite {'esp': 0.0, 'duration_us': 804.0, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.05829} {'sim_scale1.0': 0.00253, 'sim_scale0.1': 0.0703}
+hubbard_8 mkco_full {'esp': 0.0, 'duration_us': 803.16, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.05855} {'sim_scale1.0': 0.00253, 'sim_scale0.1': 0.07058}
+hubbard_8 mkco_full_dur {'esp': 0.0, 'duration_us': 803.16, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.05855} {'sim_scale1.0': 0.00253, 'sim_scale0.1': 0.07058}
+hubbard_8 qiskit_o3 {'esp': 0.0, 'duration_us': 809.88, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.06196} {'sim_scale1.0': 0.00285, 'sim_scale0.1': 0.07535}
+hubbard_8 qiskit_o3+mkco_rewrite {'esp': 0.0, 'duration_us': 802.86, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.05872} {'sim_scale1.0': 0.00257, 'sim_scale0.1': 0.07078}
+hubbard_8 mkco_alap {'esp': 0.0, 'duration_us': 804.54, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.06309} {'sim_scale1.0': 0.0028, 'sim_scale0.1': 0.07636}
+hubbard_8 mkco_full_alap {'esp': 0.0, 'duration_us': 803.16, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.06341} {'sim_scale1.0': 0.0028, 'sim_scale0.1': 0.07672}
+hhl_8 original {'esp': 0.0, 'duration_us': 1747.56, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00095} {'sim_scale1.0': 0.0056, 'sim_scale0.1': 0.01234}
+hhl_8 lee2026 {'esp': 0.0, 'duration_us': 1747.56, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00095} {'sim_scale1.0': 0.0056, 'sim_scale0.1': 0.01234}
+hhl_8 jk2026 {'esp': 0.0, 'duration_us': 1737.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00102} {'sim_scale1.0': 0.00762, 'sim_scale0.1': 0.01375}
+hhl_8 mkco {'esp': 0.0, 'duration_us': 1737.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00102} {'sim_scale1.0': 0.00762, 'sim_scale0.1': 0.01375}
+hhl_8 mkco_xt {'esp': 0.0, 'duration_us': 1748.16, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00095} {'sim_scale1.0': 0.00406, 'sim_scale0.1': 0.01183}
+hhl_8 mkco_rewrite {'esp': 0.0, 'duration_us': 1737.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00102} {'sim_scale1.0': 0.00762, 'sim_scale0.1': 0.01375}
+hhl_8 mkco_full {'esp': 0.0, 'duration_us': 1737.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00102} {'sim_scale1.0': 0.00762, 'sim_scale0.1': 0.01376}
+hhl_8 mkco_full_dur {'esp': 0.0, 'duration_us': 1737.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00102} {'sim_scale1.0': 0.00762, 'sim_scale0.1': 0.01376}
+hhl_8 qiskit_o3 {'esp': 0.0, 'duration_us': 1755.24, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00091} {'sim_scale1.0': 0.0056, 'sim_scale0.1': 0.01224}
+hhl_8 qiskit_o3+mkco_rewrite {'esp': 0.0, 'duration_us': 1745.28, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00098} {'sim_scale1.0': 0.0076, 'sim_scale0.1': 0.01365}
+hhl_8 mkco_alap {'esp': 0.0, 'duration_us': 1735.44, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00092} {'sim_scale1.0': 0.00741, 'sim_scale0.1': 0.01258}
+hhl_8 mkco_full_alap {'esp': 0.0, 'duration_us': 1737.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00102} {'sim_scale1.0': 0.00762, 'sim_scale0.1': 0.01376}
+heisenberg_32 original {'esp': 0.0, 'duration_us': 715.26, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 lee2026 {'esp': 0.0, 'duration_us': 715.26, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 jk2026 {'esp': 0.0, 'duration_us': 715.26, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 mkco {'esp': 0.0, 'duration_us': 715.26, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 mkco_xt {'esp': 0.0, 'duration_us': 721.86, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 mkco_rewrite {'esp': 0.0, 'duration_us': 632.22, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 mkco_full {'esp': 0.0, 'duration_us': 632.22, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 mkco_full_dur {'esp': 0.0, 'duration_us': 632.22, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 qiskit_o3 {'esp': 0.0, 'duration_us': 690.6, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 qiskit_o3+mkco_rewrite {'esp': 0.0, 'duration_us': 689.1, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 mkco_alap {'esp': 0.0, 'duration_us': 715.26, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+heisenberg_32 mkco_full_alap {'esp': 0.0, 'duration_us': 632.22, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+grover_10 original {'esp': 0.0, 'duration_us': 8003.94, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 lee2026 {'esp': 0.0, 'duration_us': 8003.94, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 jk2026 {'esp': 0.0, 'duration_us': 7883.4, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 mkco {'esp': 0.0, 'duration_us': 7883.4, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 mkco_xt {'esp': 0.0, 'duration_us': 8095.86, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 mkco_rewrite {'esp': 0.0, 'duration_us': 7883.04, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 mkco_full {'esp': 0.0, 'duration_us': 7883.04, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 mkco_full_dur {'esp': 0.0, 'duration_us': 7883.04, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 qiskit_o3 {'esp': 0.0, 'duration_us': 8005.02, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 qiskit_o3+mkco_rewrite {'esp': 0.0, 'duration_us': 7884.12, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 mkco_alap {'esp': 0.0, 'duration_us': 7881.0, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+grover_10 mkco_full_alap {'esp': 0.0, 'duration_us': 7883.04, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.0} {}
+hubbard_18 original {'esp': 0.0, 'duration_us': 17101.2, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 lee2026 {'esp': 0.0, 'duration_us': 17101.2, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 jk2026 {'esp': 0.0, 'duration_us': 17099.28, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 mkco {'esp': 0.0, 'duration_us': 17029.02, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 mkco_xt {'esp': 0.0, 'duration_us': 17146.98, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 mkco_rewrite {'esp': 0.0, 'duration_us': 15555.24, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 mkco_full {'esp': 0.0, 'duration_us': 15555.24, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 mkco_full_dur {'esp': 0.0, 'duration_us': 13868.52, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 qiskit_o3 {'esp': 0.0, 'duration_us': 14732.4, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 qiskit_o3+mkco_rewrite {'esp': 0.0, 'duration_us': 14689.02, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 mkco_alap {'esp': 0.0, 'duration_us': 17088.18, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}
+hubbard_18 mkco_full_alap {'esp': 0.0, 'duration_us': 15555.24, 'sesp_scale1.0': None, 'sesp_scale0.1': None} {}

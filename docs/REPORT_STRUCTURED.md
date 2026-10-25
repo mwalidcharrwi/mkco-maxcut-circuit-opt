@@ -6,7 +6,8 @@ not trivially colourable.
 
 - **E1 – the paper's random benchmark (Fig. 1 setting: m = 10/20/30 qubits,
   n = 50–200 multi-controlled-Z gates, 5 seeds each, 60 circuits).**
-  - MKCO is certified optimal on **41/60** (DSatur 36/60, JK 0/60). It is
+  - By the clique/Jackson bound, MKCO is certified optimal on **41/60** (DSatur
+    36/60, JK 0/60); with the θ and θ⁺ bounds of E7, 48/60 vs 42/60. It is
     strictly better than DSatur on 14 circuits and never worse.
   - Its average excess over the certified bound is 0.57 layers, against 1.23
     for DSatur and 12.2 for JK.
@@ -27,10 +28,15 @@ not trivially colourable.
     solver accuracy.
     - Computed for all 15 open instances with ≤ 150 gates, it proves MKCO
       optimal on 6 more E1 circuits, raising E1's certified count from 41/60
-      to **47/60**. The one open E3 circuit stays open (θ does not reach
+      to **47/60**. DSatur also reaches 5 of these bounds (36/60 → 41/60); JK
+      none. The one open E3 circuit stays open (θ does not reach
       MKCO's depth there).
-    - The 5 open 200-gate instances were not attempted: the interior-point SDP
-      time grows steeply with size (about 3–6 min at 150 gates on this laptop).
+    - At 200 gates the interior-point solver needs about an hour and 6 GB per
+      instance. These 5 instances were solved for θ⁺ with the first-order SCS
+      solver instead (E7b). The repair keeps the bound valid; the lower
+      accuracy can only weaken it. θ⁺ proves one more circuit optimal
+      (m = 20, seed 0: 95.03 → 96 = MKCO), so E1 ends at **48/60** (DSatur
+      42/60).
     - θ never exceeded a proven chromatic number in the sanity tests.
 
 ![F2n multiplier](figures/gf2_multiplier.png)

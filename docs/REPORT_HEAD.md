@@ -29,14 +29,31 @@ MKCO turns that reduction into a **Max-k-Cut framework** that:
 5. **Goes beyond reordering when asked.** Optional single-qubit (ZSX) and
    two-qubit (KAK, native ECR direction) resynthesis feed the same Max-k-Cut
    layering. Selected by depth or by estimated execution time, this beats
-   Qiskit O3 on every benchmark.
+   Qiskit O3 on every benchmark. Commutation-aware block formation lets KAK see
+   blocks that commuting gates had split (E11).
+6. **Optimises fault-tolerant depth.** T-depth and Toffoli-depth with free
+   Clifford gates reduce to a mixed-graph colouring on the non-Clifford gates
+   (Proposition 10), solved by the same engine with a certified bound. On top
+   of PyZX it lowers T-depth by 41% on average (E8).
+7. **Routes with the same commutation structure.** A SABRE-style router whose
+   front layer is the trace-order front, followed by Max-k-Cut layering. It is
+   proven correct per output (Proposition 11) and evaluated against Qiskit O3
+   on IBM's 127-qubit heavy-hex device (E9).
+8. **Is checked against device noise.** Scoring with the ibm_brisbane
+   calibration shows that a depth-optimal reordering can be *less* faithful,
+   because qubits may idle in superposition for longer. A state-aware success
+   estimate (Proposition 12) predicts this, matching density-matrix
+   simulation, and picks the output (E10). A script for real IBM runs is
+   included.
 
 **Comparison against the related work.** Lee et al. 2026 and Jain & Kumar 2026
 are run on identical inputs:
 - rows 1–6: the 9 provided IBM-127-transpiled benchmarks (rz/sx/x/ecr,
   1.9k–358k gates);
 - rows 7–11: the paper's own experimental settings and structured commuting
-  circuits.
+  circuits;
+- rows 12–15: the extensions (fault-tolerant depth, routing, block formation,
+  noise), each against an established tool.
 
 <!-- HEADLINE -->
 

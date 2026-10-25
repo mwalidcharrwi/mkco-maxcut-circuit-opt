@@ -194,3 +194,92 @@ and dividing by the trace. `⌈⟨J, X⟩ − ε⌉` is then a depth lower bound
 not depend on the solver's accuracy; `ε` covers only floating-point error in
 `λ_min` and the sum. It can beat the clique bound: for the 5-cycle `ω = 2`,
 but `ϑ = √5` gives 3.
+
+*Szegedy's θ⁺.* Relaxing the zero constraints to `X_ij ≤ 0` gives
+`ϑ⁺(Ḡ) ≥ ϑ(Ḡ)`, and still `ϑ⁺(Ḡ) ≤ χ(G)`. *Proof:* for a proper
+`k`-colouring with classes `C_1..C_k`, the matrix
+`Y = k Σ_c 1_{C_c} 1_{C_c}ᵀ − J` is PSD by Cauchy–Schwarz
+(`xᵀYx = k Σ_c s_c² − (Σ_c s_c)²`). It equals `kI + M − J`, where `M ≥ 0` is
+supported on non-adjacent pairs of `G`. So `(λ = k, M)` is dual-feasible, and
+weak duality gives `⟨J, X⟩ ≤ k` for every feasible `X`. The repair is the same,
+except that positive entries on non-adjacent pairs are cut to zero and
+negative ones are kept. ∎
+
+## 8. Non-Clifford depth with free Cliffords
+
+Fix a set `C` of *counted* gates (T-like rotations, Toffolis, or non-Clifford
+rotations). Every other gate is *free*. The counted depth of a gate sequence
+is its ASAP depth when counted gates take one step and free gates take none
+but still synchronise their wires (the usual T-depth).
+
+**Proposition 10.** Over all commutation-equivalent reorderings, the minimum
+counted depth equals the chromatic number of the mixed graph on `C` with
+- arcs `u → v` for `u ≺ v` (trace order of Lemma 2);
+- edges for incomparable counted gates that share a qubit.
+
+*Proof.* (≥) Take any reordering and give each counted gate its ASAP level.
+Along a chain `u ≺ … ≺ v`, levels never decrease at free gates and increase
+at counted ones, so `level(u) < level(v)`. Two counted gates on one wire get
+distinct levels. So the levels form a feasible colouring.
+
+(≤) Take a feasible colouring `L`. Give every free gate `f` the gap
+`g(f) = max L(u)` over its counted ancestors (−1 if none), and sort all gates by
+`(2L(c) or 2g(f)+1, original index)`. The key never decreases along `≺`:
+- counted `u ≺` counted `v`: `L(u) < L(v)`;
+- counted `u ≺` free `f`: `g(f) ≥ L(u)`;
+- free `f ≺` counted `v`: every counted ancestor of `f` is one of `v`, so
+  `L(v) > g(f)`;
+- free `f ≺` free `f'`: the ancestor sets are nested.
+
+So the sorted order is a linear extension of `≺`, hence equivalent (Lemma 2).
+Its counted depth is at most the number of colours. ∎
+
+The mixed graph is not built explicitly. A *surrogate circuit* keeps the
+counted gates with their real qubits and per-qubit axes. Every pair `(u, v)`
+joined by a path whose interior gates are all free gets a private virtual wire,
+on which `u` and `v` have non-commuting axes. The transitive closure of these
+pairs is `≺` restricted to `C`; real wires only add pairs that are already
+ordered; virtual wires only add conflicts between ordered pairs. The
+surrogate's feasible layerings are therefore exactly the colourings of
+Proposition 10. The unchanged MKCO engine solves it, and Theorem 7 applied to
+the surrogate is a certified bound on the counted depth.
+
+## 9. Commutation-aware routing
+
+**Proposition 11.** Let `R` be a routed circuit: gates on physical qubits, plus
+SWAPs, starting from layout `π₀`. Track the layout through the SWAPs and map
+every non-SWAP gate back to logical qubits. If the resulting logical sequence
+is a linear extension of the input's trace order, `R` implements the input
+followed by the final permutation `π_f`.
+
+*Proof.* A SWAP only relabels which physical qubit holds which logical state.
+So `R` equals the logical sequence, conjugated by the layout permutations.
+Lemma 2 makes that sequence equivalent to the input. ∎
+
+The router lets a gate enter the front layer once the previous run on each of
+its wires has been executed: exactly the gates that may come next in some
+linear extension. This is why every routed output passes the exact `unroute`
+check of Proposition 11.
+
+## 10. State-dependent idle noise
+
+**Proposition 12.** Let a qubit `q` of a pure state `|ψ⟩` idle for time `t`
+under amplitude damping `γ = 1 − e^{−t/T₁}` followed by dephasing
+`p = (1 − e^{−t/T_φ})/2` (with `1/T_φ = 1/T₂ − 1/(2T₁)`). Then, to first order,
+the fidelity with `|ψ⟩` drops by
+
+`γ (P₁ − |⟨σ⁻⟩|²) + p (1 − ⟨Z⟩²)`,
+
+where `P₁`, `⟨σ⁻⟩` and `⟨Z⟩` are the reduced quantities of `q` in `|ψ⟩`.
+
+*Proof.* For the damping Kraus pair `K₀ = |0⟩⟨0| + √(1−γ)|1⟩⟨1|` and
+`K₁ = √γ |0⟩⟨1|`: `|⟨ψ|K₀|ψ⟩|² = 1 − γP₁ + O(γ²)` and
+`|⟨ψ|K₁|ψ⟩|² = γ|⟨σ⁻⟩|²`. For a Z error with probability `p`:
+`F = 1 − p + p⟨Z⟩²`. ∎
+
+A qubit idling in `|0⟩` loses nothing; one idling in an equal superposition
+dephases fully. Two reorderings with the same depth and total idle time can
+therefore differ in fidelity. A state-blind ESP cannot see this; the
+state-aware ESP of mkco.noise (Proposition 12 summed over all idle gaps of the
+ALAP schedule) can.
+

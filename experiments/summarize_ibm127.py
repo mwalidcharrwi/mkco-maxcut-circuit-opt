@@ -170,7 +170,7 @@ def main(outdir="results/ibm127"):
         nz = json.load(open(noise))
         show = ["original", "qiskit_o3", "mkco", "mkco_alap", "mkco_full", "mkco_full_alap",
                 "mkco_noise"]
-        A(f"\n### Table 10 - Noise study with the {nz['backend']} calibration snapshot\n")
+        A(f"\n### Table 10 - Noise study with the ibm_brisbane calibration snapshot ({nz['backend']})\n")
         A("ESP = estimated success probability (state-blind, ALAP idling); sESP = state-aware "
           "ESP (idle gaps weighted by the idling qubit's state, <= 22 active qubits); "
           "sim = exact density-matrix state fidelity (<= 8 active qubits). Scale 0.1 = all "
@@ -185,7 +185,7 @@ def main(outdir="results/ibm127"):
         for name, cr in nz["circuits"].items():
             ms = cr["methods"]
             pick = ms["mkco_noise"]["selected"]
-            rows_ = [("ESP", "esp"), ("ESP x0.1", "esp_scale0.1"), ("sESP", "sesp_scale1.0"),
+            rows_ = [("ESP", "esp"), ("ESP_xt", "esp_xt"), ("ESP x0.1", "esp_scale0.1"), ("sESP", "sesp_scale1.0"),
                      ("sESP x0.1", "sesp_scale0.1")]
             if cr["simulated"]:
                 rows_ += [("sim F", ("sim_scale1.0", "state_fidelity")),
