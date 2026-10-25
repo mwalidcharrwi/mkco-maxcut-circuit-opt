@@ -1,0 +1,45 @@
+mult_8 original pub 0 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+mult_8 qiskit_o3 pub 1 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+mult_8 mkco pub 2 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+mult_8 mkco_alap pub 3 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+mult_8 mkco_full pub 4 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+mult_8 mkco_full_alap pub 5 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+mult_8 mkco_noise pub 6 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+hubbard_8 original pub 7 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+hubbard_8 qiskit_o3 pub 8 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+hubbard_8 mkco pub 9 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+hubbard_8 mkco_alap pub 10 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+hubbard_8 mkco_full pub 11 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+hubbard_8 mkco_full_alap pub 12 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+hubbard_8 mkco_noise pub 13 active [3, 4, 5, 15, 20, 21, 22, 23] flipped 0
+hhl_8 original pub 14 active [2, 3, 4, 5, 15, 20, 21, 22] flipped 0
+hhl_8 qiskit_o3 pub 15 active [2, 3, 4, 5, 15, 20, 21, 22] flipped 0
+hhl_8 mkco pub 16 active [2, 3, 4, 5, 15, 20, 21, 22] flipped 0
+hhl_8 mkco_alap pub 17 active [2, 3, 4, 5, 15, 20, 21, 22] flipped 0
+hhl_8 mkco_full pub 18 active [2, 3, 4, 5, 15, 20, 21, 22] flipped 0
+hhl_8 mkco_full_alap pub 19 active [2, 3, 4, 5, 15, 20, 21, 22] flipped 0
+hhl_8 mkco_noise pub 20 active [2, 3, 4, 5, 15, 20, 21, 22] flipped 0
+experiments/run_ibm_hardware.py:287: DeprecationWarning: The SamplerV2 class is deprecated as of qiskit-ibm-runtime 0.50.0 and will be removed no sooner than 3 months after the release date. `qiskit_ibm_runtime.executor_sampler.Sampler` provides a new Sampler implementation that runs all the pre- and post-processing in the client side. The top-level `qiskit_ibm_runtime.Sampler` import will be updated to point to the client-side sampler in an upcoming release, with the legacy Sampler being available until the deprecation is completed.
+  job = SamplerV2(mode=mode).run([pubs[i] for i in order], shots=a.shots)
+job 7ef657ea-9b6f-429b-9ab3-27877932b1cb on fake_brisbane
+mult_8 original 0.0135 [0.0122, 0.0148]
+mult_8 qiskit_o3 0.0127 [0.0116, 0.0139]
+mult_8 mkco 0.0109 [0.0098, 0.0119]
+mult_8 mkco_alap 0.011 [0.0099, 0.0121]
+mult_8 mkco_full 0.0111 [0.01, 0.0123]
+mult_8 mkco_full_alap 0.0112 [0.0101, 0.0123]
+mult_8 mkco_noise 0.0128 [0.0116, 0.014]
+hubbard_8 original 0.004 [0.0034, 0.0046]
+hubbard_8 qiskit_o3 0.004 [0.0033, 0.0047]
+hubbard_8 mkco 0.0032 [0.0025, 0.0038]
+hubbard_8 mkco_alap 0.0039 [0.0032, 0.0046]
+hubbard_8 mkco_full 0.0033 [0.0027, 0.0039]
+hubbard_8 mkco_full_alap 0.0048 [0.004, 0.0055]
+hubbard_8 mkco_noise 0.0037 [0.0031, 0.0043]
+hhl_8 original 0.063 [0.0605, 0.0654]
+hhl_8 qiskit_o3 0.0601 [0.0574, 0.0626]
+hhl_8 mkco 0.0627 [0.0598, 0.0651]
+hhl_8 mkco_alap 0.0657 [0.0631, 0.0683]
+hhl_8 mkco_full 0.0661 [0.0635, 0.0687]
+hhl_8 mkco_full_alap 0.0647 [0.0619, 0.0672]
+hhl_8 mkco_noise 0.0626 [0.0597, 0.0652]

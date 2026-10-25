@@ -64,7 +64,10 @@ Full tables in [docs/REPORT.md](docs/REPORT.md) and
 backend and scores the counts by Hellinger fidelity against the ideal output.
 It needs your own account, saved beforehand with
 `QiskitRuntimeService.save_account(...)`; the script never handles tokens.
-`submit --fake` runs the same pipeline locally on the FakeBrisbane noise model.
+`submit --fake [--noise-scale 0.1]` runs the same pipeline on a noisy
+simulated backend (Aer + the ibm_brisbane calibration snapshot). The results
+are in report Table 12: the state-aware estimate ordered every resolved pair
+of methods correctly (12/12), while the usual ESP got 3/12.
 
 ## Layout
 ```

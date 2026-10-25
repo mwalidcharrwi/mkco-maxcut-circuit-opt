@@ -140,15 +140,11 @@ def esp(circuit, cal, scale=1.0, xt_adjacent=None, xt_error=None):
             "broken_gates": broken}
 
 
-def noisy_density_matrix(circuit, cal, scale=1.0):
-    """Exact noisy simulation of the scheduled circuit on its active qubits.
-
-    Returns (rho as numpy array, ideal statevector, active qubits) with qubit
-    order = sorted active physical qubits, little-endian as in Qiskit."""
+def _noisy_circuits(circuit, cal, scale=1.0):
+    """(noisy, ideal, active): the scheduled circuit on its active qubits with
+    inline noise channels, and the same gates without noise."""
     from qiskit import QuantumCircuit
     from qiskit.circuit.library import ECRGate
-    from qiskit.quantum_info import Statevector
-    from qiskit_aer import AerSimulator
     from qiskit_aer.noise import depolarizing_error, thermal_relaxation_error
 
     active = sorted({q for g in circuit.gates for q in g.qubits if g.kind != "barrier"})
@@ -184,6 +180,17 @@ def noisy_density_matrix(circuit, cal, scale=1.0):
         if gap > 1e-12:
             noisy.append(thermal_relaxation_error(cal.t1[q] / scale, cal.t2[q] / scale, gap)
                          .to_instruction(), [pos[q]])
+    return noisy, ideal, active
+
+
+def noisy_density_matrix(circuit, cal, scale=1.0):
+    """Exact noisy simulation of the scheduled circuit on its active qubits.
+
+    Returns (rho as numpy array, ideal statevector, active qubits) with qubit
+    order = sorted active physical qubits, little-endian as in Qiskit."""
+    from qiskit.quantum_info import Statevector
+    from qiskit_aer import AerSimulator
+    noisy, ideal, active = _noisy_circuits(circuit, cal, scale)
     noisy.save_density_matrix()
     sim = AerSimulator(method="density_matrix")
     rho = np.asarray(sim.run(noisy).result().data()["density_matrix"])

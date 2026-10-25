@@ -138,10 +138,31 @@ T1, T2 and readout errors (`mkco.noise`, Table 10):
   proxy does not carry over. Under ESP_xt (an extra ECR error for every
   time-overlapping neighbouring pair), mkco_xt beats plain MKCO only on
   hubbard_18 (×24). A duration-aware crosstalk objective is future work.
-- **On hardware.** These are model results. `run_ibm_hardware.py` submits the
-  same outputs to a real backend (with the user's own IBM Quantum account) and
-  scores the counts against the ideal distribution. It is tested end to end
-  in local mode on the FakeBrisbane noise model.
+- **Independent check on a noisy simulated backend (Table 12).** The three
+  8-qubit circuits were also run end to end as on hardware, on a simulated
+  noisy backend:
+  - Qiskit's ALAP scheduling, then Aer with its standard noise model built
+    from the same ibm_brisbane calibration (`NoiseModel.from_backend`). This
+    model shares no code with `mkco.noise`.
+  - 32,768 shots per circuit, all methods interleaved in one job, at
+    calibrated and at 10× lower noise.
+  - On the method pairs that sampling separates, `mkco.noise`'s
+    density-matrix model and the state-aware ESP order **12/12** pairs
+    correctly at 10× lower noise. The state-blind ESP gets 3/12, worse than
+    chance, because it rewards the shorter orders.
+  - At calibrated noise, where the circuits sit near the noise floor, the
+    scores are 6/6, 5/6 and 4/6.
+  - Measured at 10× lower noise, `mkco_noise` reproduces the predicted
+    winners. Its circuit is measured twice, as itself and as the method it
+    selects, so the pair of numbers shows the sampling spread:
+    - mult_8: it keeps the input order, 0.546–0.548, on par with Qiskit
+      (0.542), while plain MKCO drops to 0.513;
+    - hubbard_8: 0.073–0.074, against 0.072 for Qiskit and 0.065 for plain
+      MKCO;
+    - hhl_8 (MKCO-full): 0.072–0.075, against 0.069 for Qiskit.
+- **On real hardware.** `run_ibm_hardware.py submit` sends the same job to an
+  IBM Quantum backend. It needs the user's own account; none was available
+  for this study.
 
 ### 7.5 Stronger SDP certificates (E7b)
 

@@ -10,10 +10,15 @@ QiskitRuntimeService.save_account(...); this script never handles tokens):
     python experiments/run_ibm_hardware.py status     # job state
     python experiments/run_ibm_hardware.py collect    # scores, once the job is done
 
-Local dry run with the ibm_brisbane noise model (no account needed; tests the
-pipeline only, without ALAP delays, so idle noise is not modelled):
+Noisy simulated backend (no account needed): the same pipeline on Aer with
+the standard device noise model of the ibm_brisbane calibration snapshot
+(FakeBrisbane: depolarizing + thermal relaxation on gates, thermal relaxation
+on the ALAP delays, readout errors; Aer caps the two snapshot qubits that
+report T2 > 2*T1).  This noise model and Qiskit's
+scheduler share no code with mkco.noise, so it is an independent check:
 
-    python experiments/run_ibm_hardware.py submit --fake --circuits mult_8
+    python experiments/run_ibm_hardware.py submit --fake --shots 32768
+    python experiments/run_ibm_hardware.py submit --fake --shots 32768 --noise-scale 0.1
 
 All circuits go into one Sampler job, so every method sees the same
 calibration.  Placement: the benchmarks are native to ibm_brisbane.  On a
@@ -156,10 +161,65 @@ def hellinger(counts, p, k, rng=None, boot=0):
     return val, [float(np.percentile(samples, 2.5)), float(np.percentile(samples, 97.5))]
 
 
+def fake_brisbane():
+    from qiskit_ibm_runtime.fake_provider import FakeBrisbane
+    return FakeBrisbane()
+
+
+def noise_model(backend, scale=1.0):
+    """Aer's standard device noise model (NoiseModel.from_backend: depolarizing +
+    thermal relaxation on gates, thermal relaxation on delays, readout errors),
+    built from a copy of the backend's calibration with every error rate x scale
+    and T1, T2 / scale.  The backend itself is not modified."""
+    from qiskit.providers import BackendV2, Options
+    from qiskit.transpiler import InstructionProperties, QubitProperties, Target
+    from qiskit_aer.noise import NoiseModel
+    if scale == 1.0:
+        return NoiseModel.from_backend(backend)
+    src = backend.target
+    qps = []
+    for p in src.qubit_properties:
+        t2 = min(p.t2, 2 * p.t1)                     # 2 snapshot qubits report T2 > 2*T1
+        qps.append(QubitProperties(t1=p.t1 / scale, t2=t2 / scale, frequency=p.frequency))
+    tg = Target(num_qubits=src.num_qubits, dt=src.dt, qubit_properties=qps)
+    for name in src.operation_names:
+        if src[name] is None or any(k is None for k in src[name]):
+            continue                                  # control flow / global ops: no noise
+        props = {k: (None if v is None else InstructionProperties(
+            duration=v.duration, error=None if v.error is None else v.error * scale))
+            for k, v in src[name].items()}
+        tg.add_instruction(src.operation_from_name(name), props, name=name)
+
+    class _Scaled(BackendV2):
+        def __init__(self):
+            super().__init__(name=f"{backend.name}_x{scale:g}")
+
+        @property
+        def target(self):
+            return tg
+
+        @property
+        def max_circuits(self):
+            return None
+
+        @classmethod
+        def _default_options(cls):
+            return Options()
+
+        def run(self, *args, **kwargs):
+            raise NotImplementedError
+
+    return NoiseModel.from_backend(_Scaled())
+
+
+def files(a):
+    tag = f"noisy_backend_scale{a.noise_scale:g}_" if a.fake else ""
+    return os.path.join(HDIR, tag + "jobs.json"), os.path.join(HDIR, tag + "results.json")
+
+
 def get_backend(a):
     if a.fake:
-        from qiskit_ibm_runtime.fake_provider import FakeBrisbane
-        return FakeBrisbane(), None
+        return fake_brisbane(), None
     from qiskit_ibm_runtime import QiskitRuntimeService
     service = QiskitRuntimeService()
     if a.backend != "auto":
@@ -206,29 +266,36 @@ def submit(a):
             p_ideal = ideal_distribution(c)          # same bit order as the measured qubits
             qc = transpile(to_qiskit(c, act), backend=backend, optimization_level=0,
                            initial_layout=list(range(backend.num_qubits)),
-                           # local dry runs skip scheduling: Aer rejects the snapshot's
-                           # T2 > 2*T1 qubits once delays carry relaxation noise
-                           scheduling_method=None if a.fake else "alap", seed_transpiler=0)
-            s = state_aware_esp(c, cal) if "ecr" in backend.operation_names else None
+                           scheduling_method="alap", seed_transpiler=0)
+            scale = a.noise_scale if a.fake else 1.0
+            s = state_aware_esp(c, cal, scale) if "ecr" in backend.operation_names else None
             recs.append({"circuit": name, "method": m, "pub": len(pubs), "active": act,
                          "placement": {str(k): v for k, v in phi.items()}, "ecr_flipped": flipped,
                          "two_qubit_gates": sum(1 for g in c.gates if len(g.qubits) == 2),
                          "depth": c.depth(),
-                         "model": {"esp": esp(c, cal)["esp"] if "ecr" in backend.operation_names else None,
+                         "model": {"esp": esp(c, cal, scale)["esp"] if "ecr" in backend.operation_names else None,
                                    "sesp": None if s is None else s["sesp"]},
                          "ideal": p_ideal.tolist()})
             pubs.append(qc)
             print(name, m, "pub", len(pubs) - 1, "active", act, "flipped", flipped, flush=True)
     order = np.random.default_rng(a.seed).permutation(len(pubs))       # interleave methods
-    job = SamplerV2(mode=backend).run([pubs[i] for i in order], shots=a.shots)
+    if a.fake:
+        from qiskit_aer import AerSimulator
+        mode = AerSimulator(noise_model=noise_model(backend, a.noise_scale), seed_simulator=a.seed)
+    else:
+        mode = backend
+    job = SamplerV2(mode=mode).run([pubs[i] for i in order], shots=a.shots)
     pos = {int(i): k for k, i in enumerate(order)}
     for r in recs:
         r["pub"] = pos[r["pub"]]
     meta = {"backend": backend.name, "job_id": job.job_id(), "shots": a.shots, "fake": bool(a.fake),
-            "submitted": time.strftime("%Y-%m-%d %H:%M:%S"), "options": "SamplerV2 defaults "
-            "(no dynamical decoupling, no twirling)", "records": recs}
+            "submitted": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "options": ("Aer noisy simulation, NoiseModel.from_backend(FakeBrisbane), ALAP delays"
+                        if a.fake else "SamplerV2 defaults (no dynamical decoupling, no twirling)"),
+            "records": recs}
     os.makedirs(HDIR, exist_ok=True)
-    json.dump(meta, open(os.path.join(HDIR, "jobs_fake.json" if a.fake else "jobs.json"), "w"), indent=1)
+    meta["noise_scale"] = a.noise_scale if a.fake else None
+    json.dump(meta, open(files(a)[0], "w"), indent=1)
     print("job", job.job_id(), "on", backend.name, flush=True)
     if a.fake:
         collect(a, job=job)
@@ -242,8 +309,7 @@ def status(a):
 
 
 def collect(a, job=None):
-    fn = "jobs_fake.json" if a.fake else "jobs.json"
-    meta = json.load(open(os.path.join(HDIR, fn)))
+    meta = json.load(open(files(a)[0]))
     if job is None:
         from qiskit_ibm_runtime import QiskitRuntimeService
         job = QiskitRuntimeService().job(meta["job_id"])
@@ -263,7 +329,8 @@ def collect(a, job=None):
         print(rows[-1]["circuit"], rows[-1]["method"], round(h, 4), [round(x, 4) for x in ci], flush=True)
     out = {"backend": meta["backend"], "job_id": meta["job_id"], "submitted": meta["submitted"],
            "options": meta["options"], "rows": rows}
-    json.dump(out, open(os.path.join(HDIR, "results_fake.json" if a.fake else "results.json"), "w"), indent=1)
+    out["noise_scale"] = meta.get("noise_scale")
+    json.dump(out, open(files(a)[1], "w"), indent=1)
 
 
 def main():
@@ -271,11 +338,15 @@ def main():
     ap.add_argument("cmd", choices=["submit", "status", "collect"])
     ap.add_argument("--backend", default="auto",
                     help="backend name, or auto: ibm_brisbane > 127-qubit Eagle > least busy")
-    ap.add_argument("--fake", action="store_true", help="run locally on FakeBrisbane")
+    ap.add_argument("--fake", action="store_true",
+                    help="run on the noisy simulated backend (Aer + ibm_brisbane calibration)")
     ap.add_argument("--circuits", nargs="+", default=["mult_8", "hubbard_8", "hhl_8"])
     ap.add_argument("--methods", nargs="+",
-                    default=["original", "qiskit_o3", "mkco", "mkco_alap", "mkco_noise"])
+                    default=["original", "qiskit_o3", "mkco", "mkco_alap", "mkco_full",
+                             "mkco_full_alap", "mkco_noise"])
     ap.add_argument("--placement", choices=["native", "best"], default="native")
+    ap.add_argument("--noise-scale", type=float, default=1.0,
+                    help="with --fake: error rates x scale, T1 and T2 / scale")
     ap.add_argument("--shots", type=int, default=8192)
     ap.add_argument("--seed", type=int, default=0)
     a = ap.parse_args()

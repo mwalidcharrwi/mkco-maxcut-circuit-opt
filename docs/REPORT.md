@@ -579,6 +579,38 @@ ESP = estimated success probability (state-blind, ALAP idling); sESP = state-awa
 | qae_17 | 541 | 0 | 0 | 541 | 0 | 0 |
 | qft_16 | 614 | 0 | 0 | 614 | 0 | 0 |
 
+### Table 12 - Noisy simulated backend: Aer + ibm_brisbane calibration, sampled counts
+
+Hellinger fidelity of 32768 shots against the ideal output [bootstrap 95% interval]. Noise model: Aer's NoiseModel.from_backend (independent of mkco.noise); Qiskit's ALAP scheduling; one job per scale, methods interleaved. mkco_noise is the same circuit as the method it selects (a repeat measurement). Prediction = mkco.noise density-matrix Hellinger fidelity at the same scale.
+
+| Circuit | method | scale 1 | scale 0.1 | prediction (scale 0.1) |
+|---|---|---:|---:|---:|
+| mult_8 | original | 0.0135 [0.0122, 0.0148] | 0.5461 [0.5404, 0.5512] | 0.5505 |
+| mult_8 | qiskit_o3 | 0.0127 [0.0116, 0.0139] | 0.5417 [0.5359, 0.5469] | 0.5494 |
+| mult_8 | mkco | 0.0109 [0.0098, 0.0119] | 0.5128 [0.5073, 0.5179] | 0.5265 |
+| mult_8 | mkco_alap | 0.0110 [0.0099, 0.0121] | 0.5215 [0.5167, 0.5266] | 0.5298 |
+| mult_8 | mkco_full | 0.0111 [0.0100, 0.0123] | 0.5148 [0.5092, 0.5203] | 0.5266 |
+| mult_8 | mkco_full_alap | 0.0112 [0.0101, 0.0123] | 0.5131 [0.5076, 0.5188] | 0.5266 |
+| mult_8 | mkco_noise (= original) | 0.0128 [0.0116, 0.0140] | 0.5475 [0.5423, 0.5529] | 0.5505 |
+| hubbard_8 | original | 0.0040 [0.0034, 0.0046] | 0.0695 [0.0667, 0.0721] | 0.0808 |
+| hubbard_8 | qiskit_o3 | 0.0040 [0.0033, 0.0047] | 0.0716 [0.0688, 0.0742] | 0.0810 |
+| hubbard_8 | mkco | 0.0032 [0.0025, 0.0038] | 0.0647 [0.0620, 0.0673] | 0.0757 |
+| hubbard_8 | mkco_alap | 0.0039 [0.0032, 0.0046] | 0.0732 [0.0703, 0.0758] | 0.0820 |
+| hubbard_8 | mkco_full | 0.0033 [0.0027, 0.0039] | 0.0677 [0.0650, 0.0704] | 0.0760 |
+| hubbard_8 | mkco_full_alap | 0.0048 [0.0040, 0.0055] | 0.0740 [0.0712, 0.0770] | 0.0823 |
+| hubbard_8 | mkco_noise (= mkco_full_alap) | 0.0037 [0.0031, 0.0043] | 0.0732 [0.0703, 0.0761] | 0.0823 |
+| hhl_8 | original | 0.0630 [0.0605, 0.0654] | 0.0719 [0.0689, 0.0746] | 0.0722 |
+| hhl_8 | qiskit_o3 | 0.0601 [0.0574, 0.0626] | 0.0694 [0.0665, 0.0719] | 0.0720 |
+| hhl_8 | mkco | 0.0627 [0.0598, 0.0651] | 0.0717 [0.0688, 0.0743] | 0.0738 |
+| hhl_8 | mkco_alap | 0.0657 [0.0631, 0.0683] | 0.0731 [0.0702, 0.0760] | 0.0735 |
+| hhl_8 | mkco_full | 0.0661 [0.0635, 0.0687] | 0.0746 [0.0717, 0.0774] | 0.0738 |
+| hhl_8 | mkco_full_alap | 0.0647 [0.0619, 0.0672] | 0.0747 [0.0717, 0.0775] | 0.0738 |
+| hhl_8 | mkco_noise (= mkco_full) | 0.0626 [0.0597, 0.0652] | 0.0721 [0.0692, 0.0749] | 0.0738 |
+
+Scale 1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 6/6, state-aware ESP 5/6, ESP 4/6 correctly.
+
+Scale 0.1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 12/12, state-aware ESP 12/12, ESP 3/12 correctly.
+
 ## 6. Results in the settings of Lee et al. and on structured commuting circuits
 
 These experiments reproduce the settings of Lee et al. They are the regime
@@ -973,10 +1005,31 @@ T1, T2 and readout errors (`mkco.noise`, Table 10):
   proxy does not carry over. Under ESP_xt (an extra ECR error for every
   time-overlapping neighbouring pair), mkco_xt beats plain MKCO only on
   hubbard_18 (×24). A duration-aware crosstalk objective is future work.
-- **On hardware.** These are model results. `run_ibm_hardware.py` submits the
-  same outputs to a real backend (with the user's own IBM Quantum account) and
-  scores the counts against the ideal distribution. It is tested end to end
-  in local mode on the FakeBrisbane noise model.
+- **Independent check on a noisy simulated backend (Table 12).** The three
+  8-qubit circuits were also run end to end as on hardware, on a simulated
+  noisy backend:
+  - Qiskit's ALAP scheduling, then Aer with its standard noise model built
+    from the same ibm_brisbane calibration (`NoiseModel.from_backend`). This
+    model shares no code with `mkco.noise`.
+  - 32,768 shots per circuit, all methods interleaved in one job, at
+    calibrated and at 10× lower noise.
+  - On the method pairs that sampling separates, `mkco.noise`'s
+    density-matrix model and the state-aware ESP order **12/12** pairs
+    correctly at 10× lower noise. The state-blind ESP gets 3/12, worse than
+    chance, because it rewards the shorter orders.
+  - At calibrated noise, where the circuits sit near the noise floor, the
+    scores are 6/6, 5/6 and 4/6.
+  - Measured at 10× lower noise, `mkco_noise` reproduces the predicted
+    winners. Its circuit is measured twice, as itself and as the method it
+    selects, so the pair of numbers shows the sampling spread:
+    - mult_8: it keeps the input order, 0.546–0.548, on par with Qiskit
+      (0.542), while plain MKCO drops to 0.513;
+    - hubbard_8: 0.073–0.074, against 0.072 for Qiskit and 0.065 for plain
+      MKCO;
+    - hhl_8 (MKCO-full): 0.072–0.075, against 0.069 for Qiskit.
+- **On real hardware.** `run_ibm_hardware.py submit` sends the same job to an
+  IBM Quantum backend. It needs the user's own account; none was available
+  for this study.
 
 ### 7.5 Stronger SDP certificates (E7b)
 
@@ -1154,8 +1207,9 @@ small demonstration; ⭕ are open problems we identified.
     reordering can be *less* faithful on hardware, because qubits may wait in
     superposition for longer. The state-aware ESP predicts this, matching
     density-matrix simulation, and selects among MKCO candidates (`mkco_noise`).
-    ⭕ Real-device runs: `experiments/run_ibm_hardware.py` is ready, but needs an
-    IBM Quantum account.
+    Confirmed on a noisy simulated backend with Aer's independent device noise
+    model (Table 12). ⭕ Real-device runs: `experiments/run_ibm_hardware.py`
+    is ready, but needs an IBM Quantum account.
 
 ## 9. Limitations and threats to validity
 
@@ -1211,7 +1265,8 @@ python experiments/run_tdepth.py                       # E8 T-depth / Toffoli-de
 python experiments/run_routing.py                      # E9 routing on heavy-hex (needs qiskit)
 python experiments/run_regroup.py                      # E11 commutation-aware block formation
 python experiments/run_noise.py                        # E10 noise study (needs qiskit-aer, qiskit-ibm-runtime)
-python experiments/run_ibm_hardware.py submit --fake   # hardware script, local dry run
+python experiments/run_ibm_hardware.py submit --fake --shots 32768                    # noisy backend
+python experiments/run_ibm_hardware.py submit --fake --shots 32768 --noise-scale 0.1
 python experiments/plots.py                            # figures -> docs/figures
 pytest -q
 ```

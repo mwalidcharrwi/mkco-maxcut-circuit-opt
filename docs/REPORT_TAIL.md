@@ -68,8 +68,9 @@ small demonstration; ⭕ are open problems we identified.
     reordering can be *less* faithful on hardware, because qubits may wait in
     superposition for longer. The state-aware ESP predicts this, matching
     density-matrix simulation, and selects among MKCO candidates (`mkco_noise`).
-    ⭕ Real-device runs: `experiments/run_ibm_hardware.py` is ready, but needs an
-    IBM Quantum account.
+    Confirmed on a noisy simulated backend with Aer's independent device noise
+    model (Table 12). ⭕ Real-device runs: `experiments/run_ibm_hardware.py`
+    is ready, but needs an IBM Quantum account.
 
 ## 9. Limitations and threats to validity
 
@@ -125,7 +126,8 @@ python experiments/run_tdepth.py                       # E8 T-depth / Toffoli-de
 python experiments/run_routing.py                      # E9 routing on heavy-hex (needs qiskit)
 python experiments/run_regroup.py                      # E11 commutation-aware block formation
 python experiments/run_noise.py                        # E10 noise study (needs qiskit-aer, qiskit-ibm-runtime)
-python experiments/run_ibm_hardware.py submit --fake   # hardware script, local dry run
+python experiments/run_ibm_hardware.py submit --fake --shots 32768                    # noisy backend
+python experiments/run_ibm_hardware.py submit --fake --shots 32768 --noise-scale 0.1
 python experiments/plots.py                            # figures -> docs/figures
 pytest -q
 ```

@@ -209,6 +209,49 @@ def main(outdir="results/ibm127"):
             A(f"| {r['circuit']} | {i.get('ecr', '–')} | {i.get('plain_ecr_removed', '–')} | "
               f"{i.get('regroup_ecr_removed', '–')} | {q.get('ecr', '–')} | {q.get('plain_ecr_removed', '–')} | "
               f"{q.get('regroup_ecr_removed', '–')} |")
+    hw = {sc: f"results/hardware/noisy_backend_scale{sc}_results.json" for sc in ("1", "0.1")}
+    if all(os.path.exists(f) for f in hw.values()) and os.path.exists(noise):
+        import itertools
+        nzc = json.load(open(noise))["circuits"]
+        hwres = {sc: json.load(open(f)) for sc, f in hw.items()}
+        jobs = {sc: json.load(open(f.replace("_results.json", "_jobs.json"))) for sc, f in hw.items()}
+        A("\n### Table 12 - Noisy simulated backend: Aer + ibm_brisbane calibration, sampled counts\n")
+        A(f"Hellinger fidelity of {hwres['1']['rows'][0]['shots']} shots against the ideal output "
+          "[bootstrap 95% interval]. Noise model: Aer's NoiseModel.from_backend (independent of "
+          "mkco.noise); Qiskit's ALAP scheduling; one job per scale, methods interleaved. mkco_noise "
+          "is the same circuit as the method it selects (a repeat measurement). Prediction = "
+          "mkco.noise density-matrix Hellinger fidelity at the same scale.\n")
+        A("| Circuit | method | scale 1 | scale 0.1 | prediction (scale 0.1) |")
+        A("|---|---|---:|---:|---:|")
+        rows_by = {sc: {(r["circuit"], r["method"]): r for r in hwres[sc]["rows"]} for sc in hwres}
+        for (c, m), r1 in rows_by["1"].items():
+            r2 = rows_by["0.1"][(c, m)]
+            mm = nzc[c]["methods"].get(m)
+            pred = mm["sim_scale0.1"]["hellinger_fidelity"] if mm and "sim_scale0.1" in mm else None
+            pick = f" (= {nzc[c]['methods']['mkco_noise']['selected']})" if m == "mkco_noise" else ""
+            A(f"| {c} | {m}{pick} | {r1['hellinger_fidelity']:.4f} [{r1['ci95'][0]:.4f}, {r1['ci95'][1]:.4f}] | "
+              f"{r2['hellinger_fidelity']:.4f} [{r2['ci95'][0]:.4f}, {r2['ci95'][1]:.4f}] | "
+              f"{'–' if pred is None else f'{pred:.4f}'} |")
+        for sc, tag in (("1", "1.0"), ("0.1", "0.1")):
+            model = {(r["circuit"], r["method"]): r["model"] for r in jobs[sc]["records"]}
+            agree = {"density-matrix model": [0, 0], "state-aware ESP": [0, 0], "ESP": [0, 0]}
+            rb = rows_by[sc]
+            for c in sorted({k[0] for k in rb}):
+                ms = [m for (cc, m) in rb if cc == c and m != "mkco_noise"]
+                for a, b in itertools.combinations(ms, 2):
+                    ra, rr = rb[(c, a)], rb[(c, b)]
+                    if not (ra["ci95"][1] < rr["ci95"][0] or rr["ci95"][1] < ra["ci95"][0]):
+                        continue
+                    truth = ra["hellinger_fidelity"] > rr["hellinger_fidelity"]
+                    dm = nzc[c]["methods"]
+                    for k, (x, y) in {"density-matrix model": (dm[a][f"sim_scale{tag}"]["hellinger_fidelity"],
+                                                               dm[b][f"sim_scale{tag}"]["hellinger_fidelity"]),
+                                      "state-aware ESP": (model[(c, a)]["sesp"], model[(c, b)]["sesp"]),
+                                      "ESP": (model[(c, a)]["esp"], model[(c, b)]["esp"])}.items():
+                        agree[k][1] += 1
+                        agree[k][0] += x != y and (x > y) == truth
+            A(f"\nScale {sc}: on the method pairs that sampling separates (non-overlapping intervals), the "
+              "predictions order " + ", ".join(f"{k} {a}/{n}" for k, (a, n) in agree.items()) + " correctly.")
 
     md = "\n".join(lines) + "\n"
     with open(os.path.join(outdir, "tables.md"), "w") as fh:
