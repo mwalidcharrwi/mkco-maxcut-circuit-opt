@@ -152,3 +152,120 @@ def phase_polynomial(nq, nterms, seed=0, max_w=4):
             c.add("cx", [q, tgt])
     c.name = f"phasepoly_n{nq}_t{nterms}_s{seed}"
     return c
+
+
+# ------------------------------------------------- fault-tolerant benchmarks
+def decompose_toffoli(circuit):
+    """Replace ccx / ccz by the standard 7-T Clifford+T circuit (Nielsen & Chuang Fig. 4.9)."""
+    out = circuit.copy_with_gates([])
+    for g in circuit.gates:
+        if g.name in ("ccx", "toffoli", "ccz") and g.kind == "gate" and g.cond is None:
+            a, b, t = g.qubits
+            if g.name != "ccz":
+                out.add("h", [t])
+            for name, qs in (("cx", [b, t]), ("tdg", [t]), ("cx", [a, t]), ("t", [t]),
+                             ("cx", [b, t]), ("tdg", [t]), ("cx", [a, t]), ("t", [b]),
+                             ("t", [t])):
+                out.add(name, qs)
+            if g.name != "ccz":
+                out.add("h", [t])
+            for name, qs in (("cx", [a, b]), ("t", [a]), ("tdg", [b]), ("cx", [a, b])):
+                out.add(name, qs)
+        else:
+            out.gates.append(g)
+    out.name = (circuit.name or "circuit") + "_ct"
+    return out
+
+
+def cuccaro_adder(n):
+    """Cuccaro et al. ripple-carry adder: |c0, a, b, z> -> |c0, a, a+b, z ^ carry>."""
+    c = Circuit(2 * n + 2)
+    c0, z = 0, 2 * n + 1
+    a = [1 + 2 * i for i in range(n)]
+    b = [2 + 2 * i for i in range(n)]
+
+    def maj(x, y, w):
+        c.add("cx", [w, y]).add("cx", [w, x]).add("ccx", [x, y, w])
+
+    def uma(x, y, w):
+        c.add("ccx", [x, y, w]).add("cx", [w, x]).add("cx", [x, y])
+
+    maj(c0, b[0], a[0])
+    for i in range(1, n):
+        maj(a[i - 1], b[i], a[i])
+    c.add("cx", [a[n - 1], z])
+    for i in range(n - 1, 0, -1):
+        uma(a[i - 1], b[i], a[i])
+    uma(c0, b[0], a[0])
+    c.name = f"cuccaro_{n}"
+    return c
+
+
+def mcx_vchain(n):
+    """n-controlled X with n-2 clean ancillas (Barenco et al. V-chain, compute/uncompute)."""
+    ctrl = list(range(n))
+    anc = list(range(n, 2 * n - 2))
+    tgt = 2 * n - 2
+    c = Circuit(2 * n - 1)
+    chain = [("ccx", [ctrl[0], ctrl[1], anc[0]])]
+    for i in range(2, n - 1):
+        chain.append(("ccx", [ctrl[i], anc[i - 2], anc[i - 1]]))
+    for name, qs in chain:
+        c.add(name, qs)
+    c.add("ccx", [ctrl[n - 1], anc[n - 3], tgt])
+    for name, qs in reversed(chain):
+        c.add(name, qs)
+    c.name = f"mcx_vchain_{n}"
+    return c
+
+
+_TRINOMIAL = {2: 1, 3: 1, 4: 1, 5: 2, 6: 1, 7: 1, 9: 4, 10: 3, 11: 2, 12: 3, 14: 5, 15: 1}
+
+
+def gf2_multiplier(n):
+    """F_{2^n} multiplier c ^= a*b mod (x^n + x^k + 1) with an ancilla register
+    for the high-degree terms: Toffolis (phase 1), CNOT reduction, Toffolis
+    (phase 3), then phase 1 again to clean the ancillas."""
+    k = _TRINOMIAL[n]
+    a, b = list(range(n)), list(range(n, 2 * n))
+    cc = list(range(2 * n, 3 * n))
+    e = list(range(3 * n, 4 * n - 1))
+    c = Circuit(4 * n - 1)
+    phase1 = [(a[i], b[j], e[i + j - n]) for i in range(n) for j in range(n) if i + j >= n]
+    for x, y, t in phase1:
+        c.add("ccx", [x, y, t])
+    for d in range(n - 1):                       # x^(n+d) mod P as a set of low powers
+        terms = {d, d + k}
+        while max(terms) >= n:
+            hi = max(terms)
+            terms ^= {hi, hi - n, hi - n + k}
+        for p in sorted(terms):
+            c.add("cx", [e[d], cc[p]])
+    for i in range(n):
+        for j in range(n - i):
+            c.add("ccx", [a[i], b[j], cc[i + j]])
+    for x, y, t in reversed(phase1):
+        c.add("ccx", [x, y, t])
+    c.name = f"gf2_mult_{n}"
+    return c
+
+
+def t_phase_polynomial(nq, nterms, seed=0, max_w=4):
+    """Random Clifford+T phase polynomial: CNOT parity ladders with T / T^dag / S rotations."""
+    rng = np.random.default_rng(seed)
+    c = Circuit(nq)
+    for q in range(nq):
+        c.add("h", [q])
+    for _ in range(nterms):
+        w = int(rng.integers(2, max_w + 1))
+        qs = [int(x) for x in rng.choice(nq, w, replace=False)]
+        tgt = qs[-1]
+        for q in qs[:-1]:
+            c.add("cx", [q, tgt])
+        c.add(["t", "tdg", "t", "s"][int(rng.integers(4))], [tgt])
+        for q in reversed(qs[:-1]):
+            c.add("cx", [q, tgt])
+    for q in range(nq):
+        c.add("h", [q])
+    c.name = f"tpoly_n{nq}_t{nterms}_s{seed}"
+    return c

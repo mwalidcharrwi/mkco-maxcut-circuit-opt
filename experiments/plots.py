@@ -264,6 +264,74 @@ def fig_e6(rows):
     save(fig, "e6_fanout.png")
 
 
+def fig_tdepth(rows):
+    rows = [r for r in rows if r["kind"] == "t" and "pyzx_full" in r]
+    if not rows:
+        return
+    names = [r["circuit"].replace("_ct", "").replace("rand_cliffT", "cliffT") for r in rows]
+    fig, ax = plt.subplots(figsize=(11, 4.4))
+    grouped_bars(ax, names, [("MKCO-T on the input", [r["mkco_t"]["depth_nc"] for r in rows], AQUA),
+                             ("PyZX (full_reduce + extract)", [r["pyzx_full"]["depth_nc"] for r in rows], ORANGE),
+                             ("PyZX + MKCO-T (certified)", [r["pyzx_full+mkco_t"]["depth_nc"] for r in rows], BLUE)])
+    ax.set_xticklabels(names, fontsize=8, color=INK2, rotation=35, ha="right")
+    style(ax, "T-depth with free Cliffords (lower is better)", "T-depth")
+    top = max(max(r["mkco_t"]["depth_nc"], r["pyzx_full"]["depth_nc"]) for r in rows)
+    ax.set_ylim(0, top * 1.28)
+    ax.legend(frameon=False, fontsize=9, labelcolor=INK2, loc="upper left", ncol=3)
+    save(fig, "tdepth.png")
+
+
+def fig_routing(rows):
+    if not rows:
+        return
+    names = [r["circuit"].replace("_d3", "").replace("trotter_reg3", "trotter") for r in rows]
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2), sharey=False)
+    for ax, key, title in ((axes[0], "cx", "CNOTs vs Qiskit O3 (%)"), (axes[1], "depth", "depth vs Qiskit O3 (%)")):
+        pct = lambda r, m: 100 * (r[m][key] - r["qiskit_o3"][key]) / r["qiskit_o3"][key]  # noqa: E731
+        series = [("MKCO-route (commutation-aware front)", [pct(r, "mkco_route") for r in rows], BLUE)]
+        if all("sabre_dag" in r for r in rows):
+            series.append(("ablation: same router, DAG front", [pct(r, "sabre_dag") for r in rows], AQUA))
+        grouped_bars(ax, names, series, w=0.36)
+        ax.set_xticklabels(names, fontsize=8, color=INK2, rotation=40, ha="right")
+        ax.axhline(0, color=INK2, linewidth=0.8)
+        style(ax, title, "change (%) — below 0 is better")
+    axes[0].legend(frameon=False, fontsize=8.5, labelcolor=INK2, loc="lower left")
+    fig.suptitle("Routing on the 127-qubit heavy-hex device", x=0.01, ha="left", color=INK, fontsize=12)
+    save(fig, "routing.png")
+
+
+def fig_noise(nz):
+    if not nz:
+        return
+    pts = {"ESP (state-blind)": [], "state-aware ESP": []}
+    for name, cr in nz["circuits"].items():
+        if not cr["simulated"]:
+            continue
+        ms = cr["methods"]
+        f0 = ms["original"]["sim_scale0.1"]["state_fidelity"]
+        e0 = ms["original"]["esp_scale0.1"]
+        s0 = ms["original"]["sesp_scale0.1"]
+        for m, r in ms.items():
+            if m in ("original", "mkco_noise") or "sim_scale0.1" not in r:
+                continue
+            x = r["sim_scale0.1"]["state_fidelity"] / f0
+            pts["ESP (state-blind)"].append((x, r["esp_scale0.1"] / e0))
+            pts["state-aware ESP"].append((x, r["sesp_scale0.1"] / s0))
+    if not pts["state-aware ESP"]:
+        return
+    fig, ax = plt.subplots(figsize=(6.4, 5.2))
+    xs = [p[0] for v in pts.values() for p in v]
+    lo, hi = min(xs + [p[1] for v in pts.values() for p in v]) - 0.01, max(xs + [p[1] for v in pts.values() for p in v]) + 0.01
+    ax.plot([lo, hi], [lo, hi], color=GRID, linewidth=1.5, zorder=1)
+    for (label, v), col in zip(pts.items(), (ORANGE, BLUE)):
+        ax.scatter([p[0] for p in v], [p[1] for p in v], s=46, color=col, edgecolor=SURFACE,
+                   linewidth=1.5, label=label, zorder=3)
+    style(ax, "Predicted vs simulated fidelity, relative to the input order",
+          "predicted / predicted(input)", "density-matrix fidelity / fidelity(input)")
+    ax.legend(frameon=False, fontsize=9, labelcolor=INK2, loc="upper left")
+    save(fig, "noise_validation.png")
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     res = load("results/ibm127/results_recomputed.json")
@@ -287,4 +355,9 @@ if __name__ == "__main__":
         fig_e4(load(f"{S}/e4.json"))
     if load(f"{S}/e6.json"):
         fig_e6(load(f"{S}/e6.json"))
+    if load(f"{S}/tdepth.json"):
+        fig_tdepth(load(f"{S}/tdepth.json"))
+    if load(f"{S}/routing.json"):
+        fig_routing(load(f"{S}/routing.json"))
+    fig_noise(load("results/ibm127/noise.json"))
     print("figures written to", OUT, sorted(os.listdir(OUT)))

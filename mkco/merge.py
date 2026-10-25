@@ -78,7 +78,6 @@ def merge_rotations(circuit, max_rounds=6):
     gates = list(circuit.gates)
     stats = {"rounds": 0, "groups_merged": 0, "gates_removed": 0}
     for _ in range(max_rounds):
-        c = circuit.copy_with_gates(gates)
         segs, cur = [], []
         for g in gates:                 # barriers split runs
             if g.kind == "barrier":

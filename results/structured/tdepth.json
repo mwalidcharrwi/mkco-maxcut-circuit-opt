@@ -1,0 +1,1544 @@
+[
+ {
+  "circuit": "cuccaro_4_ct",
+  "qubits": 10,
+  "kind": "t",
+  "original": {
+   "count": 56,
+   "depth_nc": 32,
+   "cx": 65,
+   "depth": 98,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 56,
+   "depth_nc": 36,
+   "cx": 65,
+   "depth": 94,
+   "statevector_ok": true,
+   "time_s": 0.04
+  },
+  "mkco_t": {
+   "count": 56,
+   "depth_nc": 32,
+   "cx": 65,
+   "depth": 94,
+   "statevector_ok": true,
+   "time_s": 0.03,
+   "lower_bound": 32,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 32,
+   "depth_nc": 23,
+   "cx": 82,
+   "depth": 79,
+   "statevector_ok": true,
+   "time_s": 0.97
+  },
+  "pyzx_full+mkco_t": {
+   "count": 32,
+   "depth_nc": 17,
+   "cx": 82,
+   "depth": 75,
+   "statevector_ok": true,
+   "time_s": 1.06,
+   "lower_bound": 17,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 32,
+   "depth_nc": 32,
+   "cx": 53,
+   "depth": 96,
+   "statevector_ok": true,
+   "time_s": 0.21
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 32,
+   "depth_nc": 29,
+   "cx": 53,
+   "depth": 96,
+   "statevector_ok": true,
+   "time_s": 0.23,
+   "lower_bound": 29,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "cuccaro_8_ct",
+  "qubits": 18,
+  "kind": "t",
+  "original": {
+   "count": 112,
+   "depth_nc": 64,
+   "cx": 129,
+   "depth": 194,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 112,
+   "depth_nc": 72,
+   "cx": 129,
+   "depth": 186,
+   "statevector_ok": true,
+   "time_s": 0.02
+  },
+  "mkco_t": {
+   "count": 112,
+   "depth_nc": 64,
+   "cx": 129,
+   "depth": 186,
+   "statevector_ok": true,
+   "time_s": 0.06,
+   "lower_bound": 64,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 64,
+   "depth_nc": 41,
+   "cx": 157,
+   "depth": 153,
+   "statevector_ok": true,
+   "time_s": 0.77
+  },
+  "pyzx_full+mkco_t": {
+   "count": 64,
+   "depth_nc": 36,
+   "cx": 157,
+   "depth": 148,
+   "statevector_ok": true,
+   "time_s": 0.84,
+   "lower_bound": 36,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 64,
+   "depth_nc": 64,
+   "cx": 105,
+   "depth": 188,
+   "statevector_ok": true,
+   "time_s": 0.34
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 64,
+   "depth_nc": 57,
+   "cx": 105,
+   "depth": 188,
+   "statevector_ok": true,
+   "time_s": 0.38,
+   "lower_bound": 57,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "cuccaro_16_ct",
+  "qubits": 34,
+  "kind": "t",
+  "original": {
+   "count": 224,
+   "depth_nc": 128,
+   "cx": 257,
+   "depth": 386,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 224,
+   "depth_nc": 144,
+   "cx": 257,
+   "depth": 370,
+   "statevector_ok": null,
+   "time_s": 0.1
+  },
+  "mkco_t": {
+   "count": 224,
+   "depth_nc": 128,
+   "cx": 257,
+   "depth": 370,
+   "statevector_ok": null,
+   "time_s": 0.51,
+   "lower_bound": 128,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 128,
+   "depth_nc": 92,
+   "cx": 317,
+   "depth": 315,
+   "statevector_ok": null,
+   "time_s": 4.28
+  },
+  "pyzx_full+mkco_t": {
+   "count": 128,
+   "depth_nc": 72,
+   "cx": 317,
+   "depth": 293,
+   "statevector_ok": null,
+   "time_s": 4.51,
+   "lower_bound": 72,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 128,
+   "depth_nc": 128,
+   "cx": 209,
+   "depth": 372,
+   "statevector_ok": null,
+   "time_s": 0.94
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 128,
+   "depth_nc": 113,
+   "cx": 209,
+   "depth": 372,
+   "statevector_ok": null,
+   "time_s": 1.06,
+   "lower_bound": 113,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "mcx_vchain_5_ct",
+  "qubits": 9,
+  "kind": "t",
+  "original": {
+   "count": 49,
+   "depth_nc": 28,
+   "cx": 42,
+   "depth": 71,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 49,
+   "depth_nc": 26,
+   "cx": 42,
+   "depth": 64,
+   "statevector_ok": true,
+   "time_s": 0.01
+  },
+  "mkco_t": {
+   "count": 49,
+   "depth_nc": 25,
+   "cx": 42,
+   "depth": 64,
+   "statevector_ok": true,
+   "time_s": 0.01,
+   "lower_bound": 25,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 31,
+   "depth_nc": 22,
+   "cx": 64,
+   "depth": 77,
+   "statevector_ok": true,
+   "time_s": 0.14
+  },
+  "pyzx_full+mkco_t": {
+   "count": 31,
+   "depth_nc": 19,
+   "cx": 64,
+   "depth": 76,
+   "statevector_ok": true,
+   "time_s": 0.2,
+   "lower_bound": 19,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 31,
+   "depth_nc": 26,
+   "cx": 36,
+   "depth": 71,
+   "statevector_ok": true,
+   "time_s": 0.07
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 31,
+   "depth_nc": 23,
+   "cx": 36,
+   "depth": 67,
+   "statevector_ok": true,
+   "time_s": 0.08,
+   "lower_bound": 23,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "mcx_vchain_8_ct",
+  "qubits": 15,
+  "kind": "t",
+  "original": {
+   "count": 91,
+   "depth_nc": 52,
+   "cx": 78,
+   "depth": 131,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 91,
+   "depth_nc": 47,
+   "cx": 78,
+   "depth": 118,
+   "statevector_ok": true,
+   "time_s": 0.02
+  },
+  "mkco_t": {
+   "count": 91,
+   "depth_nc": 46,
+   "cx": 78,
+   "depth": 118,
+   "statevector_ok": true,
+   "time_s": 0.02,
+   "lower_bound": 46,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 55,
+   "depth_nc": 43,
+   "cx": 126,
+   "depth": 149,
+   "statevector_ok": true,
+   "time_s": 0.35
+  },
+  "pyzx_full+mkco_t": {
+   "count": 55,
+   "depth_nc": 33,
+   "cx": 126,
+   "depth": 146,
+   "statevector_ok": true,
+   "time_s": 0.39,
+   "lower_bound": 33,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 55,
+   "depth_nc": 45,
+   "cx": 66,
+   "depth": 120,
+   "statevector_ok": true,
+   "time_s": 0.19
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 55,
+   "depth_nc": 41,
+   "cx": 66,
+   "depth": 117,
+   "statevector_ok": true,
+   "time_s": 0.21,
+   "lower_bound": 41,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "mcx_vchain_12_ct",
+  "qubits": 23,
+  "kind": "t",
+  "original": {
+   "count": 147,
+   "depth_nc": 84,
+   "cx": 126,
+   "depth": 211,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 147,
+   "depth_nc": 75,
+   "cx": 126,
+   "depth": 190,
+   "statevector_ok": null,
+   "time_s": 0.03
+  },
+  "mkco_t": {
+   "count": 147,
+   "depth_nc": 74,
+   "cx": 126,
+   "depth": 190,
+   "statevector_ok": null,
+   "time_s": 0.05,
+   "lower_bound": 74,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 87,
+   "depth_nc": 58,
+   "cx": 163,
+   "depth": 191,
+   "statevector_ok": null,
+   "time_s": 0.82
+  },
+  "pyzx_full+mkco_t": {
+   "count": 87,
+   "depth_nc": 52,
+   "cx": 163,
+   "depth": 185,
+   "statevector_ok": null,
+   "time_s": 0.91,
+   "lower_bound": 52,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 87,
+   "depth_nc": 72,
+   "cx": 106,
+   "depth": 194,
+   "statevector_ok": null,
+   "time_s": 0.34
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 87,
+   "depth_nc": 65,
+   "cx": 106,
+   "depth": 187,
+   "statevector_ok": null,
+   "time_s": 0.37,
+   "lower_bound": 65,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_3_ct",
+  "qubits": 11,
+  "kind": "t",
+  "original": {
+   "count": 84,
+   "depth_nc": 36,
+   "cx": 76,
+   "depth": 94,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 84,
+   "depth_nc": 25,
+   "cx": 76,
+   "depth": 57,
+   "statevector_ok": true,
+   "time_s": 0.02
+  },
+  "mkco_t": {
+   "count": 84,
+   "depth_nc": 22,
+   "cx": 76,
+   "depth": 66,
+   "statevector_ok": true,
+   "time_s": 0.03,
+   "lower_bound": 22,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 50,
+   "depth_nc": 18,
+   "cx": 225,
+   "depth": 142,
+   "statevector_ok": true,
+   "time_s": 0.56
+  },
+  "pyzx_full+mkco_t": {
+   "count": 50,
+   "depth_nc": 8,
+   "cx": 225,
+   "depth": 144,
+   "statevector_ok": true,
+   "time_s": 0.64,
+   "lower_bound": 8,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 50,
+   "depth_nc": 31,
+   "cx": 70,
+   "depth": 77,
+   "statevector_ok": true,
+   "time_s": 0.39
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 50,
+   "depth_nc": 18,
+   "cx": 70,
+   "depth": 60,
+   "statevector_ok": true,
+   "time_s": 0.41,
+   "lower_bound": 18,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_4_ct",
+  "qubits": 15,
+  "kind": "t",
+  "original": {
+   "count": 154,
+   "depth_nc": 54,
+   "cx": 138,
+   "depth": 140,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 154,
+   "depth_nc": 37,
+   "cx": 138,
+   "depth": 88,
+   "statevector_ok": true,
+   "time_s": 5.57
+  },
+  "mkco_t": {
+   "count": 154,
+   "depth_nc": 33,
+   "cx": 138,
+   "depth": 102,
+   "statevector_ok": true,
+   "time_s": 0.04,
+   "lower_bound": 33,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 86,
+   "depth_nc": 31,
+   "cx": 424,
+   "depth": 230,
+   "statevector_ok": true,
+   "time_s": 1.32
+  },
+  "pyzx_full+mkco_t": {
+   "count": 86,
+   "depth_nc": 11,
+   "cx": 424,
+   "depth": 220,
+   "statevector_ok": true,
+   "time_s": 1.58,
+   "lower_bound": 11,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 86,
+   "depth_nc": 51,
+   "cx": 126,
+   "depth": 125,
+   "statevector_ok": true,
+   "time_s": 2.78
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 86,
+   "depth_nc": 29,
+   "cx": 126,
+   "depth": 100,
+   "statevector_ok": true,
+   "time_s": 2.82,
+   "lower_bound": 29,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_5_ct",
+  "qubits": 19,
+  "kind": "t",
+  "original": {
+   "count": 245,
+   "depth_nc": 81,
+   "cx": 219,
+   "depth": 210,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 245,
+   "depth_nc": 49,
+   "cx": 219,
+   "depth": 125,
+   "statevector_ok": true,
+   "time_s": 12.22
+  },
+  "mkco_t": {
+   "count": 237,
+   "depth_nc": 45,
+   "cx": 219,
+   "depth": 146,
+   "statevector_ok": true,
+   "time_s": 0.07,
+   "lower_bound": 45,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 133,
+   "depth_nc": 41,
+   "cx": 730,
+   "depth": 326,
+   "statevector_ok": true,
+   "time_s": 5.09
+  },
+  "pyzx_full+mkco_t": {
+   "count": 133,
+   "depth_nc": 14,
+   "cx": 730,
+   "depth": 320,
+   "statevector_ok": true,
+   "time_s": 5.95,
+   "lower_bound": 14,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 133,
+   "depth_nc": 69,
+   "cx": 199,
+   "depth": 179,
+   "statevector_ok": true,
+   "time_s": 1.76
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 133,
+   "depth_nc": 37,
+   "cx": 199,
+   "depth": 136,
+   "statevector_ok": true,
+   "time_s": 1.81,
+   "lower_bound": 37,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_6_ct",
+  "qubits": 23,
+  "kind": "t",
+  "original": {
+   "count": 357,
+   "depth_nc": 90,
+   "cx": 316,
+   "depth": 232,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 357,
+   "depth_nc": 61,
+   "cx": 316,
+   "depth": 155,
+   "statevector_ok": null,
+   "time_s": 10.5
+  },
+  "mkco_t": {
+   "count": 349,
+   "depth_nc": 55,
+   "cx": 316,
+   "depth": 180,
+   "statevector_ok": null,
+   "time_s": 0.18,
+   "lower_bound": 55,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 189,
+   "depth_nc": 55,
+   "cx": 1085,
+   "depth": 463,
+   "statevector_ok": null,
+   "time_s": 7.34
+  },
+  "pyzx_full+mkco_t": {
+   "count": 189,
+   "depth_nc": 20,
+   "cx": 1085,
+   "depth": 432,
+   "statevector_ok": null,
+   "time_s": 9.71,
+   "lower_bound": 20,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 189,
+   "depth_nc": 94,
+   "cx": 286,
+   "depth": 245,
+   "statevector_ok": null,
+   "time_s": 9.76
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 189,
+   "depth_nc": 47,
+   "cx": 286,
+   "depth": 180,
+   "statevector_ok": null,
+   "time_s": 9.87,
+   "lower_bound": 47,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_7_ct",
+  "qubits": 27,
+  "kind": "t",
+  "original": {
+   "count": 490,
+   "depth_nc": 108,
+   "cx": 432,
+   "depth": 278,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 490,
+   "depth_nc": 73,
+   "cx": 432,
+   "depth": 183,
+   "statevector_ok": null,
+   "time_s": 11.74
+  },
+  "mkco_t": {
+   "count": 482,
+   "depth_nc": 66,
+   "cx": 432,
+   "depth": 223,
+   "statevector_ok": null,
+   "time_s": 0.22,
+   "lower_bound": 66,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 256,
+   "depth_nc": 74,
+   "cx": 1640,
+   "depth": 691,
+   "statevector_ok": null,
+   "time_s": 10.01
+  },
+  "pyzx_full+mkco_t": {
+   "count": 256,
+   "depth_nc": 23,
+   "cx": 1640,
+   "depth": 656,
+   "statevector_ok": null,
+   "time_s": 13.5,
+   "lower_bound": 23,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 256,
+   "depth_nc": 110,
+   "cx": 390,
+   "depth": 285,
+   "statevector_ok": null,
+   "time_s": 13.14
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 256,
+   "depth_nc": 55,
+   "cx": 390,
+   "depth": 227,
+   "statevector_ok": null,
+   "time_s": 13.23,
+   "lower_bound": 55,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "tpoly_n8_t40_s0",
+  "qubits": 8,
+  "kind": "t",
+  "original": {
+   "count": 27,
+   "depth_nc": 22,
+   "cx": 162,
+   "depth": 148,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 27,
+   "depth_nc": 17,
+   "cx": 162,
+   "depth": 96,
+   "statevector_ok": true,
+   "time_s": 0.03
+  },
+  "mkco_t": {
+   "count": 27,
+   "depth_nc": 17,
+   "cx": 162,
+   "depth": 128,
+   "statevector_ok": true,
+   "time_s": 0.04,
+   "lower_bound": 17,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 25,
+   "depth_nc": 9,
+   "cx": 103,
+   "depth": 73,
+   "statevector_ok": true,
+   "time_s": 0.3
+  },
+  "pyzx_full+mkco_t": {
+   "count": 25,
+   "depth_nc": 5,
+   "cx": 103,
+   "depth": 75,
+   "statevector_ok": true,
+   "time_s": 0.37,
+   "lower_bound": 5,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 25,
+   "depth_nc": 20,
+   "cx": 142,
+   "depth": 115,
+   "statevector_ok": true,
+   "time_s": 0.42
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 25,
+   "depth_nc": 15,
+   "cx": 142,
+   "depth": 106,
+   "statevector_ok": true,
+   "time_s": 0.49,
+   "lower_bound": 15,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "tpoly_n12_t80_s0",
+  "qubits": 12,
+  "kind": "t",
+  "original": {
+   "count": 52,
+   "depth_nc": 40,
+   "cx": 316,
+   "depth": 267,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 52,
+   "depth_nc": 29,
+   "cx": 316,
+   "depth": 173,
+   "statevector_ok": true,
+   "time_s": 0.05
+  },
+  "mkco_t": {
+   "count": 52,
+   "depth_nc": 28,
+   "cx": 316,
+   "depth": 223,
+   "statevector_ok": true,
+   "time_s": 0.08,
+   "lower_bound": 28,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 48,
+   "depth_nc": 20,
+   "cx": 283,
+   "depth": 167,
+   "statevector_ok": true,
+   "time_s": 1.88
+  },
+  "pyzx_full+mkco_t": {
+   "count": 48,
+   "depth_nc": 9,
+   "cx": 283,
+   "depth": 160,
+   "statevector_ok": true,
+   "time_s": 1.97,
+   "lower_bound": 9,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 48,
+   "depth_nc": 30,
+   "cx": 296,
+   "depth": 206,
+   "statevector_ok": true,
+   "time_s": 1.68
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 48,
+   "depth_nc": 27,
+   "cx": 296,
+   "depth": 202,
+   "statevector_ok": true,
+   "time_s": 1.77,
+   "lower_bound": 27,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "tpoly_n16_t120_s0",
+  "qubits": 16,
+  "kind": "t",
+  "original": {
+   "count": 79,
+   "depth_nc": 47,
+   "cx": 470,
+   "depth": 334,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 79,
+   "depth_nc": 37,
+   "cx": 470,
+   "depth": 222,
+   "statevector_ok": true,
+   "time_s": 12.33
+  },
+  "mkco_t": {
+   "count": 79,
+   "depth_nc": 33,
+   "cx": 470,
+   "depth": 268,
+   "statevector_ok": true,
+   "time_s": 0.14,
+   "lower_bound": 33,
+   "certified_optimal": true
+  },
+  "pyzx_full": {
+   "count": 73,
+   "depth_nc": 26,
+   "cx": 564,
+   "depth": 324,
+   "statevector_ok": true,
+   "time_s": 3.04
+  },
+  "pyzx_full+mkco_t": {
+   "count": 73,
+   "depth_nc": 13,
+   "cx": 564,
+   "depth": 306,
+   "statevector_ok": true,
+   "time_s": 3.2,
+   "lower_bound": 13,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 73,
+   "depth_nc": 39,
+   "cx": 446,
+   "depth": 269,
+   "statevector_ok": true,
+   "time_s": 4.06
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 73,
+   "depth_nc": 33,
+   "cx": 446,
+   "depth": 271,
+   "statevector_ok": true,
+   "time_s": 4.2,
+   "lower_bound": 33,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "rand_cliffT_n8_g400_s0",
+  "qubits": 8,
+  "kind": "t",
+  "original": {
+   "count": 95,
+   "depth_nc": 39,
+   "cx": 157,
+   "depth": 141,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 95,
+   "depth_nc": 37,
+   "cx": 157,
+   "depth": 116,
+   "statevector_ok": true,
+   "time_s": 0.03
+  },
+  "mkco_t": {
+   "count": 79,
+   "depth_nc": 25,
+   "cx": 157,
+   "depth": 141,
+   "statevector_ok": true,
+   "time_s": 12.57,
+   "lower_bound": 19,
+   "certified_optimal": false
+  },
+  "pyzx_full": {
+   "count": 43,
+   "depth_nc": 25,
+   "cx": 176,
+   "depth": 155,
+   "statevector_ok": true,
+   "time_s": 0.98
+  },
+  "pyzx_full+mkco_t": {
+   "count": 43,
+   "depth_nc": 15,
+   "cx": 176,
+   "depth": 145,
+   "statevector_ok": true,
+   "time_s": 1.06,
+   "lower_bound": 15,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 43,
+   "depth_nc": 20,
+   "cx": 147,
+   "depth": 126,
+   "statevector_ok": true,
+   "time_s": 0.65
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 43,
+   "depth_nc": 13,
+   "cx": 147,
+   "depth": 118,
+   "statevector_ok": true,
+   "time_s": 0.73,
+   "lower_bound": 13,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "rand_cliffT_n10_g800_s0",
+  "qubits": 10,
+  "kind": "t",
+  "original": {
+   "count": 175,
+   "depth_nc": 48,
+   "cx": 331,
+   "depth": 219,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 175,
+   "depth_nc": 51,
+   "cx": 331,
+   "depth": 173,
+   "statevector_ok": true,
+   "time_s": 0.06
+  },
+  "mkco_t": {
+   "count": 145,
+   "depth_nc": 35,
+   "cx": 331,
+   "depth": 216,
+   "statevector_ok": true,
+   "time_s": 20.23,
+   "lower_bound": 32,
+   "certified_optimal": false
+  },
+  "pyzx_full": {
+   "count": 91,
+   "depth_nc": 49,
+   "cx": 389,
+   "depth": 300,
+   "statevector_ok": true,
+   "time_s": 2.11
+  },
+  "pyzx_full+mkco_t": {
+   "count": 91,
+   "depth_nc": 29,
+   "cx": 389,
+   "depth": 291,
+   "statevector_ok": true,
+   "time_s": 2.67,
+   "lower_bound": 29,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 91,
+   "depth_nc": 36,
+   "cx": 292,
+   "depth": 195,
+   "statevector_ok": true,
+   "time_s": 2.72
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 91,
+   "depth_nc": 24,
+   "cx": 292,
+   "depth": 181,
+   "statevector_ok": true,
+   "time_s": 3.04,
+   "lower_bound": 24,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "rand_cliffT_n12_g1200_s0",
+  "qubits": 12,
+  "kind": "t",
+  "original": {
+   "count": 247,
+   "depth_nc": 69,
+   "cx": 502,
+   "depth": 299,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 247,
+   "depth_nc": 64,
+   "cx": 502,
+   "depth": 240,
+   "statevector_ok": true,
+   "time_s": 13.61
+  },
+  "mkco_t": {
+   "count": 215,
+   "depth_nc": 45,
+   "cx": 502,
+   "depth": 293,
+   "statevector_ok": true,
+   "time_s": 17.35,
+   "lower_bound": 36,
+   "certified_optimal": false
+  },
+  "pyzx_full": {
+   "count": 143,
+   "depth_nc": 65,
+   "cx": 712,
+   "depth": 488,
+   "statevector_ok": true,
+   "time_s": 6.16
+  },
+  "pyzx_full+mkco_t": {
+   "count": 143,
+   "depth_nc": 36,
+   "cx": 712,
+   "depth": 472,
+   "statevector_ok": true,
+   "time_s": 7.31,
+   "lower_bound": 36,
+   "certified_optimal": true
+  },
+  "pyzx_teleport": {
+   "count": 143,
+   "depth_nc": 47,
+   "cx": 470,
+   "depth": 264,
+   "statevector_ok": true,
+   "time_s": 4.36
+  },
+  "pyzx_teleport+mkco_t": {
+   "count": 143,
+   "depth_nc": 33,
+   "cx": 470,
+   "depth": 253,
+   "statevector_ok": true,
+   "time_s": 4.9,
+   "lower_bound": 33,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "cuccaro_8",
+  "qubits": 18,
+  "kind": "toffoli",
+  "original": {
+   "count": 16,
+   "depth_nc": 16,
+   "cx": 33,
+   "depth": 42,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 16,
+   "depth_nc": 16,
+   "cx": 33,
+   "depth": 36,
+   "statevector_ok": true,
+   "time_s": 0.01
+  },
+  "mkco_t": {
+   "count": 16,
+   "depth_nc": 16,
+   "cx": 33,
+   "depth": 36,
+   "statevector_ok": true,
+   "time_s": 0.01,
+   "lower_bound": 16,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "cuccaro_16",
+  "qubits": 34,
+  "kind": "toffoli",
+  "original": {
+   "count": 32,
+   "depth_nc": 32,
+   "cx": 65,
+   "depth": 82,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 32,
+   "depth_nc": 32,
+   "cx": 65,
+   "depth": 68,
+   "statevector_ok": null,
+   "time_s": 0.02
+  },
+  "mkco_t": {
+   "count": 32,
+   "depth_nc": 32,
+   "cx": 65,
+   "depth": 68,
+   "statevector_ok": null,
+   "time_s": 0.02,
+   "lower_bound": 32,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "cuccaro_32",
+  "qubits": 66,
+  "kind": "toffoli",
+  "original": {
+   "count": 64,
+   "depth_nc": 64,
+   "cx": 129,
+   "depth": 162,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 64,
+   "depth_nc": 64,
+   "cx": 129,
+   "depth": 132,
+   "statevector_ok": null,
+   "time_s": 0.03
+  },
+  "mkco_t": {
+   "count": 64,
+   "depth_nc": 64,
+   "cx": 129,
+   "depth": 132,
+   "statevector_ok": null,
+   "time_s": 0.05,
+   "lower_bound": 64,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "mcx_vchain_8",
+  "qubits": 15,
+  "kind": "toffoli",
+  "original": {
+   "count": 13,
+   "depth_nc": 13,
+   "cx": 0,
+   "depth": 13,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 13,
+   "depth_nc": 13,
+   "cx": 0,
+   "depth": 13,
+   "statevector_ok": true,
+   "time_s": 0.01
+  },
+  "mkco_t": {
+   "count": 13,
+   "depth_nc": 13,
+   "cx": 0,
+   "depth": 13,
+   "statevector_ok": true,
+   "time_s": 0.01,
+   "lower_bound": 13,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "mcx_vchain_16",
+  "qubits": 31,
+  "kind": "toffoli",
+  "original": {
+   "count": 29,
+   "depth_nc": 29,
+   "cx": 0,
+   "depth": 29,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 29,
+   "depth_nc": 29,
+   "cx": 0,
+   "depth": 29,
+   "statevector_ok": null,
+   "time_s": 0.01
+  },
+  "mkco_t": {
+   "count": 29,
+   "depth_nc": 29,
+   "cx": 0,
+   "depth": 29,
+   "statevector_ok": null,
+   "time_s": 0.01,
+   "lower_bound": 29,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_4",
+  "qubits": 15,
+  "kind": "toffoli",
+  "original": {
+   "count": 22,
+   "depth_nc": 15,
+   "cx": 6,
+   "depth": 18,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 22,
+   "depth_nc": 8,
+   "cx": 6,
+   "depth": 8,
+   "statevector_ok": true,
+   "time_s": 1.28
+  },
+  "mkco_t": {
+   "count": 22,
+   "depth_nc": 7,
+   "cx": 6,
+   "depth": 11,
+   "statevector_ok": true,
+   "time_s": 0.01,
+   "lower_bound": 7,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_5",
+  "qubits": 19,
+  "kind": "toffoli",
+  "original": {
+   "count": 35,
+   "depth_nc": 23,
+   "cx": 9,
+   "depth": 24,
+   "statevector_ok": true,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 35,
+   "depth_nc": 10,
+   "cx": 9,
+   "depth": 10,
+   "statevector_ok": true,
+   "time_s": 1.49
+  },
+  "mkco_t": {
+   "count": 35,
+   "depth_nc": 10,
+   "cx": 9,
+   "depth": 15,
+   "statevector_ok": true,
+   "time_s": 4.47,
+   "lower_bound": 9,
+   "certified_optimal": false
+  }
+ },
+ {
+  "circuit": "gf2_mult_6",
+  "qubits": 23,
+  "kind": "toffoli",
+  "original": {
+   "count": 51,
+   "depth_nc": 25,
+   "cx": 10,
+   "depth": 30,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 51,
+   "depth_nc": 12,
+   "cx": 10,
+   "depth": 12,
+   "statevector_ok": null,
+   "time_s": 0.04
+  },
+  "mkco_t": {
+   "count": 51,
+   "depth_nc": 11,
+   "cx": 10,
+   "depth": 19,
+   "statevector_ok": null,
+   "time_s": 0.61,
+   "lower_bound": 11,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_7",
+  "qubits": 27,
+  "kind": "toffoli",
+  "original": {
+   "count": 70,
+   "depth_nc": 30,
+   "cx": 12,
+   "depth": 36,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 70,
+   "depth_nc": 14,
+   "cx": 12,
+   "depth": 14,
+   "statevector_ok": null,
+   "time_s": 1.54
+  },
+  "mkco_t": {
+   "count": 70,
+   "depth_nc": 13,
+   "cx": 12,
+   "depth": 19,
+   "statevector_ok": null,
+   "time_s": 0.81,
+   "lower_bound": 13,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_9",
+  "qubits": 35,
+  "kind": "toffoli",
+  "original": {
+   "count": 117,
+   "depth_nc": 45,
+   "cx": 19,
+   "depth": 46,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 117,
+   "depth_nc": 18,
+   "cx": 19,
+   "depth": 18,
+   "statevector_ok": null,
+   "time_s": 3.51
+  },
+  "mkco_t": {
+   "count": 117,
+   "depth_nc": 18,
+   "cx": 19,
+   "depth": 24,
+   "statevector_ok": null,
+   "time_s": 0.1,
+   "lower_bound": 17,
+   "certified_optimal": false
+  }
+ },
+ {
+  "circuit": "gf2_mult_10",
+  "qubits": 39,
+  "kind": "toffoli",
+  "original": {
+   "count": 145,
+   "depth_nc": 52,
+   "cx": 20,
+   "depth": 53,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 145,
+   "depth_nc": 20,
+   "cx": 20,
+   "depth": 20,
+   "statevector_ok": null,
+   "time_s": 0.55
+  },
+  "mkco_t": {
+   "count": 145,
+   "depth_nc": 19,
+   "cx": 20,
+   "depth": 27,
+   "statevector_ok": null,
+   "time_s": 0.07,
+   "lower_bound": 19,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_11",
+  "qubits": 43,
+  "kind": "toffoli",
+  "original": {
+   "count": 176,
+   "depth_nc": 59,
+   "cx": 21,
+   "depth": 60,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 176,
+   "depth_nc": 22,
+   "cx": 21,
+   "depth": 22,
+   "statevector_ok": null,
+   "time_s": 0.04
+  },
+  "mkco_t": {
+   "count": 176,
+   "depth_nc": 21,
+   "cx": 21,
+   "depth": 25,
+   "statevector_ok": null,
+   "time_s": 0.79,
+   "lower_bound": 21,
+   "certified_optimal": true
+  }
+ },
+ {
+  "circuit": "gf2_mult_12",
+  "qubits": 47,
+  "kind": "toffoli",
+  "original": {
+   "count": 210,
+   "depth_nc": 64,
+   "cx": 24,
+   "depth": 65,
+   "statevector_ok": null,
+   "time_s": 0.0
+  },
+  "mkco_depth": {
+   "count": 210,
+   "depth_nc": 24,
+   "cx": 24,
+   "depth": 24,
+   "statevector_ok": null,
+   "time_s": 0.99
+  },
+  "mkco_t": {
+   "count": 210,
+   "depth_nc": 23,
+   "cx": 24,
+   "depth": 31,
+   "statevector_ok": null,
+   "time_s": 0.69,
+   "lower_bound": 23,
+   "certified_optimal": true
+  }
+ }
+]

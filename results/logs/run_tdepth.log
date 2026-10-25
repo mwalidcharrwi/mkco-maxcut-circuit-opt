@@ -1,0 +1,30 @@
+cuccaro_4_ct {'original': (56, 32), 'mkco_depth': (56, 36), 'mkco_t': (56, 32), 'pyzx_full': (32, 23), 'pyzx_full+mkco_t': (32, 17), 'pyzx_teleport': (32, 32), 'pyzx_teleport+mkco_t': (32, 29)}
+cuccaro_8_ct {'original': (112, 64), 'mkco_depth': (112, 72), 'mkco_t': (112, 64), 'pyzx_full': (64, 41), 'pyzx_full+mkco_t': (64, 36), 'pyzx_teleport': (64, 64), 'pyzx_teleport+mkco_t': (64, 57)}
+cuccaro_16_ct {'original': (224, 128), 'mkco_depth': (224, 144), 'mkco_t': (224, 128), 'pyzx_full': (128, 92), 'pyzx_full+mkco_t': (128, 72), 'pyzx_teleport': (128, 128), 'pyzx_teleport+mkco_t': (128, 113)}
+mcx_vchain_5_ct {'original': (49, 28), 'mkco_depth': (49, 26), 'mkco_t': (49, 25), 'pyzx_full': (31, 22), 'pyzx_full+mkco_t': (31, 19), 'pyzx_teleport': (31, 26), 'pyzx_teleport+mkco_t': (31, 23)}
+mcx_vchain_8_ct {'original': (91, 52), 'mkco_depth': (91, 47), 'mkco_t': (91, 46), 'pyzx_full': (55, 43), 'pyzx_full+mkco_t': (55, 33), 'pyzx_teleport': (55, 45), 'pyzx_teleport+mkco_t': (55, 41)}
+mcx_vchain_12_ct {'original': (147, 84), 'mkco_depth': (147, 75), 'mkco_t': (147, 74), 'pyzx_full': (87, 58), 'pyzx_full+mkco_t': (87, 52), 'pyzx_teleport': (87, 72), 'pyzx_teleport+mkco_t': (87, 65)}
+gf2_mult_3_ct {'original': (84, 36), 'mkco_depth': (84, 25), 'mkco_t': (84, 22), 'pyzx_full': (50, 18), 'pyzx_full+mkco_t': (50, 8), 'pyzx_teleport': (50, 31), 'pyzx_teleport+mkco_t': (50, 18)}
+gf2_mult_4_ct {'original': (154, 54), 'mkco_depth': (154, 37), 'mkco_t': (154, 33), 'pyzx_full': (86, 31), 'pyzx_full+mkco_t': (86, 11), 'pyzx_teleport': (86, 51), 'pyzx_teleport+mkco_t': (86, 29)}
+gf2_mult_5_ct {'original': (245, 81), 'mkco_depth': (245, 49), 'mkco_t': (237, 45), 'pyzx_full': (133, 41), 'pyzx_full+mkco_t': (133, 14), 'pyzx_teleport': (133, 69), 'pyzx_teleport+mkco_t': (133, 37)}
+gf2_mult_6_ct {'original': (357, 90), 'mkco_depth': (357, 61), 'mkco_t': (349, 55), 'pyzx_full': (189, 55), 'pyzx_full+mkco_t': (189, 20), 'pyzx_teleport': (189, 94), 'pyzx_teleport+mkco_t': (189, 47)}
+gf2_mult_7_ct {'original': (490, 108), 'mkco_depth': (490, 73), 'mkco_t': (482, 66), 'pyzx_full': (256, 74), 'pyzx_full+mkco_t': (256, 23), 'pyzx_teleport': (256, 110), 'pyzx_teleport+mkco_t': (256, 55)}
+tpoly_n8_t40_s0 {'original': (27, 22), 'mkco_depth': (27, 17), 'mkco_t': (27, 17), 'pyzx_full': (25, 9), 'pyzx_full+mkco_t': (25, 5), 'pyzx_teleport': (25, 20), 'pyzx_teleport+mkco_t': (25, 15)}
+tpoly_n12_t80_s0 {'original': (52, 40), 'mkco_depth': (52, 29), 'mkco_t': (52, 28), 'pyzx_full': (48, 20), 'pyzx_full+mkco_t': (48, 9), 'pyzx_teleport': (48, 30), 'pyzx_teleport+mkco_t': (48, 27)}
+tpoly_n16_t120_s0 {'original': (79, 47), 'mkco_depth': (79, 37), 'mkco_t': (79, 33), 'pyzx_full': (73, 26), 'pyzx_full+mkco_t': (73, 13), 'pyzx_teleport': (73, 39), 'pyzx_teleport+mkco_t': (73, 33)}
+rand_cliffT_n8_g400_s0 {'original': (95, 39), 'mkco_depth': (95, 37), 'mkco_t': (79, 25), 'pyzx_full': (43, 25), 'pyzx_full+mkco_t': (43, 15), 'pyzx_teleport': (43, 20), 'pyzx_teleport+mkco_t': (43, 13)}
+rand_cliffT_n10_g800_s0 {'original': (175, 48), 'mkco_depth': (175, 51), 'mkco_t': (145, 35), 'pyzx_full': (91, 49), 'pyzx_full+mkco_t': (91, 29), 'pyzx_teleport': (91, 36), 'pyzx_teleport+mkco_t': (91, 24)}
+rand_cliffT_n12_g1200_s0 {'original': (247, 69), 'mkco_depth': (247, 64), 'mkco_t': (215, 45), 'pyzx_full': (143, 65), 'pyzx_full+mkco_t': (143, 36), 'pyzx_teleport': (143, 47), 'pyzx_teleport+mkco_t': (143, 33)}
+cuccaro_8 {'original': (16, 16), 'mkco_depth': (16, 16), 'mkco_t': (16, 16)}
+cuccaro_16 {'original': (32, 32), 'mkco_depth': (32, 32), 'mkco_t': (32, 32)}
+cuccaro_32 {'original': (64, 64), 'mkco_depth': (64, 64), 'mkco_t': (64, 64)}
+mcx_vchain_8 {'original': (13, 13), 'mkco_depth': (13, 13), 'mkco_t': (13, 13)}
+mcx_vchain_16 {'original': (29, 29), 'mkco_depth': (29, 29), 'mkco_t': (29, 29)}
+gf2_mult_4 {'original': (22, 15), 'mkco_depth': (22, 8), 'mkco_t': (22, 7)}
+gf2_mult_5 {'original': (35, 23), 'mkco_depth': (35, 10), 'mkco_t': (35, 10)}
+gf2_mult_6 {'original': (51, 25), 'mkco_depth': (51, 12), 'mkco_t': (51, 11)}
+gf2_mult_7 {'original': (70, 30), 'mkco_depth': (70, 14), 'mkco_t': (70, 13)}
+gf2_mult_9 {'original': (117, 45), 'mkco_depth': (117, 18), 'mkco_t': (117, 18)}
+gf2_mult_10 {'original': (145, 52), 'mkco_depth': (145, 20), 'mkco_t': (145, 19)}
+gf2_mult_11 {'original': (176, 59), 'mkco_depth': (176, 22), 'mkco_t': (176, 21)}
+gf2_mult_12 {'original': (210, 64), 'mkco_depth': (210, 24), 'mkco_t': (210, 23)}

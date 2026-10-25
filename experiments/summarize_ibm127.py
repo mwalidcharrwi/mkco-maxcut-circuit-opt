@@ -165,6 +165,50 @@ def main(outdir="results/ibm127"):
             A(f"| {r['circuit']} | {r['slack_pct']} | {r['depth_2q']} | {r['xt_pairs']} | "
               f"{100 * (r['xt_pairs'] - r['xt_pairs_original']) / r['xt_pairs_original']:+.1f}% | "
               f"{r['duration_ns'] / 1000:.2f} |")
+    noise = os.path.join(outdir, "noise.json")
+    if os.path.exists(noise):
+        nz = json.load(open(noise))
+        show = ["original", "qiskit_o3", "mkco", "mkco_alap", "mkco_full", "mkco_full_alap",
+                "mkco_noise"]
+        A(f"\n### Table 10 - Noise study with the {nz['backend']} calibration snapshot\n")
+        A("ESP = estimated success probability (state-blind, ALAP idling); sESP = state-aware "
+          "ESP (idle gaps weighted by the idling qubit's state, <= 22 active qubits); "
+          "sim = exact density-matrix state fidelity (<= 8 active qubits). Scale 0.1 = all "
+          "error rates x0.1 and T1, T2 x10. mkco_noise = the MKCO candidate with the best sESP "
+          "(ESP for larger circuits), the input included.\n")
+        A("| Circuit | score | " + " | ".join(show) + " | mkco_noise picks |")
+        A("|---|---|" + "---:|" * len(show) + "---|")
+
+        def fmt(v):
+            return "–" if v is None else (f"{v:.3g}" if v >= 1e-3 else f"{v:.2e}")
+
+        for name, cr in nz["circuits"].items():
+            ms = cr["methods"]
+            pick = ms["mkco_noise"]["selected"]
+            rows_ = [("ESP", "esp"), ("ESP x0.1", "esp_scale0.1"), ("sESP", "sesp_scale1.0"),
+                     ("sESP x0.1", "sesp_scale0.1")]
+            if cr["simulated"]:
+                rows_ += [("sim F", ("sim_scale1.0", "state_fidelity")),
+                          ("sim F x0.1", ("sim_scale0.1", "state_fidelity"))]
+            for label, key in rows_:
+                vals = []
+                for m in show:
+                    r = ms.get(m, {})
+                    v = r.get(key[0], {}).get(key[1]) if isinstance(key, tuple) else r.get(key)
+                    vals.append(v)
+                best = max((v for v in vals if v is not None), default=None)
+                cells = [("**" + fmt(v) + "**") if v is not None and v == best else fmt(v) for v in vals]
+                A(f"| {name} | {label} | " + " | ".join(cells) + f" | {pick if label == 'ESP' else ''} |")
+    rg = "results/structured/regroup.json"
+    if os.path.exists(rg):
+        A("\n### Table 11 - ECRs removed by block KAK, plain vs commutation-aware block formation\n")
+        A("| Circuit | input ECRs | plain KAK | regrouped KAK | Qiskit O3 ECRs | plain KAK on O3 | regrouped KAK on O3 |")
+        A("|---|---:|---:|---:|---:|---:|---:|")
+        for r in json.load(open(rg))["ibm127"]:
+            i, q = r.get("input", {}), r.get("qiskit_o3", {})
+            A(f"| {r['circuit']} | {i.get('ecr', '–')} | {i.get('plain_ecr_removed', '–')} | "
+              f"{i.get('regroup_ecr_removed', '–')} | {q.get('ecr', '–')} | {q.get('plain_ecr_removed', '–')} | "
+              f"{q.get('regroup_ecr_removed', '–')} |")
 
     md = "\n".join(lines) + "\n"
     with open(os.path.join(outdir, "tables.md"), "w") as fh:

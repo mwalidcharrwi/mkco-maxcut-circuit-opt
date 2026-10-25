@@ -170,7 +170,6 @@ class MaxKCutState:
         return v
 
     def viol_vec(self, i, lo, hi):
-        ts = np.arange(lo, hi + 1)
         v = np.zeros(hi - lo + 1)
         for p in self.preds[i]:
             if self.run_max[p] >= lo:
@@ -331,7 +330,6 @@ class MaxKCutState:
         score = (lambda: base() + self.V) if prec else base
         best_phi = score()
         best_slot = self.slot.copy()
-        best_feasible = self.V == 0
         it = 0
         last_improve = 0
         stall_limit = stall_limit or max(3000, 60 * self.nu)
@@ -396,7 +394,6 @@ class MaxKCutState:
             if now < best_phi - 1e-12:
                 best_phi = now
                 best_slot = self.slot.copy()
-                best_feasible = self.V == 0
                 last_improve = it
         if score() > best_phi + 1e-12:
             self.reset_to(best_slot)

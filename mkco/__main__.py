@@ -1,6 +1,8 @@
 """MKCO command line.
 
-  python -m mkco opt   IN.qasm OUT.qasm [--metric depth|2q] [--time 30] [--full|--rewrite|--merge] [--xt]
+  python -m mkco opt   IN.qasm OUT.qasm [--metric depth|2q] [--time 30] [--full|--rewrite|--merge]
+                       [--xt] [--alap] [--nc t|toffoli|rotation]
+  python -m mkco route IN.qasm OUT.qasm [--device benchmarks/devices/ibm_eagle_127.json]
   python -m mkco bench FILES_OR_DIRS... [--metric depth|2q] [--time 30] [--csv out.csv]
 
 `opt` reorders a circuit (commutation-preserving) and prints the certified
@@ -9,7 +11,12 @@ direction, needs qiskit) and then does `--rewrite`; `--rewrite` re-synthesises
 single-qubit chains (ZSX) and fuses
 same-axis rotations across commuting gates; `--merge` does only the latter;
 `--xt` keeps the optimal 2q-depth and minimises crosstalk-prone ECR pairs on
-neighbouring couplers (coupling graph inferred from the circuit).
+neighbouring couplers (coupling graph inferred from the circuit); `--alap`
+places gates as late as possible (same depth, better under idle noise);
+`--nc` minimises the non-Clifford depth (T-depth, Toffoli-depth or rotation
+depth) with free Clifford gates instead of the total depth.
+`route` maps a logical circuit onto a device coupling graph with the
+commutation-aware router and prints the exact `unroute` check.
 For the full related-work comparison use experiments/run_ibm127.py.
 """
 import argparse
@@ -26,7 +33,7 @@ from .verify import audit_reordering, statevector_check
 
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="mkco")
-    ap.add_argument("cmd", choices=["opt", "bench"])
+    ap.add_argument("cmd", choices=["opt", "route", "bench"])
     ap.add_argument("paths", nargs="+")
     ap.add_argument("--time", type=float, default=30.0)
     ap.add_argument("--metric", default="depth", choices=["depth", "2q"])
@@ -37,8 +44,32 @@ def main(argv=None):
                     help="single-qubit ZSX resynthesis + rotation merging before reordering")
     ap.add_argument("--xt", action="store_true", help="crosstalk-aware layering")
     ap.add_argument("--hmc", action="store_true", help="add hierarchical Max-Cut warm starts")
+    ap.add_argument("--alap", action="store_true", help="as-late-as-possible layering")
+    ap.add_argument("--nc", choices=["t", "toffoli", "rotation"],
+                    help="minimise the non-Clifford depth with free Cliffords")
+    ap.add_argument("--device", default="benchmarks/devices/ibm_eagle_127.json")
+    ap.add_argument("--trials", type=int, default=8)
     ap.add_argument("--csv", default="results/bench.csv")
     a = ap.parse_args(argv)
+    if a.cmd == "route":
+        import json
+
+        import networkx as nx
+
+        from .route import check_coupling, route, unroute
+        c = load_qasm(a.paths[0])
+        d = json.load(open(a.device))
+        g = nx.Graph()
+        g.add_nodes_from(range(d["num_qubits"]))
+        g.add_edges_from(tuple(e) for e in d["coupling"])
+        out, rep = route(c, g, trials=a.trials)
+        ok, msg, fin = unroute(c, out, rep["initial_layout"])
+        print(f"{rep['swaps']} SWAPs; unroute check: {'pass' if ok else 'FAIL'} ({msg}); "
+              f"coupling check: {'pass' if check_coupling(out, g) else 'FAIL'}")
+        print(f"initial layout {rep['initial_layout']}\nfinal layout   {fin}")
+        with open(a.paths[1], "w") as fh:
+            fh.write(out.to_qasm())
+        return
     if a.cmd == "opt":
         c = load_qasm(a.paths[0])
         src = c
@@ -70,14 +101,23 @@ def main(argv=None):
             out, _ = optimize_crosstalk(src, adj, time_limit=a.time)
             print(f"crosstalk pairs {crosstalk_pairs(src, adj)} -> {crosstalk_pairs(out, adj)}; "
                   f"2q depth {src.depth('2q')} -> {out.depth('2q', barrier_sync=True)}")
+        elif a.nc:
+            from .nonclifford import optimize_nonclifford
+            out, rep = optimize_nonclifford(src, kind=a.nc, time_limit=a.time)
+            cert = " (certified optimal)" if rep["certified_optimal"] else ""
+            print(f"{a.nc}-depth: {rep['before']} -> {rep['after']}, lower bound "
+                  f"{rep['lower_bound']}{cert}; {a.nc} count {rep['count_before']} -> "
+                  f"{rep['count_after']}")
         else:
-            out, rep = optimize(src, metric=a.metric, time_limit=a.time, use_hmc=a.hmc)
+            out, rep = optimize(src, metric=a.metric, time_limit=a.time, use_hmc=a.hmc,
+                                alap=a.alap)
             cert = " (certified optimal)" if rep["certified_optimal"] else ""
             print(f"{a.metric}: {rep['before']} -> {rep['after']}, lower bound "
                   f"{rep['lower_bound']}{cert}; {rep['time']:.1f}s")
-        audit = audit_reordering(src, src.gates, out.gates)      # the reordering step
-        print(f"commutation audit: {'pass' if audit['ok'] else 'FAIL'} "
-              f"({audit.get('inverted_pairs')} reordered pairs checked)")
+        if not a.nc:                                    # rotation merging changes the gates
+            audit = audit_reordering(src, src.gates, out.gates)      # the reordering step
+            print(f"commutation audit: {'pass' if audit['ok'] else 'FAIL'} "
+                  f"({audit.get('inverted_pairs')} reordered pairs checked)")
         ok, fid = statevector_check(c, out)
         if ok is not None:
             print(f"state-vector check: {'pass' if ok else 'FAIL'} (min fidelity {fid:.12f})")

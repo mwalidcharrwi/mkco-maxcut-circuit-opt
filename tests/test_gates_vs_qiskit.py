@@ -10,7 +10,6 @@ pytest.importorskip("qiskit")
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Operator
 from mkco import gates as G
-from mkco.qasm import parse_qasm
 
 
 def equal_up_to_phase(a, b, tol=1e-8):

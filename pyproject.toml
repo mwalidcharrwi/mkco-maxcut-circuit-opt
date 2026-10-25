@@ -4,10 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mkco"
-version = "0.1.0"
+version = "0.2.0"
 description = "Quantum circuit optimization by precedence-constrained Max-k-Cut (extends Lee, Jeong & Kim, Quantum 2026)"
 readme = "README.md"
 requires-python = ">=3.10"
+license = { file = "LICENSE" }
 authors = [{ name = "Mohammad Walid Charrwi" }]
 dependencies = ["numpy>=1.24", "scipy>=1.10", "networkx>=3.0"]
 
@@ -16,6 +17,8 @@ qiskit = ["qiskit>=1.0"]
 exact = ["ortools>=9.8"]
 sdp = ["cvxpy>=1.4"]
 plots = ["matplotlib>=3.8"]
+noise = ["qiskit>=1.0", "qiskit-aer>=0.15", "qiskit-ibm-runtime>=0.30"]
+zx = ["pyzx>=0.8"]
 dev = ["pytest>=7", "qiskit>=1.0", "ortools>=9.8", "matplotlib>=3.8", "cvxpy>=1.4"]
 
 [project.scripts]

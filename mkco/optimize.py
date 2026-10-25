@@ -103,7 +103,7 @@ def optimize_segment(circuit, gates, metric, time_limit, seed=0, use_hmc=False,
 
 
 def optimize(circuit, metric="depth", time_limit=10.0, seed=0, use_hmc=False,
-             hmc_backend="sa", log=None, exact_small=False):
+             hmc_backend="sa", log=None, exact_small=False, alap=False):
     """Reorder `circuit` (commutation-preserving) to minimise depth or 2q-depth.
 
     Returns (optimized_circuit, report).  The output is never worse than the
@@ -111,7 +111,17 @@ def optimize(circuit, metric="depth", time_limit=10.0, seed=0, use_hmc=False,
     the circuit has no barriers the report's `lower_bound` is a certified
     bound on every commutation-equivalent reordering, so `after ==
     lower_bound` proves optimality.
+
+    alap=True layers the reversed circuit and reverses the result, so gates are
+    placed as late as possible.  The depth and the bound are the same; on
+    hardware this keeps qubits in |0> longer before their first gates, which
+    matters under state-dependent idle noise (mkco.noise).
     """
+    if alap:
+        rev = circuit.copy_with_gates(list(reversed(circuit.gates)))
+        out, rep = optimize(rev, metric, time_limit, seed, use_hmc, hmc_backend, log, exact_small)
+        rep["alap"] = True
+        return out.copy_with_gates(list(reversed(out.gates))), rep
     t0 = time.time()
     segs = split_barriers(circuit)
     total = sum(len(p) for k, p in segs if k == "gates") or 1

@@ -28,7 +28,7 @@ from mkco.crosstalk import (adjacent_couplers, coupler_edges,    # noqa: E402
                             crosstalk_pairs, optimize_crosstalk)
 from mkco.jk import jain_kumar                                   # noqa: E402
 from mkco.optimize import optimize                               # noqa: E402
-from mkco.qasm import load_qasm, parse_qasm                      # noqa: E402
+from mkco.qasm import load_qasm                                  # noqa: E402
 from mkco.verify import audit_reordering, statevector_check      # noqa: E402
 
 # nominal IBM Eagle gate durations (ns): rz is virtual, sx/x 35.56 ns, ECR 533.33 ns.
