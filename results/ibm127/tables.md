@@ -167,7 +167,7 @@ Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native
 | hhl_8 | 10 | 2330 | 44 | -21.4% | 1372.24 |
 | hhl_8 | 20 | 2339 | 34 | -39.3% | 1377.32 |
 
-### Table 10 - Noise study with the ibm_brisbane calibration snapshot (fake_brisbane)
+### Table 10 - Noise study with device calibration snapshots (fake_brisbane)
 
 ESP = estimated success probability (state-blind, ALAP idling); sESP = state-aware ESP (idle gaps weighted by the idling qubit's state, <= 22 active qubits); sim = exact density-matrix state fidelity (<= 8 active qubits). Scale 0.1 = all error rates x0.1 and T1, T2 x10. mkco_noise = the MKCO candidate with the best sESP (ESP for larger circuits), the input included.
 
@@ -239,7 +239,7 @@ ESP = estimated success probability (state-blind, ALAP idling); sESP = state-awa
 | qae_17 | 541 | 0 | 0 | 541 | 0 | 0 |
 | qft_16 | 614 | 0 | 0 | 614 | 0 | 0 |
 
-### Table 12 - Noisy simulated backend: Aer + ibm_brisbane calibration, sampled counts
+### Table 12 - Noisy simulated backend: Aer + the circuits' device calibrations, sampled counts
 
 Hellinger fidelity of 512 or 32768 shots against the ideal output [bootstrap 95% interval]. Noise model: Aer's NoiseModel.from_backend (independent of mkco.noise); Qiskit's ALAP scheduling; methods interleaved in one job per run. mkco_noise is the same circuit as the method it selects (a repeat measurement). Predictions at scale 0.1: mkco.noise density-matrix Hellinger fidelity (<= 8 qubits) and state-aware ESP. The 17-qubit circuits are run at scale 0.1 only (at scale 1 they are at the noise floor).
 

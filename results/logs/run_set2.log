@@ -1,0 +1,288 @@
+== tfim_8: 1527 gates, 8 active qubits
+   original         depth=    388 2q=    90 xt=  190 dur=   53049.2ns gates=  1527 t=0.0s
+   lee2026          depth=    388 2q=    90 xt=  190 dur=   53049.2ns gates=  1527 t=0.2s
+   jk2026           depth=    386 2q=    90 xt=  190 dur=   52978.1ns gates=  1527 t=0.1s
+   mkco             depth=    386 2q=    90 xt=  190 dur=   52978.1ns gates=  1527 t=0.1s
+   lee2026_2q       depth=    388 2q=    90 xt=  190 dur=   53049.2ns gates=  1527 t=0.2s
+   jk2026_2q        depth=    389 2q=    90 xt=  190 dur=   53404.8ns gates=  1527 t=0.0s
+   mkco_2q          depth=    388 2q=    90 xt=  190 dur=   53049.2ns gates=  1527 t=0.1s
+   mkco_xt          depth=    389 2q=    90 xt=  190 dur=   53404.8ns gates=  1527 t=0.0s
+== heisenberg_8: 2135 gates, 8 active qubits
+   original         depth=    530 2q=   130 xt=  290 dur=   76231.5ns gates=  2135 t=0.0s
+   lee2026          depth=    530 2q=   130 xt=  290 dur=   76231.5ns gates=  2135 t=0.3s
+   jk2026           depth=    527 2q=   130 xt=  290 dur=   75804.8ns gates=  2135 t=0.1s
+   mkco             depth=    527 2q=   130 xt=  290 dur=   75804.8ns gates=  2135 t=0.1s
+   lee2026_2q       depth=    530 2q=   130 xt=  290 dur=   76231.5ns gates=  2135 t=0.2s
+   jk2026_2q        depth=    541 2q=   130 xt=  290 dur=   76942.7ns gates=  2135 t=0.0s
+   mkco_2q          depth=    530 2q=   130 xt=  290 dur=   76231.5ns gates=  2135 t=0.1s
+   mkco_xt          depth=    541 2q=   130 xt=  290 dur=   76942.7ns gates=  2135 t=0.0s
+== qpe_8: 3161 gates, 8 active qubits
+   original         depth=   1930 2q=   452 xt=   22 dur=  261832.2ns gates=  3161 t=0.0s
+   lee2026          depth=   1930 2q=   452 xt=   22 dur=  261832.2ns gates=  3161 t=0.5s
+   jk2026           depth=   1889 2q=   452 xt=   22 dur=  260445.4ns gates=  3161 t=0.3s
+   mkco             depth=   1889 2q=   452 xt=   22 dur=  260445.4ns gates=  3161 t=0.2s
+   lee2026_2q       depth=   1930 2q=   452 xt=   22 dur=  261832.2ns gates=  3161 t=0.3s
+   jk2026_2q        depth=   1934 2q=   452 xt=   22 dur=  261974.4ns gates=  3161 t=0.1s
+   mkco_2q          depth=   1930 2q=   452 xt=   22 dur=  261832.2ns gates=  3161 t=0.1s
+   mkco_xt          depth=   1934 2q=   452 xt=   19 dur=  261974.4ns gates=  3161 t=3.9s
+== tfim_7_40: 4288 gates, 7 active qubits
+   original         depth=   1560 2q=   368 xt=  156 dur=  215076.7ns gates=  4288 t=0.0s
+   lee2026          depth=   1560 2q=   368 xt=  156 dur=  215076.7ns gates=  4288 t=0.8s
+   jk2026           depth=   1514 2q=   368 xt=  156 dur=  212872.0ns gates=  4288 t=0.3s
+   mkco             depth=   1514 2q=   368 xt=  156 dur=  212729.7ns gates=  4288 t=0.4s
+   lee2026_2q       depth=   1560 2q=   368 xt=  156 dur=  215076.7ns gates=  4288 t=0.6s
+   jk2026_2q        depth=   1587 2q=   368 xt=  156 dur=  216107.9ns gates=  4288 t=0.1s
+   mkco_2q          depth=   1560 2q=   368 xt=  156 dur=  215076.7ns gates=  4288 t=0.2s
+   mkco_xt          depth=   1587 2q=   368 xt=  156 dur=  216107.9ns gates=  4288 t=0.1s
+tfim_8: O3 388 (reversed ECR 0, 2s, sv True) | O3+MKCO 386 | O3+MKCO-rewrite 386 (sv True) | MKCO-rewrite -
+heisenberg_8: O3 530 (reversed ECR 0, 0s, sv False) | O3+MKCO 526 | O3+MKCO-rewrite 526 (sv False) | MKCO-rewrite -
+qpe_8: O3 1930 (reversed ECR 0, 0s, sv True) | O3+MKCO 1889 | O3+MKCO-rewrite 1889 (sv True) | MKCO-rewrite -
+tfim_7_40: O3 1559 (reversed ECR 0, 0s, sv False) | O3+MKCO 1513 | O3+MKCO-rewrite 1511 (sv False) | MKCO-rewrite -
+tfim_8 depth 388 -> 386 sv True
+heisenberg_8 depth 530 -> 527 sv True
+qpe_8 depth 1930 -> 1889 sv True
+tfim_7_40 depth 1560 -> 1514 sv True
+tfim_8: mkco_rewrite 386 (sv {'ok': True, 'min_fidelity': 0.999999999999821}), o3+mkco_rewrite 386 (sv {'ok': True, 'min_fidelity': 0.9999999999999002})
+heisenberg_8: mkco_rewrite 527 (sv {'ok': True, 'min_fidelity': 0.9999999999997495}), o3+mkco_rewrite 526 (sv {'ok': False, 'min_fidelity': 0.3221316079914684})
+qpe_8: mkco_rewrite 1889 (sv {'ok': True, 'min_fidelity': 0.999999999999797}), o3+mkco_rewrite 1889 (sv {'ok': True, 'min_fidelity': 0.9999999999999344})
+tfim_7_40: mkco_rewrite 1512 (sv {'ok': True, 'min_fidelity': 0.9999999999996599}), o3+mkco_rewrite 1511 (sv {'ok': False, 'min_fidelity': 0.42507002065423066})
+tfim_8: mkco_full depth 386 [full] (cert True), ECR 280 (reversed 0), 2q 90, sv True, 0s | rewrite 386 | O3 388
+heisenberg_8: mkco_full depth 527 [full] (cert True), ECR 420 (reversed 0), 2q 130, sv True, 1s | rewrite 527 | O3 530
+qpe_8: mkco_full depth 1889 [full] (cert True), ECR 484 (reversed 0), 2q 452, sv True, 1s | rewrite 1889 | O3 1930
+tfim_7_40: mkco_full depth 1512 [full] (cert True), ECR 714 (reversed 0), 2q 368, sv True, 9s | rewrite 1512 | O3 1559
+tfim_8: [kak+1q, depth] duration 53.0us (O3 53.0) depth 386 (O3 388) 2q 90 (O3 90) ECR 280 (O3 280) sv True
+heisenberg_8: [kak+1q, depth] duration 75.8us (O3 76.2) depth 527 (O3 530) 2q 130 (O3 130) ECR 420 (O3 420) sv True
+qpe_8: [kak+1q, depth] duration 260.4us (O3 261.8) depth 1889 (O3 1930) 2q 452 (O3 452) ECR 484 (O3 484) sv True
+tfim_7_40: [kak+1q, depth] duration 212.6us (O3 215.1) depth 1512 (O3 1559) 2q 368 (O3 368) ECR 714 (O3 714) sv True
+{'circuit': 'tfim_8', 'blocks_with_2q': 140, 'multi_gate_blocks': 140, 'cheaper_after_kak': 0, 'ecr_removed': 0, 'time_s': 0.1}
+{'circuit': 'heisenberg_8', 'blocks_with_2q': 210, 'multi_gate_blocks': 210, 'cheaper_after_kak': 0, 'ecr_removed': 0, 'time_s': 0.1}
+{'circuit': 'qpe_8', 'blocks_with_2q': 256, 'multi_gate_blocks': 256, 'cheaper_after_kak': 0, 'ecr_removed': 0, 'time_s': 0.2}
+{'circuit': 'tfim_7_40', 'blocks_with_2q': 318, 'multi_gate_blocks': 318, 'cheaper_after_kak': 0, 'ecr_removed': 0, 'time_s': 0.2}
+{'circuit': 'heisenberg_8', 'slack_pct': 0, 'extra_layers': 0, 'depth_2q': 130, 'xt_pairs': 290, 'xt_pairs_original': 290, 'duration_ns': 76942.7, 'duration_ns_original': 76231.5, 'audit_ok': True, 'time_s': 0.1}
+{'circuit': 'heisenberg_8', 'slack_pct': 1, 'extra_layers': 1, 'depth_2q': 131, 'xt_pairs': 286, 'xt_pairs_original': 290, 'duration_ns': 77511.6, 'duration_ns_original': 76231.5, 'audit_ok': True, 'time_s': 18.9}
+{'circuit': 'heisenberg_8', 'slack_pct': 2, 'extra_layers': 3, 'depth_2q': 133, 'xt_pairs': 278, 'xt_pairs_original': 290, 'duration_ns': 78613.8, 'duration_ns_original': 76231.5, 'audit_ok': True, 'time_s': 17.9}
+{'circuit': 'heisenberg_8', 'slack_pct': 5, 'extra_layers': 6, 'depth_2q': 136, 'xt_pairs': 264, 'xt_pairs_original': 290, 'duration_ns': 80285.0, 'duration_ns_original': 76231.5, 'audit_ok': True, 'time_s': 20.2}
+{'circuit': 'heisenberg_8', 'slack_pct': 10, 'extra_layers': 13, 'depth_2q': 143, 'xt_pairs': 238, 'xt_pairs_original': 290, 'duration_ns': 83876.0, 'duration_ns_original': 76231.5, 'audit_ok': True, 'time_s': 20.1}
+{'circuit': 'heisenberg_8', 'slack_pct': 20, 'extra_layers': 26, 'depth_2q': 154, 'xt_pairs': 192, 'xt_pairs_original': 290, 'duration_ns': 90204.9, 'duration_ns_original': 76231.5, 'audit_ok': True, 'time_s': 20.2}
+{'circuit': 'qpe_8', 'slack_pct': 0, 'extra_layers': 0, 'depth_2q': 452, 'xt_pairs': 19, 'xt_pairs_original': 22, 'duration_ns': 261974.4, 'duration_ns_original': 261832.2, 'audit_ok': True, 'time_s': 4.7}
+{'circuit': 'qpe_8', 'slack_pct': 1, 'extra_layers': 5, 'depth_2q': 452, 'xt_pairs': 19, 'xt_pairs_original': 22, 'duration_ns': 261974.4, 'duration_ns_original': 261832.2, 'audit_ok': True, 'time_s': 4.5}
+{'circuit': 'qpe_8', 'slack_pct': 2, 'extra_layers': 9, 'depth_2q': 452, 'xt_pairs': 19, 'xt_pairs_original': 22, 'duration_ns': 261974.4, 'duration_ns_original': 261832.2, 'audit_ok': True, 'time_s': 4.3}
+{'circuit': 'qpe_8', 'slack_pct': 5, 'extra_layers': 23, 'depth_2q': 453, 'xt_pairs': 18, 'xt_pairs_original': 22, 'duration_ns': 262543.3, 'duration_ns_original': 261832.2, 'audit_ok': True, 'time_s': 4.4}
+{'circuit': 'qpe_8', 'slack_pct': 10, 'extra_layers': 45, 'depth_2q': 455, 'xt_pairs': 16, 'xt_pairs_original': 22, 'duration_ns': 263752.2, 'duration_ns_original': 261832.2, 'audit_ok': True, 'time_s': 4.5}
+{'circuit': 'qpe_8', 'slack_pct': 20, 'extra_layers': 90, 'depth_2q': 456, 'xt_pairs': 14, 'xt_pairs_original': 22, 'duration_ns': 264356.7, 'duration_ns_original': 261832.2, 'audit_ok': True, 'time_s': 4.9}
+{'circuit': 'tfim_7_40', 'slack_pct': 0, 'extra_layers': 0, 'depth_2q': 368, 'xt_pairs': 156, 'xt_pairs_original': 156, 'duration_ns': 216107.9, 'duration_ns_original': 215076.7, 'audit_ok': True, 'time_s': 0.1}
+{'circuit': 'tfim_7_40', 'slack_pct': 1, 'extra_layers': 4, 'depth_2q': 372, 'xt_pairs': 150, 'xt_pairs_original': 156, 'duration_ns': 218490.2, 'duration_ns_original': 215076.7, 'audit_ok': True, 'time_s': 20.1}
+{'circuit': 'tfim_7_40', 'slack_pct': 2, 'extra_layers': 7, 'depth_2q': 370, 'xt_pairs': 153, 'xt_pairs_original': 156, 'duration_ns': 217316.8, 'duration_ns_original': 215076.7, 'audit_ok': True, 'time_s': 20.1}
+{'circuit': 'tfim_7_40', 'slack_pct': 5, 'extra_layers': 18, 'depth_2q': 378, 'xt_pairs': 136, 'xt_pairs_original': 156, 'duration_ns': 222081.3, 'duration_ns_original': 215076.7, 'audit_ok': True, 'time_s': 20.2}
+{'circuit': 'tfim_7_40', 'slack_pct': 10, 'extra_layers': 37, 'depth_2q': 386, 'xt_pairs': 126, 'xt_pairs_original': 156, 'duration_ns': 226703.5, 'duration_ns_original': 215076.7, 'audit_ok': True, 'time_s': 20.1}
+{'circuit': 'tfim_7_40', 'slack_pct': 20, 'extra_layers': 74, 'depth_2q': 402, 'xt_pairs': 97, 'xt_pairs_original': 156, 'duration_ns': 235948.0, 'duration_ns_original': 215076.7, 'audit_ok': True, 'time_s': 20.2}
+{'circuit': 'tfim_8', 'slack_pct': 0, 'extra_layers': 0, 'depth_2q': 90, 'xt_pairs': 190, 'xt_pairs_original': 190, 'duration_ns': 53404.8, 'duration_ns_original': 53049.2, 'audit_ok': True, 'time_s': 0.0}
+{'circuit': 'tfim_8', 'slack_pct': 1, 'extra_layers': 1, 'depth_2q': 91, 'xt_pairs': 187, 'xt_pairs_original': 190, 'duration_ns': 54044.8, 'duration_ns_original': 53049.2, 'audit_ok': True, 'time_s': 6.9}
+{'circuit': 'tfim_8', 'slack_pct': 2, 'extra_layers': 2, 'depth_2q': 92, 'xt_pairs': 182, 'xt_pairs_original': 190, 'duration_ns': 54578.2, 'duration_ns_original': 53049.2, 'audit_ok': True, 'time_s': 7.4}
+{'circuit': 'tfim_8', 'slack_pct': 5, 'extra_layers': 4, 'depth_2q': 94, 'xt_pairs': 172, 'xt_pairs_original': 190, 'duration_ns': 55609.3, 'duration_ns_original': 53049.2, 'audit_ok': True, 'time_s': 8.0}
+{'circuit': 'tfim_8', 'slack_pct': 10, 'extra_layers': 9, 'depth_2q': 99, 'xt_pairs': 150, 'xt_pairs_original': 190, 'duration_ns': 58524.8, 'duration_ns_original': 53049.2, 'audit_ok': True, 'time_s': 12.3}
+{'circuit': 'tfim_8', 'slack_pct': 20, 'extra_layers': 18, 'depth_2q': 106, 'xt_pairs': 120, 'xt_pairs_original': 190, 'duration_ns': 62720.4, 'duration_ns_original': 53049.2, 'audit_ok': True, 'time_s': 18.3}
+tfim_8 original {'esp': 0.00079, 'duration_us': 67.92, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.49011} {'sim_scale1.0': 0.00778, 'sim_scale0.1': 0.47044}
+tfim_8 lee2026 {'esp': 0.00079, 'duration_us': 67.92, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.49011} {'sim_scale1.0': 0.00778, 'sim_scale0.1': 0.47044}
+tfim_8 jk2026 {'esp': 0.00079, 'duration_us': 67.8, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.48978} {'sim_scale1.0': 0.00766, 'sim_scale0.1': 0.47032}
+tfim_8 mkco {'esp': 0.00079, 'duration_us': 67.8, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.48978} {'sim_scale1.0': 0.00767, 'sim_scale0.1': 0.47032}
+tfim_8 mkco_xt {'esp': 0.00078, 'duration_us': 68.52, 'sesp_scale1.0': 0.00069, 'sesp_scale0.1': 0.48901} {'sim_scale1.0': 0.00771, 'sim_scale0.1': 0.46944}
+tfim_8 mkco_rewrite {'esp': 0.00079, 'duration_us': 67.8, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.48978} {'sim_scale1.0': 0.00767, 'sim_scale0.1': 0.47032}
+tfim_8 mkco_full {'esp': 0.00079, 'duration_us': 67.8, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.48978} {'sim_scale1.0': 0.00767, 'sim_scale0.1': 0.47032}
+tfim_8 mkco_full_dur {'esp': 0.00079, 'duration_us': 67.8, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.48978} {'sim_scale1.0': 0.00767, 'sim_scale0.1': 0.47032}
+tfim_8 qiskit_o3 {'esp': 0.00079, 'duration_us': 67.92, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.49011} {'sim_scale1.0': 0.00778, 'sim_scale0.1': 0.47044}
+tfim_8 qiskit_o3+mkco_rewrite {'esp': 0.00079, 'duration_us': 67.8, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.48978} {'sim_scale1.0': 0.00767, 'sim_scale0.1': 0.47032}
+tfim_8 mkco_alap {'esp': 0.00078, 'duration_us': 68.4, 'sesp_scale1.0': 0.00068, 'sesp_scale0.1': 0.48872} {'sim_scale1.0': 0.00761, 'sim_scale0.1': 0.46928}
+tfim_8 mkco_full_alap {'esp': 0.00079, 'duration_us': 67.8, 'sesp_scale1.0': 0.0007, 'sesp_scale0.1': 0.48978} {'sim_scale1.0': 0.00767, 'sim_scale0.1': 0.47032}
+heisenberg_8 original {'esp': 3e-05, 'duration_us': 97.38, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35394} {'sim_scale1.0': 0.01078, 'sim_scale0.1': 0.37622}
+heisenberg_8 lee2026 {'esp': 3e-05, 'duration_us': 97.38, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35394} {'sim_scale1.0': 0.01078, 'sim_scale0.1': 0.37622}
+heisenberg_8 jk2026 {'esp': 3e-05, 'duration_us': 96.66, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35453} {'sim_scale1.0': 0.0111, 'sim_scale0.1': 0.37743}
+heisenberg_8 mkco {'esp': 3e-05, 'duration_us': 96.66, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35462} {'sim_scale1.0': 0.01112, 'sim_scale0.1': 0.37753}
+heisenberg_8 mkco_xt {'esp': 3e-05, 'duration_us': 98.58, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35348} {'sim_scale1.0': 0.01102, 'sim_scale0.1': 0.37572}
+heisenberg_8 mkco_rewrite {'esp': 3e-05, 'duration_us': 96.66, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35462} {'sim_scale1.0': 0.01112, 'sim_scale0.1': 0.37753}
+heisenberg_8 mkco_full {'esp': 3e-05, 'duration_us': 96.66, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35462} {'sim_scale1.0': 0.01112, 'sim_scale0.1': 0.37753}
+heisenberg_8 mkco_full_dur {'esp': 3e-05, 'duration_us': 96.66, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35462} {'sim_scale1.0': 0.01112, 'sim_scale0.1': 0.37753}
+heisenberg_8 qiskit_o3 {'esp': 3e-05, 'duration_us': 97.38, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35394} {'sim_scale1.0': 0.01078, 'sim_scale0.1': 0.37622}
+heisenberg_8 qiskit_o3+mkco_rewrite {'esp': 3e-05, 'duration_us': 96.66, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35462} {'sim_scale1.0': 0.01112, 'sim_scale0.1': 0.37753}
+heisenberg_8 mkco_alap {'esp': 3e-05, 'duration_us': 96.9, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35441} {'sim_scale1.0': 0.01105, 'sim_scale0.1': 0.37717}
+heisenberg_8 mkco_full_alap {'esp': 3e-05, 'duration_us': 96.66, 'sesp_scale1.0': 3e-05, 'sesp_scale0.1': 0.35462} {'sim_scale1.0': 0.01112, 'sim_scale0.1': 0.37753}
+qpe_8 original {'esp': 0.0, 'duration_us': 333.36, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.11361} {'sim_scale1.0': 0.0023, 'sim_scale0.1': 0.09277}
+qpe_8 lee2026 {'esp': 0.0, 'duration_us': 333.36, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.11361} {'sim_scale1.0': 0.0023, 'sim_scale0.1': 0.09277}
+qpe_8 jk2026 {'esp': 0.0, 'duration_us': 331.02, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.1187} {'sim_scale1.0': 0.0031, 'sim_scale0.1': 0.09676}
+qpe_8 mkco {'esp': 0.0, 'duration_us': 331.02, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.1187} {'sim_scale1.0': 0.0031, 'sim_scale0.1': 0.09675}
+qpe_8 mkco_xt {'esp': 0.0, 'duration_us': 333.6, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.11308} {'sim_scale1.0': 0.00226, 'sim_scale0.1': 0.0923}
+qpe_8 mkco_rewrite {'esp': 0.0, 'duration_us': 331.02, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.1187} {'sim_scale1.0': 0.0031, 'sim_scale0.1': 0.09675}
+qpe_8 mkco_full {'esp': 0.0, 'duration_us': 331.02, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.1187} {'sim_scale1.0': 0.0031, 'sim_scale0.1': 0.09675}
+qpe_8 mkco_full_dur {'esp': 0.0, 'duration_us': 331.02, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.1187} {'sim_scale1.0': 0.0031, 'sim_scale0.1': 0.09675}
+qpe_8 qiskit_o3 {'esp': 0.0, 'duration_us': 333.36, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.11361} {'sim_scale1.0': 0.0023, 'sim_scale0.1': 0.09277}
+qpe_8 qiskit_o3+mkco_rewrite {'esp': 0.0, 'duration_us': 331.02, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.1187} {'sim_scale1.0': 0.0031, 'sim_scale0.1': 0.09675}
+qpe_8 mkco_alap {'esp': 0.0, 'duration_us': 331.02, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.1187} {'sim_scale1.0': 0.00303, 'sim_scale0.1': 0.09675}
+qpe_8 mkco_full_alap {'esp': 0.0, 'duration_us': 331.02, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.1187} {'sim_scale1.0': 0.0031, 'sim_scale0.1': 0.09675}
+tfim_7_40 original {'esp': 0.0, 'duration_us': 192.512, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00141} {'sim_scale1.0': 0.0086, 'sim_scale0.1': 0.01357}
+tfim_7_40 lee2026 {'esp': 0.0, 'duration_us': 192.512, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00141} {'sim_scale1.0': 0.0086, 'sim_scale0.1': 0.01357}
+tfim_7_40 jk2026 {'esp': 0.0, 'duration_us': 189.784, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00147} {'sim_scale1.0': 0.00826, 'sim_scale0.1': 0.01373}
+tfim_7_40 mkco {'esp': 0.0, 'duration_us': 189.608, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00148} {'sim_scale1.0': 0.00826, 'sim_scale0.1': 0.01374}
+tfim_7_40 mkco_xt {'esp': 0.0, 'duration_us': 193.788, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00137} {'sim_scale1.0': 0.01007, 'sim_scale0.1': 0.01373}
+tfim_7_40 mkco_rewrite {'esp': 0.0, 'duration_us': 189.476, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00147} {'sim_scale1.0': 0.00941, 'sim_scale0.1': 0.01395}
+tfim_7_40 mkco_full {'esp': 0.0, 'duration_us': 189.476, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00147} {'sim_scale1.0': 0.00941, 'sim_scale0.1': 0.01391}
+tfim_7_40 mkco_full_dur {'esp': 0.0, 'duration_us': 189.476, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00147} {'sim_scale1.0': 0.00941, 'sim_scale0.1': 0.01391}
+tfim_7_40 qiskit_o3 {'esp': 0.0, 'duration_us': 192.512, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00141} {'sim_scale1.0': 0.0086, 'sim_scale0.1': 0.01357}
+tfim_7_40 qiskit_o3+mkco_rewrite {'esp': 0.0, 'duration_us': 189.476, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00147} {'sim_scale1.0': 0.00941, 'sim_scale0.1': 0.01395}
+tfim_7_40 mkco_alap {'esp': 0.0, 'duration_us': 189.916, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00144} {'sim_scale1.0': 0.00809, 'sim_scale0.1': 0.01357}
+tfim_7_40 mkco_full_alap {'esp': 0.0, 'duration_us': 189.476, 'sesp_scale1.0': 0.0, 'sesp_scale0.1': 0.00147} {'sim_scale1.0': 0.00941, 'sim_scale0.1': 0.01391}
+### Table 1 - Total depth, reorder-only methods (lower is better)
+
+| Circuit | Gates | Original | Lee'26 (colouring) | JK'26 (MIS+beam) | **MKCO** | Certified LB | MKCO optimal? | MKCO vs original |
+|---|---:|---:|---:|---:|---:|---:|:---:|---:|
+| tfim_8 | 1527 | 388 | 388 | 386 | **386** | 386 | yes | -0.52% |
+| heisenberg_8 | 2135 | 530 | 530 | 527 | **527** | 527 | yes | -0.57% |
+| qpe_8 | 3161 | 1930 | 1930 | 1889 | **1889** | 1889 | yes | -2.12% |
+| tfim_7_40 | 4288 | 1560 | 1560 | 1514 | **1514** | 1514 | yes | -2.95% |
+
+### Table 2 - Two-qubit (ECR) depth, reorder-only methods optimising 2q-depth
+
+| Circuit | Original | Lee'26 | JK'26 | **MKCO** | Certified LB | MKCO optimal? |
+|---|---:|---:|---:|---:|---:|:---:|
+| tfim_8 | 90 | 90 | 90 | **90** | 90 | yes |
+| heisenberg_8 | 130 | 130 | 130 | **130** | 130 | yes |
+| qpe_8 | 452 | 452 | 452 | **452** | 452 | yes |
+| tfim_7_40 | 368 | 368 | 368 | **368** | 368 | yes |
+
+### Table 3 - Crosstalk-prone ECR pairs (same layer, neighbouring couplers) at optimal 2q-depth
+
+| Circuit | Original | Lee'26 | JK'26 | MKCO (2q mode) | **MKCO-XT** | Reduction vs best baseline | 2q-depth orig -> XT | Total depth orig -> XT |
+|---|---:|---:|---:|---:|---:|---:|---|---|
+| tfim_8 | 190 | 190 | 190 | 190 | **190** | +0.0% | 90 -> 90 | 388 -> 389 |
+| heisenberg_8 | 290 | 290 | 290 | 290 | **290** | +0.0% | 130 -> 130 | 530 -> 541 |
+| qpe_8 | 22 | 22 | 22 | 22 | **19** | -13.6% | 452 -> 452 | 1930 -> 1934 |
+| tfim_7_40 | 156 | 156 | 156 | 156 | **156** | +0.0% | 368 -> 368 | 1560 -> 1587 |
+
+### Table 4 - Gate-rewriting class: MKCO rewrite modes vs Qiskit O3 (device target), and composition
+
+Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native directed edges, so every output below is executable on the device (0 reversed ECRs). MKCO-rewrite = single-qubit ZSX resynthesis + run merging + Max-k-Cut reordering; MKCO-full adds two-qubit KAK block resynthesis. Every MKCO result is certified optimal for the gate list it reorders.
+
+| Circuit | Original | MKCO (reorder) | MKCO-rewrite | **MKCO-full** | Qiskit O3 | O3 + MKCO | O3 + MKCO-rewrite | Best | MKCO-full vs Qiskit O3 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| tfim_8 | 388 | **386** | **386** | **386** | 388 | **386** | **386** | 386 | -0.5% |
+| heisenberg_8 | 530 | 527 | 527 | 527 | 530 | **526** | **526** | 526 | -0.6% |
+| qpe_8 | 1930 | **1889** | **1889** | **1889** | 1930 | **1889** | **1889** | 1889 | -2.1% |
+| tfim_7_40 | 1560 | 1514 | 1512 | 1512 | 1559 | 1513 | **1511** | 1511 | -3.0% |
+
+**Hardware-time view.** MKCO-full (duration objective) keeps, per circuit, the candidate with the lowest estimated execution time among {KAK + 1q rewrite, 1q rewrite} x {reorder for depth, for 2q-depth}.
+
+| Circuit | est. duration original (us) | Qiskit O3 (us) | MKCO-full, depth obj. (us) | **MKCO-full, duration obj. (us)** | vs Qiskit | 2q-depth Qiskit / MKCO-dur | ECRs Qiskit / MKCO-dur | depth Qiskit / MKCO-dur | reversed ECRs |
+|---|---:|---:|---:|---:|---:|---|---|---|---|
+| tfim_8 | 53.05 | 53.05 | 52.98 | **52.98** | -0.1% | 90 / 90 | 280 / 280 | 388 / 386 | 0 / 0 |
+| heisenberg_8 | 76.23 | 76.23 | 75.80 | **75.80** | -0.6% | 130 / 130 | 420 / 420 | 530 / 527 | 0 / 0 |
+| qpe_8 | 261.83 | 261.83 | 260.45 | **260.45** | -0.5% | 452 / 452 | 484 / 484 | 1930 / 1889 | 0 / 0 |
+| tfim_7_40 | 215.08 | 215.08 | 212.62 | **212.62** | -1.1% | 368 / 368 | 714 / 714 | 1559 / 1512 | 0 / 0 |
+
+### Table 5 - Estimated execution time (us; ECR 533 ns, sx/x 36 ns, rz virtual)
+
+| Circuit | Original | Lee'26 | JK'26 | MKCO (depth) | MKCO (2q) | MKCO-XT |
+|---|---:|---:|---:|---:|---:|---:|
+| tfim_8 | 53.05 | 53.05 | 52.98 | 52.98 | 53.05 | 53.40 |
+| heisenberg_8 | 76.23 | 76.23 | 75.80 | 75.80 | 76.23 | 76.94 |
+| qpe_8 | 261.83 | 261.83 | 260.45 | 260.45 | 261.83 | 261.97 |
+| tfim_7_40 | 215.08 | 215.08 | 212.87 | 212.73 | 215.08 | 216.11 |
+
+### Table 6 - Runtime (s)
+
+| Circuit | Lee'26 | JK'26 | MKCO | MKCO-2q | MKCO-XT | MKCO-full | Qiskit O3 (target) | MKCO after O3 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| tfim_8 | 0.2 | 0.1 | 0.1 | 0.1 | 0.0 | 0.5 | 2.4 | 0.1 |
+| heisenberg_8 | 0.3 | 0.1 | 0.1 | 0.1 | 0.0 | 0.7 | 0.0 | 0.2 |
+| qpe_8 | 0.5 | 0.3 | 0.2 | 0.1 | 3.9 | 1.0 | 0.0 | 0.2 |
+| tfim_7_40 | 0.8 | 0.3 | 0.4 | 0.2 | 0.1 | 9.3 | 0.0 | 0.3 |
+
+### Table 7 - Verification of every reordered output
+
+| Circuit | Active qubits | Commutation audit (all reorderings) | Inverted pairs checked (MKCO) | State-vector check (MKCO) | State-vector (MKCO-rewrite, vs original) | State-vector (MKCO-full dur., vs original) |
+|---|---:|:---:|---:|:---:|:---:|:---:|
+| tfim_8 | 8 | 13/13 pass | 159 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| heisenberg_8 | 8 | 13/13 pass | 238 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| qpe_8 | 8 | 13/13 pass | 83 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| tfim_7_40 | 7 | 13/13 pass | 274 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+
+### Table 8 - Two-qubit block (KAK) resynthesis: blocks that become cheaper in native ECRs
+
+| Circuit | two-qubit blocks | cheaper after KAK | ECRs removed |
+|---|---:|---:|---:|
+| tfim_8 | 140 | 0 | 0 |
+| heisenberg_8 | 210 | 0 | 0 |
+| qpe_8 | 256 | 0 | 0 |
+| tfim_7_40 | 318 | 0 | 0 |
+
+### Table 9 - Depth budget vs crosstalk (weighted Max-k-Cut with k = k* + slack)
+
+| Circuit | slack (% of k*) | 2q-depth | crosstalk-prone pairs | vs original | est. duration (us) |
+|---|---:|---:|---:|---:|---:|
+| heisenberg_8 | 0 | 130 | 290 | +0.0% | 76.94 |
+| heisenberg_8 | 1 | 131 | 286 | -1.4% | 77.51 |
+| heisenberg_8 | 2 | 133 | 278 | -4.1% | 78.61 |
+| heisenberg_8 | 5 | 136 | 264 | -9.0% | 80.28 |
+| heisenberg_8 | 10 | 143 | 238 | -17.9% | 83.88 |
+| heisenberg_8 | 20 | 154 | 192 | -33.8% | 90.20 |
+| qpe_8 | 0 | 452 | 19 | -13.6% | 261.97 |
+| qpe_8 | 1 | 452 | 19 | -13.6% | 261.97 |
+| qpe_8 | 2 | 452 | 19 | -13.6% | 261.97 |
+| qpe_8 | 5 | 453 | 18 | -18.2% | 262.54 |
+| qpe_8 | 10 | 455 | 16 | -27.3% | 263.75 |
+| qpe_8 | 20 | 456 | 14 | -36.4% | 264.36 |
+| tfim_7_40 | 0 | 368 | 156 | +0.0% | 216.11 |
+| tfim_7_40 | 1 | 372 | 150 | -3.8% | 218.49 |
+| tfim_7_40 | 2 | 370 | 153 | -1.9% | 217.32 |
+| tfim_7_40 | 5 | 378 | 136 | -12.8% | 222.08 |
+| tfim_7_40 | 10 | 386 | 126 | -19.2% | 226.70 |
+| tfim_7_40 | 20 | 402 | 97 | -37.8% | 235.95 |
+| tfim_8 | 0 | 90 | 190 | +0.0% | 53.40 |
+| tfim_8 | 1 | 91 | 187 | -1.6% | 54.04 |
+| tfim_8 | 2 | 92 | 182 | -4.2% | 54.58 |
+| tfim_8 | 5 | 94 | 172 | -9.5% | 55.61 |
+| tfim_8 | 10 | 99 | 150 | -21.1% | 58.52 |
+| tfim_8 | 20 | 106 | 120 | -36.8% | 62.72 |
+
+### Table 10 - Noise study with device calibration snapshots (fake_brisbane, fake_cusco)
+
+ESP = estimated success probability (state-blind, ALAP idling); sESP = state-aware ESP (idle gaps weighted by the idling qubit's state, <= 22 active qubits); sim = exact density-matrix state fidelity (<= 8 active qubits). Scale 0.1 = all error rates x0.1 and T1, T2 x10. mkco_noise = the MKCO candidate with the best sESP (ESP for larger circuits), the input included.
+
+| Circuit | score | original | qiskit_o3 | mkco | mkco_alap | mkco_full | mkco_full_alap | mkco_noise | mkco_noise picks |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---|
+| tfim_8 | ESP | 7.88e-04 | 7.88e-04 | **7.91e-04** | 7.79e-04 | **7.91e-04** | 7.91e-04 | 7.88e-04 | original |
+| tfim_8 | ESP_xt | **1.81e-04** | **1.81e-04** | 1.56e-04 | 1.61e-04 | 1.56e-04 | 1.56e-04 | **1.81e-04** |  |
+| tfim_8 | ESP x0.1 | 0.495 | 0.495 | **0.495** | 0.494 | **0.495** | **0.495** | 0.495 |  |
+| tfim_8 | sESP | **7.04e-04** | 7.04e-04 | 7.00e-04 | 6.85e-04 | 7.00e-04 | 7.00e-04 | **7.04e-04** |  |
+| tfim_8 | sESP x0.1 | **0.49** | 0.49 | 0.49 | 0.489 | 0.49 | 0.49 | **0.49** |  |
+| tfim_8 | sim F | **0.00778** | **0.00778** | 0.00767 | 0.00761 | 0.00767 | 0.00767 | **0.00778** |  |
+| tfim_8 | sim F x0.1 | **0.47** | **0.47** | 0.47 | 0.469 | 0.47 | 0.47 | **0.47** |  |
+| heisenberg_8 | ESP | 2.66e-05 | 2.66e-05 | **2.71e-05** | 2.70e-05 | **2.71e-05** | 2.71e-05 | **2.71e-05** | mkco |
+| heisenberg_8 | ESP_xt | **2.85e-06** | **2.85e-06** | 2.32e-06 | 2.80e-06 | 2.32e-06 | 2.32e-06 | 2.32e-06 |  |
+| heisenberg_8 | ESP x0.1 | 0.355 | 0.355 | **0.355** | 0.355 | **0.355** | **0.355** | **0.355** |  |
+| heisenberg_8 | sESP | 2.55e-05 | 2.55e-05 | **2.60e-05** | 2.58e-05 | **2.60e-05** | **2.60e-05** | **2.60e-05** |  |
+| heisenberg_8 | sESP x0.1 | 0.354 | 0.354 | 0.355 | 0.354 | 0.355 | **0.355** | 0.355 |  |
+| heisenberg_8 | sim F | 0.0108 | 0.0108 | 0.0111 | 0.011 | 0.0111 | **0.0111** | 0.0111 |  |
+| heisenberg_8 | sim F x0.1 | 0.376 | 0.376 | 0.378 | 0.377 | 0.378 | **0.378** | 0.378 |  |
+| qpe_8 | ESP | 4.32e-08 | 4.32e-08 | 4.41e-08 | 4.41e-08 | 4.41e-08 | **4.41e-08** | **4.41e-08** | mkco_full_alap |
+| qpe_8 | ESP_xt | 3.43e-08 | 3.43e-08 | 3.47e-08 | 3.47e-08 | 3.47e-08 | **3.47e-08** | **3.47e-08** |  |
+| qpe_8 | ESP x0.1 | 0.15 | 0.15 | 0.15 | 0.15 | 0.15 | **0.15** | **0.15** |  |
+| qpe_8 | sESP | 6.68e-10 | 6.68e-10 | 1.04e-09 | 1.04e-09 | 1.04e-09 | **1.04e-09** | **1.04e-09** |  |
+| qpe_8 | sESP x0.1 | 0.114 | 0.114 | **0.119** | 0.119 | **0.119** | **0.119** | **0.119** |  |
+| qpe_8 | sim F | 0.0023 | 0.0023 | 0.0031 | 0.00303 | 0.0031 | **0.0031** | **0.0031** |  |
+| qpe_8 | sim F x0.1 | 0.0928 | 0.0928 | 0.0968 | 0.0968 | 0.0968 | **0.0968** | **0.0968** |  |
+| tfim_7_40 | ESP | 3.57e-28 | 3.57e-28 | 4.08e-28 | 4.02e-28 | **5.48e-28** | 5.48e-28 | 4.08e-28 | mkco |
+| tfim_7_40 | ESP_xt | **8.43e-30** | **8.43e-30** | 6.63e-30 | 6.83e-30 | 5.74e-30 | 5.74e-30 | 6.63e-30 |  |
+| tfim_7_40 | ESP x0.1 | 0.00163 | 0.00163 | 0.00167 | 0.00167 | **0.00171** | **0.00171** | 0.00167 |  |
+| tfim_7_40 | sESP | 5.84e-30 | 5.84e-30 | **9.55e-30** | 7.25e-30 | 8.73e-30 | 8.73e-30 | **9.55e-30** |  |
+| tfim_7_40 | sESP x0.1 | 0.00141 | 0.00141 | **0.00148** | 0.00144 | 0.00147 | 0.00147 | **0.00148** |  |
+| tfim_7_40 | sim F | 0.0086 | 0.0086 | 0.00826 | 0.00809 | **0.00941** | 0.00941 | 0.00826 |  |
+| tfim_7_40 | sim F x0.1 | 0.0136 | 0.0136 | 0.0137 | 0.0136 | **0.0139** | 0.0139 | 0.0137 |  |
+
+### Table 11 - ECRs removed by block KAK, plain vs commutation-aware block formation
+
+| Circuit | input ECRs | plain KAK | regrouped KAK | Qiskit O3 ECRs | plain KAK on O3 | regrouped KAK on O3 |
+|---|---:|---:|---:|---:|---:|---:|
+| heisenberg_8 | 420 | 0 | 0 | 420 | 0 | 0 |
+| qpe_8 | 484 | 0 | 0 | 484 | 0 | 0 |
+| tfim_7_40 | 714 | 0 | 0 | 714 | 0 | 0 |
+| tfim_8 | 280 | 0 | 0 | 280 | 0 | 0 |
+

@@ -155,3 +155,14 @@ def test_alap_layering_keeps_depth_and_bound():
     b, rb = optimize(c, time_limit=2, alap=True)
     assert statevector_check(c, b)[0]
     assert b.depth() == a.depth() and rb["lower_bound"] == ra["lower_bound"]
+
+
+def test_two_qubit_bound_ignores_final_measurements():
+    from mkco.optimize import optimize
+    c = Circuit(3, num_clbits=3)
+    c.add("h", [0]).add("cx", [0, 1]).add("cx", [1, 2]).add("h", [2])
+    for q in range(3):
+        c.add("measure", [q], clbits=[q], kind="measure")
+    out, rep = optimize(c, metric="2q", time_limit=1)
+    assert rep["after"] == out.depth("2q") == 2
+    assert rep["lower_bound"] == 2 and rep["certified_optimal"]

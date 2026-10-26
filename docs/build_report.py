@@ -23,7 +23,9 @@ parts = [
     read(os.path.join(D, "REPORT_FRAMEWORK.md")),
     read(os.path.join(D, "REPORT_SETUP.md")),
     "## 5. Results on the IBM-127 benchmarks\n\n" + read(os.path.join(D, "REPORT_DISCUSSION.md")) +
-    "\n" + read(os.path.join(R, "ibm127", "tables.md")),
+    "\n" + read(os.path.join(R, "ibm127", "tables.md")) +
+    "\n### 5.1 Second benchmark set\n\n" + read(os.path.join(D, "REPORT_SET2.md")) + "\n" +
+    read(os.path.join(R, "ibm127_set2", "tables.md")).replace("### Table ", "#### Set 2 - Table "),
     "## 6. Results in the settings of Lee et al. and on structured commuting circuits\n\n" +
     read(os.path.join(D, "REPORT_STRUCTURED.md")) + "\n" + read(os.path.join(R, "structured", "tables.md")),
     "## 7. Extensions: fault-tolerant depth, routing, block formation, noise\n\n" +

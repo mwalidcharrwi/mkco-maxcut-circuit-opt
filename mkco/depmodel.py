@@ -10,8 +10,8 @@ commutation relation of mkco.gates (docs/THEORY.md, Lemma 2), and it is
 stored in O(sum of gate arities) memory: no quadratic edge list is built.
 
 Gates carry a duration in {0, 1}.  Unit gates are the ones being layered;
-zero-duration gates (single-wire only, e.g. 1q gates when the metric is the
-two-qubit depth) are placed afterwards between the layers.
+zero-duration gates (1q gates, and final measurements, when the metric is
+the two-qubit depth) are placed afterwards between the layers.
 """
 from __future__ import annotations
 
@@ -41,7 +41,13 @@ class DepModel:
         if metric == "depth":
             self.dur = np.ones(self.n, dtype=np.int8)
         elif metric == "2q":
-            self.dur = np.array([1 if len(w) >= 2 else 0 for w in self.wires], dtype=np.int8)
+            # Unit gates are the multi-qubit gates (as in Circuit.depth("2q") and
+            # Qiskit).  Measurements (qubit + clbit) count as unit only when some gate
+            # is classically conditioned, since a zero-duration gate must not carry a
+            # dependency between unit gates on different wires.
+            classical = any(g.cond is not None for g in gates)
+            self.dur = np.array([1 if (len(w) >= 2 if classical else len(g.qubits) >= 2) else 0
+                                 for g, w in zip(gates, self.wires)], dtype=np.int8)
         else:
             raise ValueError("DepModel metric must be 'depth' or '2q'")
 

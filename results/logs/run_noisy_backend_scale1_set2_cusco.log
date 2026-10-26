@@ -1,0 +1,17 @@
+tfim_7_40 original pub 0 active [92, 101, 102, 103, 104, 105, 111] flipped 0
+tfim_7_40 qiskit_o3 pub 1 active [92, 101, 102, 103, 104, 105, 111] flipped 0
+tfim_7_40 mkco pub 2 active [92, 101, 102, 103, 104, 105, 111] flipped 0
+tfim_7_40 mkco_alap pub 3 active [92, 101, 102, 103, 104, 105, 111] flipped 0
+tfim_7_40 mkco_full pub 4 active [92, 101, 102, 103, 104, 105, 111] flipped 0
+tfim_7_40 mkco_full_alap pub 5 active [92, 101, 102, 103, 104, 105, 111] flipped 0
+tfim_7_40 mkco_noise pub 6 active [92, 101, 102, 103, 104, 105, 111] flipped 0
+experiments/run_ibm_hardware.py:306: DeprecationWarning: The SamplerV2 class is deprecated as of qiskit-ibm-runtime 0.50.0 and will be removed no sooner than 3 months after the release date. `qiskit_ibm_runtime.executor_sampler.Sampler` provides a new Sampler implementation that runs all the pre- and post-processing in the client side. The top-level `qiskit_ibm_runtime.Sampler` import will be updated to point to the client-side sampler in an upcoming release, with the legacy Sampler being available until the deprecation is completed.
+  job = SamplerV2(mode=mode).run([pubs[i] for i in order], shots=a.shots)
+job e6cd038d-c0ba-4229-a999-c8ba77418fea on fake_cusco
+tfim_7_40 original 0.4782 [0.4718, 0.483]
+tfim_7_40 qiskit_o3 0.4798 [0.4742, 0.485]
+tfim_7_40 mkco 0.4902 [0.4842, 0.4944]
+tfim_7_40 mkco_alap 0.4892 [0.4831, 0.494]
+tfim_7_40 mkco_full 0.487 [0.4809, 0.4917]
+tfim_7_40 mkco_full_alap 0.4851 [0.4791, 0.4898]
+tfim_7_40 mkco_noise 0.491 [0.4852, 0.4958]

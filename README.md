@@ -37,6 +37,13 @@ Full tables in [docs/REPORT.md](docs/REPORT.md) and
       Qiskit on 9/9 (see the hardware-time table in the report).
   - **Depth budgets:** with 20% two-qubit-depth slack, the weighted Max-k-Cut
     removes 39–65% of crosstalk-prone pairs (Pareto fronts in the report).
+- **Second benchmark set** (heisenberg_8, qpe_8, tfim_8, tfim_7_40, with measurements; report
+  Section 5.1):
+  - **Certified optimal depth:** on 4/4 circuits, for both total depth and two-qubit depth.
+  - **vs Qiskit O3:** MKCO-full is 0.5–3.0% shallower; Qiskit removes at most one layer.
+  - **Crosstalk:** a 20% two-qubit-depth budget removes 34–38% of crosstalk-prone pairs.
+  - **Noisy simulation:** on qpe_8, every MKCO order beats the input and Qiskit O3 (+3–4%),
+    as the noise model predicted.
 - **Extensions** (report Section 7):
   - **T-depth with free Cliffords:** on top of PyZX, 10–69% lower T-depth
     (mean 41%) on 17 Clifford+T circuits, all certified optimal; Toffoli-depth
@@ -142,6 +149,7 @@ python experiments/run_structured.py && python experiments/run_theta.py && pytho
 python experiments/run_theta_plus.py && python experiments/run_tdepth.py
 python experiments/run_routing.py && python experiments/run_regroup.py && python experiments/run_noise.py
 python experiments/summarize_ibm127.py && python experiments/summarize_structured.py
+python experiments/run_set2.py                       # second benchmark set -> results/ibm127_set2
 python experiments/plots.py && python docs/build_report.py
 pytest -q
 ```

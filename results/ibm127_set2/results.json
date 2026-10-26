@@ -1,0 +1,1410 @@
+{
+ "tfim_8": {
+  "qubits_active": 8,
+  "methods": {
+   "original": {
+    "depth": 388,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 53049.2,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 388,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 53049.2,
+    "time_s": 0.23,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998209
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 386,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 52978.1,
+    "time_s": 0.1,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 110,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998214
+     }
+    }
+   },
+   "mkco": {
+    "depth": 386,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 52978.1,
+    "time_s": 0.1,
+    "lower_bound": 386,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 159,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999821
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 388,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 53049.2,
+    "time_s": 0.17,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 389,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 53404.8,
+    "time_s": 0.02,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 51,
+      "distinct_pair_types": 2,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 388,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 53049.2,
+    "time_s": 0.06,
+    "lower_bound": 90,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998209
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 389,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 53404.8,
+    "time_s": 0.04,
+    "model": [
+     {
+      "layers": 90,
+      "xt_pairs_model_before": 190.0,
+      "xt_pairs_model_after": 190.0,
+      "iterations": 0
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 51,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999998211
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 388,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 53049.2,
+    "time_s": 2.44,
+    "reversed_ecr": 0,
+    "target": "native directed ECR edges",
+    "verification": {
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999999014
+     }
+    }
+   },
+   "qiskit_o3+mkco": {
+    "depth": 386,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 52978.1,
+    "time_s": 0.13,
+    "lower_bound": 386,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 159,
+      "distinct_pair_types": 2,
+      "failures": 0
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 386,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 52978.1,
+    "time_s": 0.19,
+    "lower_bound": 386,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 1527,
+     "gates_after": 1527
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 159,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999999002
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 386,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 52978.1,
+    "time_s": 0.12,
+    "lower_bound": 386,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 1,
+     "groups_merged": 0,
+     "gates_removed": 0
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 159,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999821
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 386,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 52978.1,
+    "time_s": 0.26,
+    "lower_bound": 386,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 1527,
+     "gates_after": 1527
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 159,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999821
+     }
+    }
+   },
+   "mkco_full": {
+    "depth": 386,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 52978.1,
+    "time_s": 0.47,
+    "lower_bound": 386,
+    "chosen": "full",
+    "certified_optimal": true,
+    "reversed_ecr": 0,
+    "rewrite": {
+     "gates_before": 1527,
+     "gates_after": 1527,
+     "rounds": 1
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 159,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999821
+     }
+    }
+   },
+   "mkco_full_dur": {
+    "depth": 386,
+    "depth_2q": 90,
+    "gates": 1527,
+    "ecr": 280,
+    "xt_pairs": 190,
+    "duration_ns": 52978.1,
+    "time_s": 0.97,
+    "chosen": "kak+1q, reorder for depth",
+    "lower_bound": 386,
+    "certified_optimal": true,
+    "reversed_ecr": 0,
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 159,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999821
+     }
+    }
+   }
+  }
+ },
+ "heisenberg_8": {
+  "qubits_active": 8,
+  "methods": {
+   "original": {
+    "depth": 530,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 76231.5,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 530,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 76231.5,
+    "time_s": 0.31,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997498
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 527,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 75804.8,
+    "time_s": 0.14,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 173,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997488
+     }
+    }
+   },
+   "mkco": {
+    "depth": 527,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 75804.8,
+    "time_s": 0.13,
+    "lower_bound": 527,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 238,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997495
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 530,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 76231.5,
+    "time_s": 0.24,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 541,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 76942.7,
+    "time_s": 0.03,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 44,
+      "distinct_pair_types": 2,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 530,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 76231.5,
+    "time_s": 0.08,
+    "lower_bound": 130,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997498
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 541,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 76942.7,
+    "time_s": 0.03,
+    "model": [
+     {
+      "layers": 130,
+      "xt_pairs_model_before": 290.0000000000014,
+      "xt_pairs_model_after": 290.0000000000014,
+      "iterations": 0
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 44,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997493
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 530,
+    "depth_2q": 130,
+    "gates": 2132,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 76231.5,
+    "time_s": 0.02,
+    "reversed_ecr": 0,
+    "target": "native directed ECR edges",
+    "verification": {
+     "statevector": {
+      "ok": false,
+      "min_fidelity": 0.32213160799146884
+     }
+    }
+   },
+   "qiskit_o3+mkco": {
+    "depth": 526,
+    "depth_2q": 130,
+    "gates": 2132,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 75804.8,
+    "time_s": 0.18,
+    "lower_bound": 526,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 238,
+      "distinct_pair_types": 2,
+      "failures": 0
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 526,
+    "depth_2q": 130,
+    "gates": 2132,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 75804.8,
+    "time_s": 0.27,
+    "lower_bound": 526,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 2132,
+     "gates_after": 2132
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 238,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": false,
+      "min_fidelity": 0.3221316079914684
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 527,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 75804.8,
+    "time_s": 0.17,
+    "lower_bound": 527,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 1,
+     "groups_merged": 0,
+     "gates_removed": 0
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 238,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997495
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 527,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 75804.8,
+    "time_s": 0.27,
+    "lower_bound": 527,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 2135,
+     "gates_after": 2135
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 238,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997495
+     }
+    }
+   },
+   "mkco_full": {
+    "depth": 527,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 75804.8,
+    "time_s": 0.74,
+    "lower_bound": 527,
+    "chosen": "full",
+    "certified_optimal": true,
+    "reversed_ecr": 0,
+    "rewrite": {
+     "gates_before": 2135,
+     "gates_after": 2135,
+     "rounds": 1
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 238,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997495
+     }
+    }
+   },
+   "mkco_full_dur": {
+    "depth": 527,
+    "depth_2q": 130,
+    "gates": 2135,
+    "ecr": 420,
+    "xt_pairs": 290,
+    "duration_ns": 75804.8,
+    "time_s": 1.28,
+    "chosen": "kak+1q, reorder for depth",
+    "lower_bound": 527,
+    "certified_optimal": true,
+    "reversed_ecr": 0,
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 238,
+      "distinct_pair_types": 2,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997495
+     }
+    }
+   }
+  }
+ },
+ "qpe_8": {
+  "qubits_active": 8,
+  "methods": {
+   "original": {
+    "depth": 1930,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 261832.2,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 1930,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 261832.2,
+    "time_s": 0.48,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997975
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 1889,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 260445.4,
+    "time_s": 0.32,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 71,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997968
+     }
+    }
+   },
+   "mkco": {
+    "depth": 1889,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 260445.4,
+    "time_s": 0.2,
+    "lower_bound": 1889,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 83,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999797
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 1930,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 261832.2,
+    "time_s": 0.34,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 1934,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 261974.4,
+    "time_s": 0.06,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 24,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 1930,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 261832.2,
+    "time_s": 0.12,
+    "lower_bound": 452,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997975
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 1934,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 19,
+    "duration_ns": 261974.4,
+    "time_s": 3.89,
+    "model": [
+     {
+      "layers": 452,
+      "xt_pairs_model_before": 22.000000000000004,
+      "xt_pairs_model_after": 19.000000000000004,
+      "iterations": 9684
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 24,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999997972
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 1930,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 261832.2,
+    "time_s": 0.03,
+    "reversed_ecr": 0,
+    "target": "native directed ECR edges",
+    "verification": {
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999935
+     }
+    }
+   },
+   "qiskit_o3+mkco": {
+    "depth": 1889,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 260445.4,
+    "time_s": 0.23,
+    "lower_bound": 1889,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 83,
+      "distinct_pair_types": 5,
+      "failures": 0
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 1889,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 260445.4,
+    "time_s": 0.48,
+    "lower_bound": 1889,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 3161,
+     "gates_after": 3161
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 83,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999999344
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 1889,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 260445.4,
+    "time_s": 0.24,
+    "lower_bound": 1889,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 1,
+     "groups_merged": 0,
+     "gates_removed": 0
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 83,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999797
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 1889,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 260445.4,
+    "time_s": 0.42,
+    "lower_bound": 1889,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 1,
+     "fused_groups": 0,
+     "merged_groups": 0,
+     "gates_before": 3161,
+     "gates_after": 3161
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 83,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999797
+     }
+    }
+   },
+   "mkco_full": {
+    "depth": 1889,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 260445.4,
+    "time_s": 0.99,
+    "lower_bound": 1889,
+    "chosen": "full",
+    "certified_optimal": true,
+    "reversed_ecr": 0,
+    "rewrite": {
+     "gates_before": 3161,
+     "gates_after": 3161,
+     "rounds": 1
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 83,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999797
+     }
+    }
+   },
+   "mkco_full_dur": {
+    "depth": 1889,
+    "depth_2q": 452,
+    "gates": 3161,
+    "ecr": 484,
+    "xt_pairs": 22,
+    "duration_ns": 260445.4,
+    "time_s": 1.91,
+    "chosen": "kak+1q, reorder for depth",
+    "lower_bound": 1889,
+    "certified_optimal": true,
+    "reversed_ecr": 0,
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 83,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.999999999999797
+     }
+    }
+   }
+  }
+ },
+ "tfim_7_40": {
+  "qubits_active": 7,
+  "methods": {
+   "original": {
+    "depth": 1560,
+    "depth_2q": 368,
+    "gates": 4288,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 215076.7,
+    "time_s": 0.0
+   },
+   "lee2026": {
+    "depth": 1560,
+    "depth_2q": 368,
+    "gates": 4288,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 215076.7,
+    "time_s": 0.83,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999996607
+     }
+    }
+   },
+   "jk2026": {
+    "depth": 1514,
+    "depth_2q": 368,
+    "gates": 4288,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 212872.0,
+    "time_s": 0.33,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 232,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999996602
+     }
+    }
+   },
+   "mkco": {
+    "depth": 1514,
+    "depth_2q": 368,
+    "gates": 4288,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 212729.7,
+    "time_s": 0.37,
+    "lower_bound": 1514,
+    "certified_optimal": true,
+    "source": [
+     "list_tail"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 274,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999996599
+     }
+    }
+   },
+   "lee2026_2q": {
+    "depth": 1560,
+    "depth_2q": 368,
+    "gates": 4288,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 215076.7,
+    "time_s": 0.6,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     }
+    }
+   },
+   "jk2026_2q": {
+    "depth": 1587,
+    "depth_2q": 368,
+    "gates": 4288,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 216107.9,
+    "time_s": 0.06,
+    "beam": 3,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 90,
+      "distinct_pair_types": 5,
+      "failures": 0
+     }
+    }
+   },
+   "mkco_2q": {
+    "depth": 1560,
+    "depth_2q": 368,
+    "gates": 4288,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 215076.7,
+    "time_s": 0.18,
+    "lower_bound": 368,
+    "certified_optimal": true,
+    "source": [
+     "original"
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 0,
+      "distinct_pair_types": 0,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999996607
+     }
+    }
+   },
+   "mkco_xt": {
+    "depth": 1587,
+    "depth_2q": 368,
+    "gates": 4288,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 216107.9,
+    "time_s": 0.09,
+    "model": [
+     {
+      "layers": 368,
+      "xt_pairs_model_before": 155.9999999999996,
+      "xt_pairs_model_after": 155.9999999999996,
+      "iterations": 0
+     }
+    ],
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 90,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999996609
+     }
+    }
+   },
+   "qiskit_o3": {
+    "depth": 1559,
+    "depth_2q": 368,
+    "gates": 4282,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 215076.7,
+    "time_s": 0.03,
+    "reversed_ecr": 0,
+    "target": "native directed ECR edges",
+    "verification": {
+     "statevector": {
+      "ok": false,
+      "min_fidelity": 0.4250700206542315
+     }
+    }
+   },
+   "qiskit_o3+mkco": {
+    "depth": 1513,
+    "depth_2q": 368,
+    "gates": 4282,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 212729.7,
+    "time_s": 0.33,
+    "lower_bound": 1513,
+    "certified_optimal": true,
+    "verification": {
+     "audit": {
+      "ok": true,
+      "inverted_pairs": 275,
+      "distinct_pair_types": 4,
+      "failures": 0
+     }
+    }
+   },
+   "qiskit_o3+mkco_rewrite": {
+    "depth": 1511,
+    "depth_2q": 368,
+    "gates": 4136,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 212623.0,
+    "time_s": 2.84,
+    "lower_bound": 1511,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 8,
+     "fused_groups": 49,
+     "merged_groups": 49,
+     "gates_before": 4282,
+     "gates_after": 4136
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 260,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": false,
+      "min_fidelity": 0.42507002065423066
+     }
+    }
+   },
+   "mkco_merge": {
+    "depth": 1514,
+    "depth_2q": 368,
+    "gates": 4265,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 212729.7,
+    "time_s": 0.38,
+    "lower_bound": 1514,
+    "certified_optimal": true,
+    "merge": {
+     "rounds": 2,
+     "groups_merged": 22,
+     "gates_removed": 23
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 274,
+      "distinct_pair_types": 5,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999996599
+     }
+    }
+   },
+   "mkco_rewrite": {
+    "depth": 1512,
+    "depth_2q": 368,
+    "gates": 4141,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 212623.0,
+    "time_s": 2.86,
+    "lower_bound": 1512,
+    "certified_optimal": true,
+    "rewrite": {
+     "rounds": 8,
+     "fused_groups": 49,
+     "merged_groups": 49,
+     "gates_before": 4288,
+     "gates_after": 4141
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 259,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999996599
+     }
+    }
+   },
+   "mkco_full": {
+    "depth": 1512,
+    "depth_2q": 368,
+    "gates": 4117,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 212623.0,
+    "time_s": 9.32,
+    "lower_bound": 1512,
+    "chosen": "full",
+    "certified_optimal": true,
+    "reversed_ecr": 0,
+    "rewrite": {
+     "gates_before": 4288,
+     "gates_after": 4117,
+     "rounds": 3
+    },
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 256,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999996597
+     }
+    }
+   },
+   "mkco_full_dur": {
+    "depth": 1512,
+    "depth_2q": 368,
+    "gates": 4117,
+    "ecr": 714,
+    "xt_pairs": 156,
+    "duration_ns": 212623.0,
+    "time_s": 11.05,
+    "chosen": "kak+1q, reorder for depth",
+    "lower_bound": 1512,
+    "certified_optimal": true,
+    "reversed_ecr": 0,
+    "verification": {
+     "audit_of_reordering": {
+      "ok": true,
+      "inverted_pairs": 256,
+      "distinct_pair_types": 4,
+      "failures": 0
+     },
+     "statevector": {
+      "ok": true,
+      "min_fidelity": 0.9999999999996597
+     }
+    }
+   }
+  }
+ }
+}

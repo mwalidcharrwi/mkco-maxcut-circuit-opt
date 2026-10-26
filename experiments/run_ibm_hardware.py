@@ -11,8 +11,8 @@ QiskitRuntimeService.save_account(...); this script never handles tokens):
     python experiments/run_ibm_hardware.py collect    # scores, once the job is done
 
 Noisy simulated backend (no account needed): the same pipeline on Aer with
-the standard device noise model of the ibm_brisbane calibration snapshot
-(FakeBrisbane: depolarizing + thermal relaxation on gates, thermal relaxation
+the standard device noise model of the calibration snapshot on which the
+circuits are native (FakeBrisbane, or FakeCusco for tfim_7_40: depolarizing + thermal relaxation on gates, thermal relaxation
 on the ALAP delays, readout errors; Aer caps the two snapshot qubits that
 report T2 > 2*T1).  This noise model and Qiskit's
 scheduler share no code with mkco.noise, so it is an independent check:
@@ -66,7 +66,7 @@ def method_circuit(name, method):
 
 
 def active_qubits(c):
-    return sorted({q for g in c.gates if g.kind != "barrier" for q in g.qubits})
+    return sorted({q for g in c.gates if g.kind not in ("barrier", "measure") for q in g.qubits})
 
 
 def best_placement(circuits, backend, max_tries=200000):
@@ -115,6 +115,8 @@ def to_qiskit(c, active):
     from qiskit.circuit.library import ECRGate, RZGate, SXGate, XGate
     qc = QuantumCircuit(c.num_qubits, len(active))
     for g in c.gates:
+        if g.kind == "measure":
+            continue                                   # the active qubits are measured below
         if g.kind == "barrier":
             qc.barrier(list(g.qubits))
         elif g.name in ("rz", "p", "u1"):
@@ -139,7 +141,7 @@ def ideal_distribution(c):
     pos = {q: i for i, q in enumerate(active)}
     qc = QuantumCircuit(len(active))
     for g in c.gates:
-        if g.kind == "barrier":
+        if g.kind in ("barrier", "measure"):
             continue
         op = (RZGate(g.params[0]) if g.name in ("rz", "p", "u1") else SXGate() if g.name == "sx"
               else XGate() if g.name == "x" else ECRGate())
@@ -159,11 +161,6 @@ def hellinger(counts, p, k, rng=None, boot=0):
     samples = [float(np.sum(np.sqrt(p * rng.multinomial(shots, q / shots) / shots)) ** 2)
                for _ in range(boot)]
     return val, [float(np.percentile(samples, 2.5)), float(np.percentile(samples, 97.5))]
-
-
-def fake_brisbane():
-    from qiskit_ibm_runtime.fake_provider import FakeBrisbane
-    return FakeBrisbane()
 
 
 def noise_model(backend, scale=1.0):
@@ -231,7 +228,13 @@ def files(a):
 
 def get_backend(a):
     if a.fake:
-        return fake_brisbane(), None
+        from mkco.noise import matching_backend
+        bes = {matching_backend(method_circuit(n, "original")) for n in a.circuits}
+        names = {b.name if b is not None else None for b in bes}
+        if len(names) != 1 or None in names:
+            raise SystemExit(f"--fake: the circuits are native to different snapshots: {names}; "
+                             "run them separately")
+        return next(iter(bes)), None
     from qiskit_ibm_runtime import QiskitRuntimeService
     service = QiskitRuntimeService()
     if a.backend != "auto":
@@ -366,7 +369,11 @@ def main():
     ap.add_argument("--shots", type=int, default=8192)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--tag", default="small", help="with --fake: name of this run's result files")
+    ap.add_argument("--rdir", default="results/ibm127",
+                    help="folder with the method outputs (<circuit>__<method>.qasm, noise.json)")
     a = ap.parse_args()
+    global RDIR
+    RDIR = a.rdir
     {"submit": submit, "status": status, "collect": collect}[a.cmd](a)
 
 

@@ -61,6 +61,24 @@ def logical_cases():
     return cs
 
 
+def ibm_rows(bdir, rdir):
+    """ECRs removed by plain vs regrouped block KAK, on the inputs and on Qiskit O3's outputs."""
+    for f in sorted(os.listdir(bdir)):
+        name = os.path.splitext(f)[0]
+        row = {"circuit": name}
+        for tag, path in (("input", os.path.join(bdir, f)),
+                          ("qiskit_o3", os.path.join(rdir, f"{name}__qiskit_o3.qasm"))):
+            if not os.path.exists(path):
+                continue
+            c = load_qasm(path)
+            _, s0 = resynthesize_blocks(c)
+            rg, moved = regroup_both_ways(c)
+            _, s1 = resynthesize_blocks(rg)
+            row[tag] = {"ecr": n2q(c), "plain_ecr_removed": s0["ecr_removed"],
+                        "regroup_ecr_removed": s1["ecr_removed"], "gates_moved": moved}
+        yield row
+
+
 def main():
     rows = {"logical": [], "ibm127": []}
     for c in logical_cases():
@@ -79,19 +97,7 @@ def main():
         rows["logical"].append(row)
         print(row, flush=True)
         json.dump(rows, open(OUT, "w"), indent=1)
-    for f in sorted(os.listdir("benchmarks/ibm127")):
-        name = os.path.splitext(f)[0]
-        row = {"circuit": name}
-        for tag, path in (("input", os.path.join("benchmarks/ibm127", f)),
-                          ("qiskit_o3", f"results/ibm127/{name}__qiskit_o3.qasm")):
-            if not os.path.exists(path):
-                continue
-            c = load_qasm(path)
-            _, s0 = resynthesize_blocks(c)
-            rg, moved = regroup_both_ways(c)
-            _, s1 = resynthesize_blocks(rg)
-            row[tag] = {"ecr": n2q(c), "plain_ecr_removed": s0["ecr_removed"],
-                        "regroup_ecr_removed": s1["ecr_removed"], "gates_moved": moved}
+    for row in ibm_rows("benchmarks/ibm127", "results/ibm127"):
         rows["ibm127"].append(row)
         print(row, flush=True)
         json.dump(rows, open(OUT, "w"), indent=1)

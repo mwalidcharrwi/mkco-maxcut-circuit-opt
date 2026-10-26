@@ -14,4 +14,5 @@ venv/
 #                python experiments/add_merge.py && python experiments/add_rewrite.py
 #                python experiments/add_full.py && python experiments/add_full_duration.py
 results/ibm127/*.qasm
+results/ibm127_set2/*.qasm
 results/bench.csv

@@ -26,7 +26,7 @@ def main(bdir="benchmarks/ibm127", out="results/ibm127/pareto.json"):
     circs = {n: load_qasm(p) for n, p in files.items()}
     adj = adjacent_couplers(coupler_edges(circs.values()))
     rows = []
-    for name in CIRCUITS:
+    for name in [n for n in CIRCUITS if n in circs] or sorted(circs):   # set 2: all its circuits
         c = circs[name]
         k_star = c.depth("2q")
         for pct in SLACK_PCT:

@@ -28,7 +28,7 @@ from run_ibm127 import metrics                               # noqa: E402
 
 
 def device_target(qc):
-    from qiskit.circuit import Parameter
+    from qiskit.circuit import Measure, Parameter
     from qiskit.circuit.library import ECRGate, RZGate, SXGate, XGate
     from qiskit.transpiler import Target
     native = sorted({(qc.find_bit(i.qubits[0]).index, qc.find_bit(i.qubits[1]).index)
@@ -39,6 +39,7 @@ def device_target(qc):
     tg.add_instruction(SXGate(), dict(every))
     tg.add_instruction(XGate(), dict(every))
     tg.add_instruction(ECRGate(), {e: None for e in native})
+    tg.add_instruction(Measure(), dict(every))           # set-2 circuits end in measurements
     return tg, set(native)
 
 
@@ -96,7 +97,8 @@ def main(bdir="benchmarks/ibm127", outdir="results/ibm127"):
         r["methods"]["qiskit_o3+mkco_rewrite"] = m3
         open(os.path.join(outdir, f"{name}__qiskit_o3+mkco_rewrite.qasm"), "w").write(qr.to_qasm())
         print(f"{name}: O3 {m['depth']} (reversed ECR {rev}, {tq:.0f}s, sv {ok}) | O3+MKCO {m2['depth']} | "
-              f"O3+MKCO-rewrite {m3['depth']} (sv {ok3}) | MKCO-rewrite {r['methods']['mkco_rewrite']['depth']}",
+              f"O3+MKCO-rewrite {m3['depth']} (sv {ok3}) | MKCO-rewrite "
+              f"{r['methods'].get('mkco_rewrite', {}).get('depth', '-')}",
               flush=True)
         json.dump(res, open(path, "w"), indent=1, default=float)
 

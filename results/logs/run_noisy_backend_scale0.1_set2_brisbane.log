@@ -1,0 +1,45 @@
+heisenberg_8 original pub 0 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+heisenberg_8 qiskit_o3 pub 1 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+heisenberg_8 mkco pub 2 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+heisenberg_8 mkco_alap pub 3 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+heisenberg_8 mkco_full pub 4 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+heisenberg_8 mkco_full_alap pub 5 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+heisenberg_8 mkco_noise pub 6 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+qpe_8 original pub 7 active [3, 4, 15, 19, 20, 21, 22, 33] flipped 0
+qpe_8 qiskit_o3 pub 8 active [3, 4, 15, 19, 20, 21, 22, 33] flipped 0
+qpe_8 mkco pub 9 active [3, 4, 15, 19, 20, 21, 22, 33] flipped 0
+qpe_8 mkco_alap pub 10 active [3, 4, 15, 19, 20, 21, 22, 33] flipped 0
+qpe_8 mkco_full pub 11 active [3, 4, 15, 19, 20, 21, 22, 33] flipped 0
+qpe_8 mkco_full_alap pub 12 active [3, 4, 15, 19, 20, 21, 22, 33] flipped 0
+qpe_8 mkco_noise pub 13 active [3, 4, 15, 19, 20, 21, 22, 33] flipped 0
+tfim_8 original pub 14 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+tfim_8 qiskit_o3 pub 15 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+tfim_8 mkco pub 16 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+tfim_8 mkco_alap pub 17 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+tfim_8 mkco_full pub 18 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+tfim_8 mkco_full_alap pub 19 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+tfim_8 mkco_noise pub 20 active [3, 4, 15, 18, 19, 20, 21, 22] flipped 0
+experiments/run_ibm_hardware.py:306: DeprecationWarning: The SamplerV2 class is deprecated as of qiskit-ibm-runtime 0.50.0 and will be removed no sooner than 3 months after the release date. `qiskit_ibm_runtime.executor_sampler.Sampler` provides a new Sampler implementation that runs all the pre- and post-processing in the client side. The top-level `qiskit_ibm_runtime.Sampler` import will be updated to point to the client-side sampler in an upcoming release, with the legacy Sampler being available until the deprecation is completed.
+  job = SamplerV2(mode=mode).run([pubs[i] for i in order], shots=a.shots)
+job ed9eb9eb-9e22-4452-b52c-b58d0e6a0f67 on fake_brisbane
+heisenberg_8 original 0.4846 [0.4788, 0.4897]
+heisenberg_8 qiskit_o3 0.4872 [0.4814, 0.4928]
+heisenberg_8 mkco 0.4887 [0.4832, 0.4942]
+heisenberg_8 mkco_alap 0.484 [0.478, 0.4892]
+heisenberg_8 mkco_full 0.4865 [0.481, 0.4917]
+heisenberg_8 mkco_full_alap 0.4843 [0.4787, 0.4892]
+heisenberg_8 mkco_noise 0.4898 [0.4843, 0.4949]
+qpe_8 original 0.6793 [0.6735, 0.6838]
+qpe_8 qiskit_o3 0.6826 [0.6767, 0.687]
+qpe_8 mkco 0.7012 [0.6952, 0.7053]
+qpe_8 mkco_alap 0.7036 [0.6983, 0.7076]
+qpe_8 mkco_full 0.7065 [0.7012, 0.7108]
+qpe_8 mkco_full_alap 0.7045 [0.6989, 0.7088]
+qpe_8 mkco_noise 0.7026 [0.6969, 0.7072]
+tfim_8 original 0.5518 [0.5462, 0.5572]
+tfim_8 qiskit_o3 0.557 [0.5517, 0.5623]
+tfim_8 mkco 0.5608 [0.5549, 0.5661]
+tfim_8 mkco_alap 0.5615 [0.5559, 0.5666]
+tfim_8 mkco_full 0.5578 [0.5521, 0.5629]
+tfim_8 mkco_full_alap 0.5579 [0.5523, 0.5631]
+tfim_8 mkco_noise 0.5575 [0.552, 0.5628]

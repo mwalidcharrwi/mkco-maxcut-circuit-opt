@@ -121,6 +121,7 @@ python experiments/run_blocks.py && python experiments/run_pareto.py && python e
 python experiments/summarize_ibm127.py                 # tables -> results/ibm127/tables.md
 python experiments/run_structured.py                   # E1-E6 -> results/structured/*.json
 python experiments/summarize_structured.py
+python experiments/run_set2.py                         # second benchmark set (Section 5.1)
 python experiments/run_theta_plus.py                   # E7b theta-plus certificates
 python experiments/run_tdepth.py                       # E8 T-depth / Toffoli-depth (needs pyzx)
 python experiments/run_routing.py                      # E9 routing on heavy-hex (needs qiskit)

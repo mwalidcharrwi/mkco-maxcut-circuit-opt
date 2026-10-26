@@ -68,6 +68,35 @@ class Calibration:
         raise KeyError(f"no calibration for {g}")
 
 
+def unitary_part(circuit):
+    """The circuit without its final measurements (readout is scored separately).
+
+    Raises ValueError for mid-circuit measurements or resets, which the
+    schedule and the simulators here do not model."""
+    measured, keep = set(), []
+    for g in circuit.gates:
+        if g.kind == "measure":
+            measured.update(g.qubits)
+            continue
+        if g.kind == "reset" or (g.kind == "gate" and measured & set(g.qubits)):
+            raise ValueError("mid-circuit measurement or reset is not supported")
+        keep.append(g)
+    return circuit.copy_with_gates(keep)
+
+
+def matching_backend(circuit):
+    """The 127-qubit ECR fake backend (calibration snapshot) on which every
+    two-qubit gate of the circuit is native, or None."""
+    import qiskit_ibm_runtime.fake_provider as fp
+    pairs = {g.qubits for g in circuit.gates if len(g.qubits) == 2}
+    for name in ("FakeBrisbane", "FakeCusco", "FakeSherbrooke", "FakeOsaka", "FakeKyiv",
+                 "FakeKyoto", "FakeQuebec", "FakeBrussels", "FakeKawasaki", "FakeStrasbourg"):
+        be = getattr(fp, name)()
+        if pairs <= {tuple(e) for e in be.coupling_map.get_edges()}:
+            return be
+    return None
+
+
 def alap_schedule(circuit, cal):
     """Start times (seconds) of every gate under ALAP; barriers synchronise.
 
@@ -110,6 +139,7 @@ def _f_idle(t, t1, t2):
 
 def esp(circuit, cal, scale=1.0, xt_adjacent=None, xt_error=None):
     """Estimated success probability; returns a dict of its factors."""
+    circuit = unitary_part(circuit)
     starts, total, durs = alap_schedule(circuit, cal)
     log_g, broken = 0.0, 0
     for g in circuit.gates:
@@ -147,6 +177,7 @@ def _noisy_circuits(circuit, cal, scale=1.0):
     from qiskit.circuit.library import ECRGate
     from qiskit_aer.noise import depolarizing_error, thermal_relaxation_error
 
+    circuit = unitary_part(circuit)
     active = sorted({q for g in circuit.gates for q in g.qubits if g.kind != "barrier"})
     pos = {q: i for i, q in enumerate(active)}
     k = len(active)
@@ -245,6 +276,7 @@ def state_aware_esp(circuit, cal, scale=1.0, max_qubits=22):
     superposition dephases fully.  Returns None above max_qubits.
     """
     from .sim import apply_matrix
+    circuit = unitary_part(circuit)
     active = sorted({q for g in circuit.gates for q in g.qubits if g.kind != "barrier"})
     k = len(active)
     if k > max_qubits:

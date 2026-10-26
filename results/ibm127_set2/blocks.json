@@ -1,0 +1,34 @@
+[
+ {
+  "circuit": "tfim_8",
+  "blocks_with_2q": 140,
+  "multi_gate_blocks": 140,
+  "cheaper_after_kak": 0,
+  "ecr_removed": 0,
+  "time_s": 0.1
+ },
+ {
+  "circuit": "heisenberg_8",
+  "blocks_with_2q": 210,
+  "multi_gate_blocks": 210,
+  "cheaper_after_kak": 0,
+  "ecr_removed": 0,
+  "time_s": 0.1
+ },
+ {
+  "circuit": "qpe_8",
+  "blocks_with_2q": 256,
+  "multi_gate_blocks": 256,
+  "cheaper_after_kak": 0,
+  "ecr_removed": 0,
+  "time_s": 0.2
+ },
+ {
+  "circuit": "tfim_7_40",
+  "blocks_with_2q": 318,
+  "multi_gate_blocks": 318,
+  "cheaper_after_kak": 0,
+  "ecr_removed": 0,
+  "time_s": 0.2
+ }
+]

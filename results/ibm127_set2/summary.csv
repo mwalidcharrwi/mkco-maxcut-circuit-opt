@@ -1,0 +1,13 @@
+circuit,metric,original,lee2026,jk2026,mkco,lower_bound
+tfim_8,depth,388,388,386,386,386
+heisenberg_8,depth,530,530,527,527,527
+qpe_8,depth,1930,1930,1889,1889,1889
+tfim_7_40,depth,1560,1560,1514,1514,1514
+tfim_8,depth_2q,90,90,90,90,90
+heisenberg_8,depth_2q,130,130,130,130,130
+qpe_8,depth_2q,452,452,452,452,452
+tfim_7_40,depth_2q,368,368,368,368,368
+tfim_8,xt_pairs,190,190,190,190,
+heisenberg_8,xt_pairs,290,290,290,290,
+qpe_8,xt_pairs,22,22,22,19,
+tfim_7_40,xt_pairs,156,156,156,156,

@@ -1,0 +1,149 @@
+{
+ "backend": "fake_cusco",
+ "job_id": "e6cd038d-c0ba-4229-a999-c8ba77418fea",
+ "submitted": "2026-10-26 23:54:38",
+ "options": "Aer noisy simulation, NoiseModel.from_backend(FakeBrisbane), ALAP delays",
+ "rows": [
+  {
+   "circuit": "tfim_7_40",
+   "method": "original",
+   "backend": "fake_cusco",
+   "job_id": "e6cd038d-c0ba-4229-a999-c8ba77418fea",
+   "shots": 32768,
+   "hellinger_fidelity": 0.4782345845240724,
+   "ci95": [
+    0.471817995387532,
+    0.48304039194413867
+   ],
+   "uniform_baseline": 0.4790081854555877,
+   "model": {
+    "esp": 3.5749822160274598e-28,
+    "sesp": 5.8412211755852566e-30
+   },
+   "two_qubit_gates": 714,
+   "depth": 1560,
+   "ecr_flipped": 0
+  },
+  {
+   "circuit": "tfim_7_40",
+   "method": "qiskit_o3",
+   "backend": "fake_cusco",
+   "job_id": "e6cd038d-c0ba-4229-a999-c8ba77418fea",
+   "shots": 32768,
+   "hellinger_fidelity": 0.4798412709208527,
+   "ci95": [
+    0.47420587328262126,
+    0.4849985616204636
+   ],
+   "uniform_baseline": 0.47900818545577856,
+   "model": {
+    "esp": 3.5749822160274598e-28,
+    "sesp": 5.84122117558451e-30
+   },
+   "two_qubit_gates": 714,
+   "depth": 1559,
+   "ecr_flipped": 0
+  },
+  {
+   "circuit": "tfim_7_40",
+   "method": "mkco",
+   "backend": "fake_cusco",
+   "job_id": "e6cd038d-c0ba-4229-a999-c8ba77418fea",
+   "shots": 32768,
+   "hellinger_fidelity": 0.49015857008606495,
+   "ci95": [
+    0.48421679632744,
+    0.49444964417379456
+   ],
+   "uniform_baseline": 0.47900818545558876,
+   "model": {
+    "esp": 4.083857523723977e-28,
+    "sesp": 9.548988371180379e-30
+   },
+   "two_qubit_gates": 714,
+   "depth": 1514,
+   "ecr_flipped": 0
+  },
+  {
+   "circuit": "tfim_7_40",
+   "method": "mkco_alap",
+   "backend": "fake_cusco",
+   "job_id": "e6cd038d-c0ba-4229-a999-c8ba77418fea",
+   "shots": 32768,
+   "hellinger_fidelity": 0.4892259086330073,
+   "ci95": [
+    0.483082614023889,
+    0.49400252772213116
+   ],
+   "uniform_baseline": 0.4790081854555877,
+   "model": {
+    "esp": 4.0220111224137775e-28,
+    "sesp": 7.247219944019122e-30
+   },
+   "two_qubit_gates": 714,
+   "depth": 1514,
+   "ecr_flipped": 0
+  },
+  {
+   "circuit": "tfim_7_40",
+   "method": "mkco_full",
+   "backend": "fake_cusco",
+   "job_id": "e6cd038d-c0ba-4229-a999-c8ba77418fea",
+   "shots": 32768,
+   "hellinger_fidelity": 0.4869879598721646,
+   "ci95": [
+    0.4808849660968088,
+    0.4916818850205315
+   ],
+   "uniform_baseline": 0.47900818545568974,
+   "model": {
+    "esp": 5.4812659755655e-28,
+    "sesp": 8.731831254024951e-30
+   },
+   "two_qubit_gates": 714,
+   "depth": 1512,
+   "ecr_flipped": 0
+  },
+  {
+   "circuit": "tfim_7_40",
+   "method": "mkco_full_alap",
+   "backend": "fake_cusco",
+   "job_id": "e6cd038d-c0ba-4229-a999-c8ba77418fea",
+   "shots": 32768,
+   "hellinger_fidelity": 0.48506817455248247,
+   "ci95": [
+    0.4791436308956393,
+    0.48980856689830604
+   ],
+   "uniform_baseline": 0.4790081854556882,
+   "model": {
+    "esp": 5.481265975565461e-28,
+    "sesp": 8.731831254024951e-30
+   },
+   "two_qubit_gates": 714,
+   "depth": 1512,
+   "ecr_flipped": 0
+  },
+  {
+   "circuit": "tfim_7_40",
+   "method": "mkco_noise",
+   "backend": "fake_cusco",
+   "job_id": "e6cd038d-c0ba-4229-a999-c8ba77418fea",
+   "shots": 32768,
+   "hellinger_fidelity": 0.49096996364400003,
+   "ci95": [
+    0.48521700660615963,
+    0.4957648345827021
+   ],
+   "uniform_baseline": 0.47900818545558876,
+   "model": {
+    "esp": 4.083857523723977e-28,
+    "sesp": 9.548988371180379e-30
+   },
+   "two_qubit_gates": 714,
+   "depth": 1514,
+   "ecr_flipped": 0
+  }
+ ],
+ "noise_scale": 1.0
+}

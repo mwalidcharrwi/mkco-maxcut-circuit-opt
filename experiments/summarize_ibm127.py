@@ -170,7 +170,7 @@ def main(outdir="results/ibm127"):
         nz = json.load(open(noise))
         show = ["original", "qiskit_o3", "mkco", "mkco_alap", "mkco_full", "mkco_full_alap",
                 "mkco_noise"]
-        A(f"\n### Table 10 - Noise study with the ibm_brisbane calibration snapshot ({nz['backend']})\n")
+        A(f"\n### Table 10 - Noise study with device calibration snapshots ({nz['backend']})\n")
         A("ESP = estimated success probability (state-blind, ALAP idling); sESP = state-aware "
           "ESP (idle gaps weighted by the idling qubit's state, <= 22 active qubits); "
           "sim = exact density-matrix state fidelity (<= 8 active qubits). Scale 0.1 = all "
@@ -183,6 +183,8 @@ def main(outdir="results/ibm127"):
             return "–" if v is None else (f"{v:.3g}" if v >= 1e-3 else f"{v:.2e}")
 
         for name, cr in nz["circuits"].items():
+            if name not in res:
+                continue
             ms = cr["methods"]
             pick = ms["mkco_noise"]["selected"]
             rows_ = [("ESP", "esp"), ("ESP_xt", "esp_xt"), ("ESP x0.1", "esp_scale0.1"), ("sESP", "sesp_scale1.0"),
@@ -199,12 +201,14 @@ def main(outdir="results/ibm127"):
                 best = max((v for v in vals if v is not None), default=None)
                 cells = [("**" + fmt(v) + "**") if v is not None and v == best else fmt(v) for v in vals]
                 A(f"| {name} | {label} | " + " | ".join(cells) + f" | {pick if label == 'ESP' else ''} |")
-    rg = "results/structured/regroup.json"
-    if os.path.exists(rg):
+    rg = os.path.join(outdir, "regroup.json")
+    if not os.path.exists(rg):
+        rg = "results/structured/regroup.json"
+    if os.path.exists(rg) and any(r["circuit"] in res for r in json.load(open(rg))["ibm127"]):
         A("\n### Table 11 - ECRs removed by block KAK, plain vs commutation-aware block formation\n")
         A("| Circuit | input ECRs | plain KAK | regrouped KAK | Qiskit O3 ECRs | plain KAK on O3 | regrouped KAK on O3 |")
         A("|---|---:|---:|---:|---:|---:|---:|")
-        for r in json.load(open(rg))["ibm127"]:
+        for r in [r for r in json.load(open(rg))["ibm127"] if r["circuit"] in res]:
             i, q = r.get("input", {}), r.get("qiskit_o3", {})
             A(f"| {r['circuit']} | {i.get('ecr', '–')} | {i.get('plain_ecr_removed', '–')} | "
               f"{i.get('regroup_ecr_removed', '–')} | {q.get('ecr', '–')} | {q.get('plain_ecr_removed', '–')} | "
@@ -215,13 +219,15 @@ def main(outdir="results/ibm127"):
     for sc in ("1", "0.1"):
         for f in sorted(glob.glob(f"results/hardware/noisy_backend_scale{sc}_*_results.json")):
             for r in json.load(open(f))["rows"]:
-                hw_rows.setdefault(sc, {})[(r["circuit"], r["method"])] = r
+                if r["circuit"] in res:
+                    hw_rows.setdefault(sc, {})[(r["circuit"], r["method"])] = r
             for r in json.load(open(f.replace("_results.json", "_jobs.json")))["records"]:
-                hw_model.setdefault(sc, {})[(r["circuit"], r["method"])] = r["model"]
+                if r["circuit"] in res:
+                    hw_model.setdefault(sc, {})[(r["circuit"], r["method"])] = r["model"]
     if hw_rows and os.path.exists(noise):
         nzc = json.load(open(noise))["circuits"]
         shots = sorted({r["shots"] for rows_ in hw_rows.values() for r in rows_.values()})
-        A("\n### Table 12 - Noisy simulated backend: Aer + ibm_brisbane calibration, sampled counts\n")
+        A("\n### Table 12 - Noisy simulated backend: Aer + the circuits' device calibrations, sampled counts\n")
         A(f"Hellinger fidelity of {' or '.join(map(str, shots))} shots against the ideal output "
           "[bootstrap 95% interval]. Noise model: Aer's NoiseModel.from_backend (independent of "
           "mkco.noise); Qiskit's ALAP scheduling; methods interleaved in one job per run. mkco_noise "
@@ -283,4 +289,4 @@ def main(outdir="results/ibm127"):
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1] if len(sys.argv) > 1 else "results/ibm127")
