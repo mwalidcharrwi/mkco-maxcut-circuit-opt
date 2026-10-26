@@ -241,32 +241,40 @@ ESP = estimated success probability (state-blind, ALAP idling); sESP = state-awa
 
 ### Table 12 - Noisy simulated backend: Aer + ibm_brisbane calibration, sampled counts
 
-Hellinger fidelity of 32768 shots against the ideal output [bootstrap 95% interval]. Noise model: Aer's NoiseModel.from_backend (independent of mkco.noise); Qiskit's ALAP scheduling; one job per scale, methods interleaved. mkco_noise is the same circuit as the method it selects (a repeat measurement). Prediction = mkco.noise density-matrix Hellinger fidelity at the same scale.
+Hellinger fidelity of 512 or 32768 shots against the ideal output [bootstrap 95% interval]. Noise model: Aer's NoiseModel.from_backend (independent of mkco.noise); Qiskit's ALAP scheduling; methods interleaved in one job per run. mkco_noise is the same circuit as the method it selects (a repeat measurement). Predictions at scale 0.1: mkco.noise density-matrix Hellinger fidelity (<= 8 qubits) and state-aware ESP. The 17-qubit circuits are run at scale 0.1 only (at scale 1 they are at the noise floor).
 
-| Circuit | method | scale 1 | scale 0.1 | prediction (scale 0.1) |
-|---|---|---:|---:|---:|
-| mult_8 | original | 0.0135 [0.0122, 0.0148] | 0.5461 [0.5404, 0.5512] | 0.5505 |
-| mult_8 | qiskit_o3 | 0.0127 [0.0116, 0.0139] | 0.5417 [0.5359, 0.5469] | 0.5494 |
-| mult_8 | mkco | 0.0109 [0.0098, 0.0119] | 0.5128 [0.5073, 0.5179] | 0.5265 |
-| mult_8 | mkco_alap | 0.0110 [0.0099, 0.0121] | 0.5215 [0.5167, 0.5266] | 0.5298 |
-| mult_8 | mkco_full | 0.0111 [0.0100, 0.0123] | 0.5148 [0.5092, 0.5203] | 0.5266 |
-| mult_8 | mkco_full_alap | 0.0112 [0.0101, 0.0123] | 0.5131 [0.5076, 0.5188] | 0.5266 |
-| mult_8 | mkco_noise (= original) | 0.0128 [0.0116, 0.0140] | 0.5475 [0.5423, 0.5529] | 0.5505 |
-| hubbard_8 | original | 0.0040 [0.0034, 0.0046] | 0.0695 [0.0667, 0.0721] | 0.0808 |
-| hubbard_8 | qiskit_o3 | 0.0040 [0.0033, 0.0047] | 0.0716 [0.0688, 0.0742] | 0.0810 |
-| hubbard_8 | mkco | 0.0032 [0.0025, 0.0038] | 0.0647 [0.0620, 0.0673] | 0.0757 |
-| hubbard_8 | mkco_alap | 0.0039 [0.0032, 0.0046] | 0.0732 [0.0703, 0.0758] | 0.0820 |
-| hubbard_8 | mkco_full | 0.0033 [0.0027, 0.0039] | 0.0677 [0.0650, 0.0704] | 0.0760 |
-| hubbard_8 | mkco_full_alap | 0.0048 [0.0040, 0.0055] | 0.0740 [0.0712, 0.0770] | 0.0823 |
-| hubbard_8 | mkco_noise (= mkco_full_alap) | 0.0037 [0.0031, 0.0043] | 0.0732 [0.0703, 0.0761] | 0.0823 |
-| hhl_8 | original | 0.0630 [0.0605, 0.0654] | 0.0719 [0.0689, 0.0746] | 0.0722 |
-| hhl_8 | qiskit_o3 | 0.0601 [0.0574, 0.0626] | 0.0694 [0.0665, 0.0719] | 0.0720 |
-| hhl_8 | mkco | 0.0627 [0.0598, 0.0651] | 0.0717 [0.0688, 0.0743] | 0.0738 |
-| hhl_8 | mkco_alap | 0.0657 [0.0631, 0.0683] | 0.0731 [0.0702, 0.0760] | 0.0735 |
-| hhl_8 | mkco_full | 0.0661 [0.0635, 0.0687] | 0.0746 [0.0717, 0.0774] | 0.0738 |
-| hhl_8 | mkco_full_alap | 0.0647 [0.0619, 0.0672] | 0.0747 [0.0717, 0.0775] | 0.0738 |
-| hhl_8 | mkco_noise (= mkco_full) | 0.0626 [0.0597, 0.0652] | 0.0721 [0.0692, 0.0749] | 0.0738 |
+| Circuit | method | scale 1 | scale 0.1 | predicted (DM, x0.1) | sESP x0.1 |
+|---|---|---:|---:|---:|---:|
+| mult_8 | original | 0.0135 [0.0122, 0.0148] | 0.5461 [0.5404, 0.5512] | 0.5505 | 0.5433 |
+| mult_8 | mkco | 0.0109 [0.0098, 0.0119] | 0.5128 [0.5073, 0.5179] | 0.5265 | 0.5189 |
+| mult_8 | mkco_alap | 0.0110 [0.0099, 0.0121] | 0.5215 [0.5167, 0.5266] | 0.5298 | 0.5220 |
+| mult_8 | mkco_full | 0.0111 [0.0100, 0.0123] | 0.5148 [0.5092, 0.5203] | 0.5266 | 0.5189 |
+| mult_8 | mkco_full_alap | 0.0112 [0.0101, 0.0123] | 0.5131 [0.5076, 0.5188] | 0.5266 | 0.5189 |
+| mult_8 | mkco_noise (= original) | 0.0128 [0.0116, 0.0140] | 0.5475 [0.5423, 0.5529] | 0.5505 | 0.5433 |
+| mult_8 | qiskit_o3 | 0.0127 [0.0116, 0.0139] | 0.5417 [0.5359, 0.5469] | 0.5494 | 0.5423 |
+| add_17 | original | – | 0.1680 [0.1348, 0.2012] | – | 0.1468 |
+| add_17 | mkco | – | 0.1484 [0.1191, 0.1777] | – | 0.1478 |
+| add_17 | mkco_noise (= mkco_full_alap) | – | 0.1270 [0.0996, 0.1563] | – | 0.1494 |
+| add_17 | qiskit_o3 | – | 0.1621 [0.1309, 0.1953] | – | 0.1470 |
+| qae_17 | original | – | 0.2799 [0.2245, 0.3051] | – | 0.1942 |
+| qae_17 | mkco | – | 0.3053 [0.2532, 0.3301] | – | 0.1963 |
+| qae_17 | mkco_noise (= mkco_full_alap) | – | 0.3525 [0.2960, 0.3752] | – | 0.1969 |
+| qae_17 | qiskit_o3 | – | 0.2544 [0.2013, 0.2751] | – | 0.1938 |
+| hubbard_8 | original | 0.0040 [0.0034, 0.0046] | 0.0695 [0.0667, 0.0721] | 0.0808 | 0.0618 |
+| hubbard_8 | mkco | 0.0032 [0.0025, 0.0038] | 0.0647 [0.0620, 0.0673] | 0.0757 | 0.0582 |
+| hubbard_8 | mkco_alap | 0.0039 [0.0032, 0.0046] | 0.0732 [0.0703, 0.0758] | 0.0820 | 0.0631 |
+| hubbard_8 | mkco_full | 0.0033 [0.0027, 0.0039] | 0.0677 [0.0650, 0.0704] | 0.0760 | 0.0586 |
+| hubbard_8 | mkco_full_alap | 0.0048 [0.0040, 0.0055] | 0.0740 [0.0712, 0.0770] | 0.0823 | 0.0634 |
+| hubbard_8 | mkco_noise (= mkco_full_alap) | 0.0037 [0.0031, 0.0043] | 0.0732 [0.0703, 0.0761] | 0.0823 | 0.0634 |
+| hubbard_8 | qiskit_o3 | 0.0040 [0.0033, 0.0047] | 0.0716 [0.0688, 0.0742] | 0.0810 | 0.0620 |
+| hhl_8 | original | 0.0630 [0.0605, 0.0654] | 0.0719 [0.0689, 0.0746] | 0.0722 | 0.0010 |
+| hhl_8 | mkco | 0.0627 [0.0598, 0.0651] | 0.0717 [0.0688, 0.0743] | 0.0738 | 0.0010 |
+| hhl_8 | mkco_alap | 0.0657 [0.0631, 0.0683] | 0.0731 [0.0702, 0.0760] | 0.0735 | 0.0009 |
+| hhl_8 | mkco_full | 0.0661 [0.0635, 0.0687] | 0.0746 [0.0717, 0.0774] | 0.0738 | 0.0010 |
+| hhl_8 | mkco_full_alap | 0.0647 [0.0619, 0.0672] | 0.0747 [0.0717, 0.0775] | 0.0738 | 0.0010 |
+| hhl_8 | mkco_noise (= mkco_full) | 0.0626 [0.0597, 0.0652] | 0.0721 [0.0692, 0.0749] | 0.0738 | 0.0010 |
+| hhl_8 | qiskit_o3 | 0.0601 [0.0574, 0.0626] | 0.0694 [0.0665, 0.0719] | 0.0720 | 0.0009 |
 
 Scale 1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 6/6, state-aware ESP 5/6, ESP 4/6 correctly.
 
-Scale 0.1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 12/12, state-aware ESP 12/12, ESP 3/12 correctly.
+Scale 0.1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 12/12, state-aware ESP 13/13, ESP 4/13 correctly.

@@ -212,8 +212,20 @@ def noise_model(backend, scale=1.0):
     return NoiseModel.from_backend(_Scaled())
 
 
+def _drop_idle(qc, active):
+    """Remove the scheduler's delays on qubits the circuit never uses (they only
+    idle in |0>, where relaxation does nothing), so Aer can drop those qubits."""
+    out = qc.copy_empty_like()
+    for inst in qc.data:
+        qs = {qc.find_bit(q).index for q in inst.qubits}
+        if inst.operation.name == "delay" and not qs & active:
+            continue
+        out.append(inst)
+    return out
+
+
 def files(a):
-    tag = f"noisy_backend_scale{a.noise_scale:g}_" if a.fake else ""
+    tag = f"noisy_backend_scale{a.noise_scale:g}_{a.tag}_" if a.fake else ""
     return os.path.join(HDIR, tag + "jobs.json"), os.path.join(HDIR, tag + "results.json")
 
 
@@ -276,12 +288,16 @@ def submit(a):
                          "model": {"esp": esp(c, cal, scale)["esp"] if "ecr" in backend.operation_names else None,
                                    "sesp": None if s is None else s["sesp"]},
                          "ideal": p_ideal.tolist()})
+            if a.fake:
+                qc = _drop_idle(qc, set(act))
             pubs.append(qc)
             print(name, m, "pub", len(pubs) - 1, "active", act, "flipped", flipped, flush=True)
     order = np.random.default_rng(a.seed).permutation(len(pubs))       # interleave methods
     if a.fake:
         from qiskit_aer import AerSimulator
-        mode = AerSimulator(noise_model=noise_model(backend, a.noise_scale), seed_simulator=a.seed)
+        big = max(len(r["active"]) for r in recs) > 12      # trajectories: branch shots
+        mode = AerSimulator(noise_model=noise_model(backend, a.noise_scale), seed_simulator=a.seed,
+                            shot_branching_enable=big)
     else:
         mode = backend
     job = SamplerV2(mode=mode).run([pubs[i] for i in order], shots=a.shots)
@@ -349,6 +365,7 @@ def main():
                     help="with --fake: error rates x scale, T1 and T2 / scale")
     ap.add_argument("--shots", type=int, default=8192)
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--tag", default="small", help="with --fake: name of this run's result files")
     a = ap.parse_args()
     {"submit": submit, "status": status, "collect": collect}[a.cmd](a)
 

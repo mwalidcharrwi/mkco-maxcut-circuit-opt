@@ -67,7 +67,7 @@ It needs your own account, saved beforehand with
 `submit --fake [--noise-scale 0.1]` runs the same pipeline on a noisy
 simulated backend (Aer + the ibm_brisbane calibration snapshot). The results
 are in report Table 12: the state-aware estimate ordered every resolved pair
-of methods correctly (12/12), while the usual ESP got 3/12.
+of methods correctly (13/13), while the usual ESP got 4/13.
 
 ## Layout
 ```

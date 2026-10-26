@@ -1,0 +1,89 @@
+{
+ "backend": "fake_brisbane",
+ "job_id": "2d692933-2458-4d82-9460-e6793740e565",
+ "submitted": "2026-10-26 12:48:29",
+ "options": "Aer noisy simulation, NoiseModel.from_backend(FakeBrisbane), ALAP delays",
+ "rows": [
+  {
+   "circuit": "add_17",
+   "method": "original",
+   "backend": "fake_brisbane",
+   "job_id": "2d692933-2458-4d82-9460-e6793740e565",
+   "shots": 512,
+   "hellinger_fidelity": 0.16796875000019373,
+   "ci95": [
+    0.13476562500017494,
+    0.2011718750002089
+   ],
+   "uniform_baseline": 7.629394531280358e-06,
+   "model": {
+    "esp": 0.17098537387852664,
+    "sesp": 0.14684597980729627
+   },
+   "two_qubit_gates": 499,
+   "depth": 1003,
+   "ecr_flipped": 0
+  },
+  {
+   "circuit": "add_17",
+   "method": "qiskit_o3",
+   "backend": "fake_brisbane",
+   "job_id": "2d692933-2458-4d82-9460-e6793740e565",
+   "shots": 512,
+   "hellinger_fidelity": 0.16210937500006845,
+   "ci95": [
+    0.1308593750000518,
+    0.1953125000000589
+   ],
+   "uniform_baseline": 7.62939453126301e-06,
+   "model": {
+    "esp": 0.1707314642993982,
+    "sesp": 0.14700418616494543
+   },
+   "two_qubit_gates": 499,
+   "depth": 1026,
+   "ecr_flipped": 0
+  },
+  {
+   "circuit": "add_17",
+   "method": "mkco",
+   "backend": "fake_brisbane",
+   "job_id": "2d692933-2458-4d82-9460-e6793740e565",
+   "shots": 512,
+   "hellinger_fidelity": 0.14843750000013933,
+   "ci95": [
+    0.11909179687508324,
+    0.17773437500015482
+   ],
+   "uniform_baseline": 7.62939453128254e-06,
+   "model": {
+    "esp": 0.17055912475998924,
+    "sesp": 0.14776440848041458
+   },
+   "two_qubit_gates": 499,
+   "depth": 964,
+   "ecr_flipped": 0
+  },
+  {
+   "circuit": "add_17",
+   "method": "mkco_noise",
+   "backend": "fake_brisbane",
+   "job_id": "2d692933-2458-4d82-9460-e6793740e565",
+   "shots": 512,
+   "hellinger_fidelity": 0.12695312500015035,
+   "ci95": [
+    0.09960937500013266,
+    0.15625000000018213
+   ],
+   "uniform_baseline": 7.629394531287552e-06,
+   "model": {
+    "esp": 0.17185321240629373,
+    "sesp": 0.14941807893661715
+   },
+   "two_qubit_gates": 499,
+   "depth": 964,
+   "ecr_flipped": 0
+  }
+ ],
+ "noise_scale": 0.1
+}

@@ -146,10 +146,11 @@ T1, T2 and readout errors (`mkco.noise`, Table 10):
     model shares no code with `mkco.noise`.
   - 32,768 shots per circuit, all methods interleaved in one job, at
     calibrated and at 10× lower noise.
-  - On the method pairs that sampling separates, `mkco.noise`'s
-    density-matrix model and the state-aware ESP order **12/12** pairs
-    correctly at 10× lower noise. The state-blind ESP gets 3/12, worse than
-    chance, because it rewards the shorter orders.
+  - On the method pairs that sampling separates, at 10× lower noise,
+    `mkco.noise`'s density-matrix model orders **12/12** pairs correctly
+    (8-qubit circuits). The state-aware ESP orders **13/13** (including
+    qae_17). The state-blind ESP gets 4/13, worse than chance, because it
+    rewards the shorter orders.
   - At calibrated noise, where the circuits sit near the noise floor, the
     scores are 6/6, 5/6 and 4/6.
   - Measured at 10× lower noise, `mkco_noise` reproduces the predicted
@@ -160,6 +161,27 @@ T1, T2 and readout errors (`mkco.noise`, Table 10):
     - hubbard_8: 0.073–0.074, against 0.072 for Qiskit and 0.065 for plain
       MKCO;
     - hhl_8 (MKCO-full): 0.072–0.075, against 0.069 for Qiskit.
+  - Larger circuits:
+    - add_17 and qae_17 (17 qubits, outputs concentrated on 1 and 4
+      bitstrings) were sampled at 10× lower noise: 512 shots per version,
+      quantum-trajectory simulation at about 0.85 s per shot. With 512 shots the 95% intervals span about
+      ±0.03, wider than the 1–2% differences the model predicts. Results:
+      - qae_17: the measured order is the one the state-aware ESP predicts
+        (noise-aware MKCO 0.353 > plain MKCO 0.305 > input 0.280 > Qiskit O3
+        0.254). The gap between noise-aware MKCO and Qiskit O3 is resolved
+        (non-overlapping intervals). The Hellinger values exceed the predicted
+        state fidelities because phase errors do not show in counts taken in
+        the computational basis.
+      - add_17: the four versions overlap (0.127–0.168), and every predicted
+        success probability lies inside its interval. The point estimates run
+        the other way from the predicted ranking, but well within the sampling
+        error.
+    - qft_16 and grover_10 were not sampled. Their ideal outputs are almost
+      uniform (16.0 and 9.9 bits of entropy), so measured counts cannot tell
+      the methods apart; grover_10 is also at the noise floor even at 10×
+      lower noise.
+    - heisenberg_32 and hubbard_18 (31–32 active qubits) are beyond noisy
+      simulation on this machine: one state vector would need about 70 GB.
 - **On real hardware.** `run_ibm_hardware.py submit` sends the same job to an
   IBM Quantum backend. It needs the user's own account; none was available
   for this study.

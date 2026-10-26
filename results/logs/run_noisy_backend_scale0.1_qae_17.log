@@ -1,0 +1,11 @@
+qae_17 original pub 0 active [54, 61, 62, 63, 64, 65, 66, 67, 72, 73, 77, 78, 79, 80, 81, 82, 83] flipped 0
+qae_17 qiskit_o3 pub 1 active [54, 61, 62, 63, 64, 65, 66, 67, 72, 73, 77, 78, 79, 80, 81, 82, 83] flipped 0
+qae_17 mkco pub 2 active [54, 61, 62, 63, 64, 65, 66, 67, 72, 73, 77, 78, 79, 80, 81, 82, 83] flipped 0
+qae_17 mkco_noise pub 3 active [54, 61, 62, 63, 64, 65, 66, 67, 72, 73, 77, 78, 79, 80, 81, 82, 83] flipped 0
+experiments/run_ibm_hardware.py:303: DeprecationWarning: The SamplerV2 class is deprecated as of qiskit-ibm-runtime 0.50.0 and will be removed no sooner than 3 months after the release date. `qiskit_ibm_runtime.executor_sampler.Sampler` provides a new Sampler implementation that runs all the pre- and post-processing in the client side. The top-level `qiskit_ibm_runtime.Sampler` import will be updated to point to the client-side sampler in an upcoming release, with the legacy Sampler being available until the deprecation is completed.
+  job = SamplerV2(mode=mode).run([pubs[i] for i in order], shots=a.shots)
+job 8822cc59-5ef2-42b5-a668-20af05ee7fa9 on fake_brisbane
+qae_17 original 0.2799 [0.2245, 0.3051]
+qae_17 qiskit_o3 0.2544 [0.2013, 0.2751]
+qae_17 mkco 0.3053 [0.2532, 0.3301]
+qae_17 mkco_noise 0.3525 [0.296, 0.3752]
