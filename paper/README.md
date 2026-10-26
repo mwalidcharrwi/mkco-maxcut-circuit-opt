@@ -12,7 +12,7 @@ Everything needed to draft the MKCO paper, organised for a writing assistant.
 | `tables/ibm127_all.csv` | Every per-circuit number for the 13 IBM-127 circuits. |
 | `tables/full_*.md` | Complete generated tables of every experiment. |
 | `supplement/` | Technical report, proofs (THEORY.md) and related-work notes. |
-| `mkco_paper_package.zip` | All of the above in one file for upload (not committed). |
+| `mkco_paper_package.zip` | All of the above in one file for upload. |
 
 ## Rebuild
 

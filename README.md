@@ -111,7 +111,7 @@ experiments/      run_ibm127.py, add_merge.py, add_rewrite.py, add_full.py,
                   run_regroup.py, run_noise.py, run_ibm_hardware.py, summarize_*.py, plots.py
 tests/            test_core.py, test_gates_vs_qiskit.py, test_extensions.py
 docs/             REPORT.md (full report), THEORY.md, RELATED_WORK.md, figures/
-results/          JSON, tables and logs (optimized QASM outputs are regenerated, not committed)
+results/          JSON, tables, logs and the optimized QASM output of every circuit x method
 ```
 
 ## Install and use
