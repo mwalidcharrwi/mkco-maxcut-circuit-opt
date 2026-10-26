@@ -16,3 +16,4 @@ venv/
 results/ibm127/*.qasm
 results/ibm127_set2/*.qasm
 results/bench.csv
+paper/mkco_paper_package.zip
