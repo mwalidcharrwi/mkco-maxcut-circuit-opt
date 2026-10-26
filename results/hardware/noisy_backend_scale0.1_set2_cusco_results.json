@@ -26,26 +26,6 @@
   },
   {
    "circuit": "tfim_7_40",
-   "method": "qiskit_o3",
-   "backend": "fake_cusco",
-   "job_id": "67aeaf8a-c3a7-400d-abb6-5aeed4b49a4b",
-   "shots": 32768,
-   "hellinger_fidelity": 0.46034025588075594,
-   "ci95": [
-    0.45449718517543375,
-    0.4649159967301611
-   ],
-   "uniform_baseline": 0.47900818545577856,
-   "model": {
-    "esp": 0.0016255128783487058,
-    "sesp": 0.0014070351069081996
-   },
-   "two_qubit_gates": 714,
-   "depth": 1559,
-   "ecr_flipped": 0
-  },
-  {
-   "circuit": "tfim_7_40",
    "method": "mkco",
    "backend": "fake_cusco",
    "job_id": "67aeaf8a-c3a7-400d-abb6-5aeed4b49a4b",

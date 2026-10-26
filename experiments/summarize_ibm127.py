@@ -76,38 +76,39 @@ def main(outdir="results/ibm127"):
         rows_csv.append({"circuit": n, "metric": "xt_pairs", "original": o, "lee2026": l,
                          "jk2026": j, "mkco": x, "lower_bound": ""})
 
-    A("\n### Table 4 - Gate-rewriting class: MKCO rewrite modes vs Qiskit O3 (device target), and composition\n")
-    A("Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native directed edges, so "
-      "every output below is executable on the device (0 reversed ECRs). MKCO-rewrite = single-qubit ZSX "
-      "resynthesis + run merging + Max-k-Cut reordering; MKCO-full adds two-qubit KAK block resynthesis. "
-      "Every MKCO result is certified optimal for the gate list it reorders.\n")
-    A("| Circuit | Original | MKCO (reorder) | MKCO-rewrite | **MKCO-full** | Qiskit O3 | O3 + MKCO | O3 + MKCO-rewrite | Best | MKCO-full vs Qiskit O3 |")
-    A("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
+    A("\n### Table 4 - Gate-rewriting modes: depth\n")
+    A("Depth (lower is better). The inputs are already transpiled by Qiskit at optimization level 3, "
+      "so the reference is the input itself; Lee'26 and JK'26 are reorder-only. MKCO-rewrite = "
+      "single-qubit ZSX resynthesis + run merging + Max-k-Cut reordering; MKCO-full adds two-qubit KAK "
+      "block resynthesis in the native ECR direction. Every MKCO result is certified optimal for the gate "
+      "list it reorders.\n")
+    A("| Circuit | Original | Lee'26 | JK'26 | MKCO (reorder) | MKCO-rewrite | **MKCO-full** | MKCO-full vs original |")
+    A("|---|---:|---:|---:|---:|---:|---:|---:|")
     for n in names:
         M = res[n]["methods"]
-        row = {k: M.get(k, {}).get("depth") for k in ("original", "mkco", "mkco_rewrite", "mkco_full",
-                                                       "qiskit_o3", "qiskit_o3+mkco", "qiskit_o3+mkco_rewrite")}
+        row = {k: M.get(k, {}).get("depth") for k in ("original", "lee2026", "jk2026", "mkco",
+                                                       "mkco_rewrite", "mkco_full")}
         best = min(v for v in row.values() if v is not None)
         f = lambda k: "" if row.get(k) is None else (f"**{row[k]}**" if row[k] == best else str(row[k]))  # noqa: E731
-        gain = ("" if row.get("mkco_full") is None or row.get("qiskit_o3") is None else
-                f"{100 * (row['mkco_full'] - row['qiskit_o3']) / row['qiskit_o3']:+.1f}%")
-        A(f"| {n} | {row['original']} | {f('mkco')} | {f('mkco_rewrite')} | {f('mkco_full')} | {f('qiskit_o3')} | "
-          f"{f('qiskit_o3+mkco')} | {f('qiskit_o3+mkco_rewrite')} | {best} | {gain} |")
+        gain = ("" if row.get("mkco_full") is None else
+                f"{100 * (row['mkco_full'] - row['original']) / row['original']:+.1f}%")
+        A(f"| {n} | {row['original']} | {f('lee2026')} | {f('jk2026')} | {f('mkco')} | {f('mkco_rewrite')} | "
+          f"{f('mkco_full')} | {gain} |")
     A("\n**Hardware-time view.** MKCO-full (duration objective) keeps, per circuit, the candidate with the "
       "lowest estimated execution time among {KAK + 1q rewrite, 1q rewrite} x {reorder for depth, for 2q-depth}.\n")
-    A("| Circuit | est. duration original (us) | Qiskit O3 (us) | MKCO-full, depth obj. (us) | **MKCO-full, duration obj. (us)** | "
-      "vs Qiskit | 2q-depth Qiskit / MKCO-dur | ECRs Qiskit / MKCO-dur | depth Qiskit / MKCO-dur | reversed ECRs |")
-    A("|---|---:|---:|---:|---:|---:|---|---|---|---|")
+    A("| Circuit | est. duration original (us) | MKCO-full, depth obj. (us) | **MKCO-full, duration obj. (us)** | "
+      "vs original | 2q-depth orig / MKCO-dur | ECRs orig / MKCO-dur | depth orig / MKCO-dur | reversed ECRs |")
+    A("|---|---:|---:|---:|---:|---|---|---|---|")
     for n in names:
         M = res[n]["methods"]
-        q, a, d = M.get("qiskit_o3", {}), M.get("mkco_full", {}), M.get("mkco_full_dur", {})
-        if not d or "depth" not in q:
+        o, a, d = M["original"], M.get("mkco_full", {}), M.get("mkco_full_dur", {})
+        if not d:
             continue
-        A(f"| {n} | {M['original']['duration_ns'] / 1000:.2f} | {q['duration_ns'] / 1000:.2f} | "
-          f"{a['duration_ns'] / 1000:.2f} | **{d['duration_ns'] / 1000:.2f}** | "
-          f"{100 * (d['duration_ns'] - q['duration_ns']) / q['duration_ns']:+.1f}% | "
-          f"{q['depth_2q']} / {d['depth_2q']} | {q['ecr']} / {d['ecr']} | {q['depth']} / {d['depth']} | "
-          f"{q.get('reversed_ecr', '-')} / {d.get('reversed_ecr', '-')} |")
+        A(f"| {n} | {o['duration_ns'] / 1000:.2f} | {a['duration_ns'] / 1000:.2f} | "
+          f"**{d['duration_ns'] / 1000:.2f}** | "
+          f"{100 * (d['duration_ns'] - o['duration_ns']) / o['duration_ns']:+.1f}% | "
+          f"{o['depth_2q']} / {d['depth_2q']} | {o['ecr']} / {d['ecr']} | {o['depth']} / {d['depth']} | "
+          f"{d.get('reversed_ecr', '-')} |")
     A("\n### Table 5 - Estimated execution time (us; ECR 533 ns, sx/x 36 ns, rz virtual)\n")
     A("| Circuit | Original | Lee'26 | JK'26 | MKCO (depth) | MKCO (2q) | MKCO-XT |")
     A("|---|---:|---:|---:|---:|---:|---:|")
@@ -118,13 +119,13 @@ def main(outdir="results/ibm127"):
         A(f"| {n} | " + " | ".join(f"{v:.2f}" for v in vals) + " |")
 
     A("\n### Table 6 - Runtime (s)\n")
-    A("| Circuit | Lee'26 | JK'26 | MKCO | MKCO-2q | MKCO-XT | MKCO-full | Qiskit O3 (target) | MKCO after O3 |")
-    A("|---|---:|---:|---:|---:|---:|---:|---:|---:|")
+    A("| Circuit | Lee'26 | JK'26 | MKCO | MKCO-2q | MKCO-XT | MKCO-full |")
+    A("|---|---:|---:|---:|---:|---:|---:|")
     for n in names:
         M = res[n]["methods"]
         g = lambda k: M.get(k, {}).get("time_s", float("nan"))  # noqa: E731
         A(f"| {n} | {g('lee2026'):.1f} | {g('jk2026'):.1f} | {g('mkco'):.1f} | {g('mkco_2q'):.1f} | "
-          f"{g('mkco_xt'):.1f} | {g('mkco_full'):.1f} | {g('qiskit_o3'):.1f} | {g('qiskit_o3+mkco'):.1f} |")
+          f"{g('mkco_xt'):.1f} | {g('mkco_full'):.1f} |")
 
     A("\n### Table 7 - Verification of every reordered output\n")
     A("| Circuit | Active qubits | Commutation audit (all reorderings) | Inverted pairs checked (MKCO) | "
@@ -168,7 +169,7 @@ def main(outdir="results/ibm127"):
     noise = os.path.join(outdir, "noise.json")
     if os.path.exists(noise):
         nz = json.load(open(noise))
-        show = ["original", "qiskit_o3", "mkco", "mkco_alap", "mkco_full", "mkco_full_alap",
+        show = ["original", "jk2026", "mkco", "mkco_alap", "mkco_full", "mkco_full_alap",
                 "mkco_noise"]
         A(f"\n### Table 10 - Noise study with device calibration snapshots ({nz['backend']})\n")
         A("ESP = estimated success probability (state-blind, ALAP idling); sESP = state-aware "
@@ -206,13 +207,12 @@ def main(outdir="results/ibm127"):
         rg = "results/structured/regroup.json"
     if os.path.exists(rg) and any(r["circuit"] in res for r in json.load(open(rg))["ibm127"]):
         A("\n### Table 11 - ECRs removed by block KAK, plain vs commutation-aware block formation\n")
-        A("| Circuit | input ECRs | plain KAK | regrouped KAK | Qiskit O3 ECRs | plain KAK on O3 | regrouped KAK on O3 |")
-        A("|---|---:|---:|---:|---:|---:|---:|")
+        A("| Circuit | input ECRs | removed by plain block KAK | removed by regrouped block KAK |")
+        A("|---|---:|---:|---:|")
         for r in [r for r in json.load(open(rg))["ibm127"] if r["circuit"] in res]:
-            i, q = r.get("input", {}), r.get("qiskit_o3", {})
+            i = r.get("input", {})
             A(f"| {r['circuit']} | {i.get('ecr', '–')} | {i.get('plain_ecr_removed', '–')} | "
-              f"{i.get('regroup_ecr_removed', '–')} | {q.get('ecr', '–')} | {q.get('plain_ecr_removed', '–')} | "
-              f"{q.get('regroup_ecr_removed', '–')} |")
+              f"{i.get('regroup_ecr_removed', '–')} |")
     import glob
     import itertools
     hw_rows, hw_model = {}, {}

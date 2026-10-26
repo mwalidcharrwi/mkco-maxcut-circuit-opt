@@ -5,7 +5,7 @@ QiskitRuntimeService.save_account(...); this script never handles tokens):
 
     python experiments/run_ibm_hardware.py submit            # backend auto, small circuits, 5 methods
     python experiments/run_ibm_hardware.py submit --backend ibm_brisbane \\
-        --circuits mult_8 hubbard_8 hhl_8 --methods original qiskit_o3 mkco mkco_alap mkco_noise
+        --circuits mult_8 hubbard_8 hhl_8 --methods original jk2026 mkco mkco_alap mkco_noise
 
     python experiments/run_ibm_hardware.py status     # job state
     python experiments/run_ibm_hardware.py collect    # scores, once the job is done
@@ -361,7 +361,7 @@ def main():
                     help="run on the noisy simulated backend (Aer + ibm_brisbane calibration)")
     ap.add_argument("--circuits", nargs="+", default=["mult_8", "hubbard_8", "hhl_8"])
     ap.add_argument("--methods", nargs="+",
-                    default=["original", "qiskit_o3", "mkco", "mkco_alap", "mkco_full",
+                    default=["original", "jk2026", "mkco", "mkco_alap", "mkco_full",
                              "mkco_full_alap", "mkco_noise"])
     ap.add_argument("--placement", choices=["native", "best"], default="native")
     ap.add_argument("--noise-scale", type=float, default=1.0,

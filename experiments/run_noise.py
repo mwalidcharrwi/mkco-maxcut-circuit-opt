@@ -16,7 +16,7 @@ Scores
               measured distribution, at calibrated noise (scale 1) and at 10x
               lower noise (scale 0.1)
 
-Methods: the stored outputs of run_ibm127.py / run_qiskit.py / add_*.py, plus
+Methods: the stored outputs of run_ibm127.py / add_*.py, plus
   mkco_alap, mkco_full_alap   the same layerings placed as late as possible
   mkco_noise                  the candidate with the best sesp (esp when the
                               circuit is too large) among original, mkco,
@@ -42,7 +42,7 @@ from mkco.optimize import optimize                           # noqa: E402
 from mkco.qasm import load_qasm                              # noqa: E402
 
 STORED = ["original", "lee2026", "jk2026", "mkco", "mkco_xt", "mkco_rewrite", "mkco_full",
-          "mkco_full_dur", "qiskit_o3", "qiskit_o3+mkco_rewrite"]
+          "mkco_full_dur"]
 CANDIDATES = ["original", "mkco", "mkco_alap", "mkco_full", "mkco_full_alap", "mkco_full_dur"]
 SIM_MAX_QUBITS = 8
 

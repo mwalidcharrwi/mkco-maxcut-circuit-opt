@@ -190,52 +190,6 @@
      },
      "time_s": 6.5
     },
-    "qiskit_o3": {
-     "esp": 0.0007883868776616231,
-     "esp_xt": 0.00018095738715093407,
-     "esp_scale0.1": 0.4950641384025129,
-     "depth": 388,
-     "ecr": 280,
-     "duration_us": 67.91999999999997,
-     "idle_us": 107.16000000000014,
-     "broken_gates": 0,
-     "sesp_scale1.0": 0.0007044276856785782,
-     "sesp_scale0.1": 0.490106780539399,
-     "sim_scale1.0": {
-      "state_fidelity": 0.007776595950881651,
-      "hellinger_fidelity": 0.04574550846979489,
-      "uniform_hellinger": 0.029983647524499273
-     },
-     "sim_scale0.1": {
-      "state_fidelity": 0.4704396619289285,
-      "hellinger_fidelity": 0.5743629407090775,
-      "uniform_hellinger": 0.029983647524499273
-     },
-     "time_s": 6.1
-    },
-    "qiskit_o3+mkco_rewrite": {
-     "esp": 0.0007905552972089327,
-     "esp_xt": 0.00015553964832482382,
-     "esp_scale0.1": 0.49520851740111477,
-     "depth": 386,
-     "ecr": 280,
-     "duration_us": 67.79999999999998,
-     "idle_us": 106.26000000000012,
-     "broken_gates": 0,
-     "sesp_scale1.0": 0.0006997806961249523,
-     "sesp_scale0.1": 0.48978479360951754,
-     "sim_scale1.0": {
-      "state_fidelity": 0.0076653467265964444,
-      "hellinger_fidelity": 0.04529098736028408,
-      "uniform_hellinger": 0.02998364752449935
-     },
-     "sim_scale0.1": {
-      "state_fidelity": 0.4703227633557136,
-      "hellinger_fidelity": 0.5738486348516108,
-      "uniform_hellinger": 0.02998364752449935
-     },
-     "time_s": 7.8
-    },
     "mkco_alap": {
      "esp": 0.0007791423890263652,
      "esp_xt": 0.00016054770927063973,
@@ -499,52 +453,6 @@
      },
      "time_s": 9.3
     },
-    "qiskit_o3": {
-     "esp": 2.6649664444746916e-05,
-     "esp_xt": 2.852559602230457e-06,
-     "esp_scale0.1": 0.3545800282349727,
-     "depth": 530,
-     "ecr": 420,
-     "duration_us": 97.37999999999961,
-     "idle_us": 149.0399999999987,
-     "broken_gates": 0,
-     "sesp_scale1.0": 2.5483516391821393e-05,
-     "sesp_scale0.1": 0.35394015489538927,
-     "sim_scale1.0": {
-      "state_fidelity": 0.010777506431464884,
-      "hellinger_fidelity": 0.053637287095100065,
-      "uniform_hellinger": 0.02979640889700313
-     },
-     "sim_scale0.1": {
-      "state_fidelity": 0.37622033915523445,
-      "hellinger_fidelity": 0.5002906471778708,
-      "uniform_hellinger": 0.02979640889700313
-     },
-     "time_s": 10.0
-    },
-    "qiskit_o3+mkco_rewrite": {
-     "esp": 2.7125033323230746e-05,
-     "esp_xt": 2.3220285812387796e-06,
-     "esp_scale0.1": 0.35525864358837356,
-     "depth": 526,
-     "ecr": 420,
-     "duration_us": 96.65999999999963,
-     "idle_us": 143.45999999999887,
-     "broken_gates": 0,
-     "sesp_scale1.0": 2.597649501486713e-05,
-     "sesp_scale0.1": 0.354616770348197,
-     "sim_scale1.0": {
-      "state_fidelity": 0.011118119087829663,
-      "hellinger_fidelity": 0.05464673717982869,
-      "uniform_hellinger": 0.029796408897003104
-     },
-     "sim_scale0.1": {
-      "state_fidelity": 0.3775324201760909,
-      "hellinger_fidelity": 0.5006575907103666,
-      "uniform_hellinger": 0.029796408897003104
-     },
-     "time_s": 9.0
-    },
     "mkco_alap": {
      "esp": 2.69581911707015e-05,
      "esp_xt": 2.798002621910518e-06,
@@ -796,52 +704,6 @@
      "broken_gates": 0,
      "sesp_scale1.0": 1.0412027923870574e-09,
      "sesp_scale0.1": 0.11869639348292756,
-     "sim_scale1.0": {
-      "state_fidelity": 0.0030965329295658058,
-      "hellinger_fidelity": 0.33523503704851004,
-      "uniform_hellinger": 0.33786784852834195
-     },
-     "sim_scale0.1": {
-      "state_fidelity": 0.09675235668922048,
-      "hellinger_fidelity": 0.70282202190174,
-      "uniform_hellinger": 0.33786784852834195
-     },
-     "time_s": 10.3
-    },
-    "qiskit_o3": {
-     "esp": 4.315904996139978e-08,
-     "esp_xt": 3.425151382803335e-08,
-     "esp_scale0.1": 0.149552172312511,
-     "depth": 1930,
-     "ecr": 484,
-     "duration_us": 333.36000000000234,
-     "idle_us": 1834.2000000000155,
-     "broken_gates": 0,
-     "sesp_scale1.0": 6.680948474947783e-10,
-     "sesp_scale0.1": 0.11361191602842606,
-     "sim_scale1.0": {
-      "state_fidelity": 0.0022975658409881625,
-      "hellinger_fidelity": 0.24302505116185769,
-      "uniform_hellinger": 0.33786784852834145
-     },
-     "sim_scale0.1": {
-      "state_fidelity": 0.09276748956604491,
-      "hellinger_fidelity": 0.6795458242464572,
-      "uniform_hellinger": 0.33786784852834145
-     },
-     "time_s": 9.9
-    },
-    "qiskit_o3+mkco_rewrite": {
-     "esp": 4.406797272426373e-08,
-     "esp_xt": 3.4704401825021085e-08,
-     "esp_scale0.1": 0.15033736578279497,
-     "depth": 1889,
-     "ecr": 484,
-     "duration_us": 331.0200000000022,
-     "idle_us": 1816.2000000000146,
-     "broken_gates": 0,
-     "sesp_scale1.0": 1.0412027923864582e-09,
-     "sesp_scale0.1": 0.11869639348292334,
      "sim_scale1.0": {
       "state_fidelity": 0.0030965329295658058,
       "hellinger_fidelity": 0.33523503704851004,
@@ -1116,52 +978,6 @@
       "uniform_hellinger": 0.4790081854556894
      },
      "time_s": 16.0
-    },
-    "qiskit_o3": {
-     "esp": 3.5749822160274598e-28,
-     "esp_xt": 8.429566704255781e-30,
-     "esp_scale0.1": 0.0016255128783487058,
-     "depth": 1559,
-     "ecr": 714,
-     "duration_us": 192.51199999999952,
-     "idle_us": 594.7399999999952,
-     "broken_gates": 277,
-     "sesp_scale1.0": 5.8412211755843436e-30,
-     "sesp_scale0.1": 0.0014070351069081946,
-     "sim_scale1.0": {
-      "state_fidelity": 0.008604406814343461,
-      "hellinger_fidelity": 0.4866299118033732,
-      "uniform_hellinger": 0.4790081854557807
-     },
-     "sim_scale0.1": {
-      "state_fidelity": 0.013572982226392229,
-      "hellinger_fidelity": 0.5188922183156199,
-      "uniform_hellinger": 0.4790081854557807
-     },
-     "time_s": 16.9
-    },
-    "qiskit_o3+mkco_rewrite": {
-     "esp": 5.263798401754002e-28,
-     "esp_xt": 6.155666460649538e-30,
-     "esp_scale0.1": 0.001708835669565527,
-     "depth": 1511,
-     "ecr": 714,
-     "duration_us": 189.4759999999998,
-     "idle_us": 577.7999999999972,
-     "broken_gates": 277,
-     "sesp_scale1.0": 9.14603226915542e-30,
-     "sesp_scale0.1": 0.0014714698572377046,
-     "sim_scale1.0": {
-      "state_fidelity": 0.009406784489473588,
-      "hellinger_fidelity": 0.49585333536953063,
-      "uniform_hellinger": 0.47900818545578133
-     },
-     "sim_scale0.1": {
-      "state_fidelity": 0.0139487557303608,
-      "hellinger_fidelity": 0.5216809483795954,
-      "uniform_hellinger": 0.47900818545578133
-     },
-     "time_s": 14.7
     },
     "mkco_alap": {
      "esp": 4.0220111224137775e-28,

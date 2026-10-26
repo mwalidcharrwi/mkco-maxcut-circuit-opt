@@ -13,18 +13,16 @@ so its results are those of set 1.
   (−0.5% to −3.0%; Set 2 Table 1) and for two-qubit depth (Set 2 Table 2),
   where the inputs were already optimal. Lee et al. gains nothing; Jain &
   Kumar reaches the same depths without a certificate.
-- **Gate rewriting vs Qiskit O3.** Qiskit O3 on the device Target removes at
-  most one layer (tfim_7_40: 1560 → 1559). MKCO-full is 0.5–3.0% shallower
-  and 0.1–1.1% faster in estimated time. KAK finds no cheaper two-qubit block
-  in any of these circuits (Set 2 Table 8). The shallowest results come from
-  MKCO-rewrite applied after Qiskit (heisenberg_8: 526, tfim_7_40: 1511).
+- **Gate rewriting.** MKCO-full is 0.5–3.1% shallower than the transpiled
+  input and 0.1–1.1% faster in estimated time. KAK finds no cheaper two-qubit
+  block in any of these circuits (Set 2 Table 8).
 - **Crosstalk.** At the optimal two-qubit depth only qpe_8 has room
   (−13.6%). With a 20% two-qubit-depth budget, the weighted Max-k-Cut removes
   34–38% of the crosstalk-prone pairs on all four (Set 2 Table 9).
 - **Noise (Set 2 Table 10).** All four circuits are small enough for exact
   density-matrix simulation, each with the calibration of its own device. At
   10× lower noise:
-  - qpe_8: MKCO's orders are 4.3% more faithful than the input and Qiskit O3
+  - qpe_8: MKCO's orders are 4.3% more faithful than the input
     (0.0968 vs 0.0928);
   - heisenberg_8: +0.3% (0.3775 vs 0.3762);
   - tfim_8: all methods within 0.3% (0.469–0.470), and `mkco_noise` keeps the
@@ -33,22 +31,22 @@ so its results are those of set 1.
     (0.0139 vs 0.0136); the state-aware pick, plain MKCO, scores 0.0137.
 
   Across all method pairs, the state-aware ESP orders the pair as the
-  simulation does in 91% of cases at 10× lower noise (80% at calibrated
-  noise), against 78% (64%) for the state-blind ESP.
+  simulation does in 90% of cases at 10× lower noise (78% at calibrated
+  noise), against 80% (64%) for the state-blind ESP.
 - **Noisy simulated backend (Set 2 Table 12).** Aer ran each circuit with
   its own device noise model, 32,768 shots, at both noise levels.
   - **qpe_8 is the clear case.** At 10× lower noise every MKCO order
-    (0.701–0.707) beats the input (0.679) and Qiskit O3 (0.683), with
-    separated intervals, as the density-matrix model predicted (+4%). At
-    calibrated noise the MKCO outputs score 0.34, the level of pure noise for
-    this distribution, while the input and Qiskit O3 fall to 0.24.
+    (0.701–0.707) beats the input (0.679), with separated intervals, as the
+    density-matrix model predicted (+4%). At calibrated noise the MKCO outputs
+    score 0.34, the level of pure noise for this distribution, while the input
+    falls to 0.24.
   - **heisenberg_8 and tfim_8** differ by less than the sampling spread. The
     same circuit measured twice differs by up to 0.006.
   - **tfim_7_40's counts carry no information.** Its ideal output is so broad
     that uniform noise already scores 0.479, about where every method lands.
   - **Agreement.** On the pairs that sampling separates, the density-matrix
     model, the state-aware ESP and the state-blind ESP all order the pair
-    correctly: 10/10 at calibrated noise, 9/9 at 10× lower noise. In this set
+    correctly: 6/6 at calibrated noise, 4/4 at 10× lower noise. In this set
     the shorter MKCO orders are also the more faithful ones, so even the
     state-blind estimate ranks them correctly.
 - **A bug these circuits exposed, now fixed.** With final measurements in the

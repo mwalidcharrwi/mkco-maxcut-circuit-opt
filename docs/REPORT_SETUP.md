@@ -18,7 +18,9 @@ IBM Eagle device:
 - *Estimated duration*: ASAP with nominal Eagle durations — ECR 533 ns,
   sx/x 36 ns, rz virtual.
 
-**Methods.** Every method sees the same input file.
+**Methods.** Every method sees the same input file. The inputs are already
+Qiskit's output at optimization level 3, so re-running Qiskit's optimiser on
+them is not a baseline; the gate-rewriting modes are compared with the input.
 - `lee2026`: Lee et al.'s DSatur colouring (networkx implementation), applied
   to every maximal block of mutually commuting gates. This is the extension
   their conclusion suggests ("divide a noncommuting circuit into many commuting
@@ -32,24 +34,10 @@ IBM Eagle device:
 - `mkco_xt`: our crosstalk mode. Optimal two-qubit depth with weighted soft
   edges (w = 0.1), and anchor barriers so an ASAP hardware scheduler reproduces
   the layering.
-- `qiskit_o3`: Qiskit 2.6, `optimization_level=3`, trivial layout, on a device
-  **Target**: rz/sx/x on every qubit, ECR only on the native directed edges
-  used by the circuit. The file's `ecr` is mapped to Qiskit's `ECRGate`, so
-  Qiskit can re-synthesise and re-orient it. All 9 outputs contain only native
-  ECRs and match the input under simulation (≤ 20 qubits). Qiskit
-  *re-synthesises* gates, so it belongs to the gate-rewriting class.
-  - *An earlier run of this study* loaded `ecr` as an opaque custom gate and
-    passed a bare coupling map. Qiskit then either failed or, on retry with a
-    bidirectional map, produced circuits with 45–49% of ECRs against the native
-    direction (not executable as written). Those numbers are superseded; see
-    `experiments/run_qiskit.py`.
-- `qiskit_o3+mkco`: our reordering applied to Qiskit's output.
 - `mkco_rewrite`: our rewrite mode. Each maximal chain of single-qubit gates
   is re-synthesised in the device basis (rz/sx/x) by ZSX Euler decomposition,
   same-axis rotations are merged across commuting two-qubit gates, and the
-  result is reordered by MKCO. Qiskit O3 also re-synthesises two-qubit
-  blocks, which MKCO does not.
-- `qiskit_o3+mkco_rewrite`: our rewrite mode applied to Qiskit's output.
+  result is reordered by MKCO.
 - `mkco_full`: two-qubit block (KAK) resynthesis into native-direction ECRs
   plus the rewrite mode, iterated to a fixed point, then Max-k-Cut reordering.
   The numerical KAK step uses Qiskit's `TwoQubitBasisDecomposer`. Block

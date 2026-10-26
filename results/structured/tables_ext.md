@@ -39,7 +39,7 @@ On the 17 T-depth instances MKCO-T lowers PyZX(full)'s T-depth by 10-69% (mean 4
 
 ### E9 - Commutation-aware routing + layering on the 127-qubit heavy-hex device (CNOT level)
 
-Cells: CNOTs / depth after routing and optimisation. sabre_dag is the ablation (same router, plain DAG front). Every mkco_route output passes the exact unroute check and the coupling check.
+Cells: CNOTs / depth after routing and optimisation of untranspiled logical circuits. Qiskit O3 = Qiskit's transpiler at level 3 (SabreLayout + SabreSwap), the routing baseline. sabre_dag is the ablation (same router, plain DAG front). Every mkco_route output passes the exact unroute check and the coupling check.
 
 | circuit | qubits | logical CNOTs | Qiskit O3 | **MKCO-route** | SWAPs | sabre_dag (ablation) | Qiskit O3 + MKCO | CNOTs vs O3 | depth vs O3 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|

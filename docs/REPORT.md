@@ -28,8 +28,8 @@ MKCO turns that reduction into a **Max-k-Cut framework** that:
    qubits, verifies every output.
 5. **Goes beyond reordering when asked.** Optional single-qubit (ZSX) and
    two-qubit (KAK, native ECR direction) resynthesis feed the same Max-k-Cut
-   layering. Selected by depth or by estimated execution time, this beats
-   Qiskit O3 on every benchmark. Commutation-aware block formation lets KAK see
+   layering. On the already-transpiled benchmarks this lowers depth by up to
+   58% and estimated execution time by up to 18%. Commutation-aware block formation lets KAK see
    blocks that commuting gates had split (E11).
 6. **Optimises fault-tolerant depth.** T-depth and Toffoli-depth with free
    Clifford gates reduce to a mixed-graph colouring on the non-Clifford gates
@@ -37,8 +37,8 @@ MKCO turns that reduction into a **Max-k-Cut framework** that:
    of PyZX it lowers T-depth by 41% on average (E8).
 7. **Routes with the same commutation structure.** A SABRE-style router whose
    front layer is the trace-order front, followed by Max-k-Cut layering. It is
-   proven correct per output (Proposition 11) and evaluated against Qiskit O3
-   on IBM's 127-qubit heavy-hex device (E9).
+   proven correct per output (Proposition 11) and evaluated against Qiskit's
+   SABRE routing on logical circuits for IBM's 127-qubit heavy-hex device (E9).
 8. **Is checked against device noise.** Scoring with the ibm_brisbane
    calibration shows that a depth-optimal reordering can be *less* faithful,
    because qubits may idle in superposition for longer. A state-aware success
@@ -60,19 +60,19 @@ are run on identical inputs:
 | Total depth, reorder-only (9 circuits) | no gain on any circuit | same depths as MKCO, uncertified | −1.9% to −5.2% on 7 circuits; **certified optimal on 9/9** |
 | Two-qubit depth | already optimal or no gain | optimal on 9/9 (uncertified) | **certified optimal on 9/9** |
 | Crosstalk-prone ECR pairs at optimal 2q-depth | cannot express | cannot express | **−1.8% to −25.9%** (mean −14.2%) |
-| Gate rewriting vs Qiskit O3 on a device Target (all outputs executable) | – | – | MKCO-full **shallower on 9/9** (−3.4% to −25.5%) and **faster (est. time) on 9/9**; MKCO after Qiskit removes a further 0.6–5.2% |
+| Gate rewriting vs the transpiled input (Qiskit level 3) | – | – | MKCO-full **shallower on 9/9** (−1.9% to −57.8%) and **faster (est. time) on 9/9** (−0.1% to −17.7%); all outputs native-direction |
 | Depth budget vs crosstalk (Pareto) | cannot express | cannot express | −21% to −44% pairs at +10% 2q-depth; −39% to −65% at +20% |
 | F₂ⁿ multiplier (paper §5.1), n = 2…64 | optimal at 24/34 sizes | 7/34 | **34/34 (proven)** |
 | Random multi-controlled-Z (paper §4.3), 60 circuits | 42/60 certified optimal (36 by clique/Jackson, 6 more by θ/θ⁺) | 0/60 | **48/60** (41 + 7 more by θ/θ⁺); never worse than DSatur |
 | Random CCZ (paper App. C), 50 circuits | 20/50 certified optimal | 17/50 | **49/50** |
 | RZZ/QAOA layers (edge colouring), 18 circuits | 0/18 reach Δ | 0/18 | **14/18 reach Δ (optimal)** |
-| Second IBM-127 set (4 circuits with measurements, Section 5.1) | no gain | ties, uncertified | depth and 2q-depth **certified optimal 4/4**; MKCO-full −0.5% to −3.0% vs Qiskit O3; noisy simulation: qpe_8 +3–4% fidelity vs O3 |
+| Second IBM-127 set (4 circuits with measurements, Section 5.1) | no gain | ties, uncertified | depth and 2q-depth **certified optimal 4/4**; MKCO-full −0.5% to −3.1% vs the input; noisy simulation: qpe_8 +3–4% fidelity vs the input |
 | Ancilla fan-out (paper §5.2) | heuristic not specified | – | up to **−24%** vs fixed copy split |
 | T-depth with free Cliffords, after PyZX (17 Clifford+T circuits, E8) | – | – | **−10% to −69%** (mean −41%) vs PyZX alone; 17/17 certified optimal |
 | Toffoli-depth, GF(2ⁿ) multipliers n = 4–12 (E8) | commuting parts only | – | **−53% to −64%** vs input; 6/8 certified |
-| Routing on the 127-qubit heavy-hex device vs Qiskit O3 (13 circuits, E9) | – | – | QAOA (7): **−3.8% to −21.9% CNOTs, up to −55% depth**; Trotter shallower; QFT worse (+11–25% CNOTs) |
+| Routing logical circuits on the 127-qubit heavy-hex device vs Qiskit's SABRE at level 3 (13 circuits, E9) | – | – | QAOA (7): **−3.8% to −21.9% CNOTs, up to −55% depth**; Trotter shallower; QFT worse (+11–25% CNOTs) |
 | Block formation before KAK (19 logical circuits, E11) | – | – | fewer CNOTs than plain block KAK on **17/19**, never more |
-| Noise with ibm_brisbane calibration (9 circuits, E10) | – | – | state-aware ESP orders method pairs like density-matrix simulation in **97%** of cases (state-blind ESP 66%); `mkco_noise` beats Qiskit O3 on **9/9** |
+| Noise with ibm_brisbane calibration (9 circuits, E10) | – | – | state-aware ESP orders method pairs like density-matrix simulation in **95%** of cases (state-blind ESP 70%); `mkco_noise` never below the input, above it on 8/9 |
 
 Every reordered output was independently verified: an exact pairwise
 commutation audit, plus state-vector simulation for ≤ 20 active qubits.
@@ -157,7 +157,9 @@ IBM Eagle device:
 - *Estimated duration*: ASAP with nominal Eagle durations — ECR 533 ns,
   sx/x 36 ns, rz virtual.
 
-**Methods.** Every method sees the same input file.
+**Methods.** Every method sees the same input file. The inputs are already
+Qiskit's output at optimization level 3, so re-running Qiskit's optimiser on
+them is not a baseline; the gate-rewriting modes are compared with the input.
 - `lee2026`: Lee et al.'s DSatur colouring (networkx implementation), applied
   to every maximal block of mutually commuting gates. This is the extension
   their conclusion suggests ("divide a noncommuting circuit into many commuting
@@ -171,24 +173,10 @@ IBM Eagle device:
 - `mkco_xt`: our crosstalk mode. Optimal two-qubit depth with weighted soft
   edges (w = 0.1), and anchor barriers so an ASAP hardware scheduler reproduces
   the layering.
-- `qiskit_o3`: Qiskit 2.6, `optimization_level=3`, trivial layout, on a device
-  **Target**: rz/sx/x on every qubit, ECR only on the native directed edges
-  used by the circuit. The file's `ecr` is mapped to Qiskit's `ECRGate`, so
-  Qiskit can re-synthesise and re-orient it. All 9 outputs contain only native
-  ECRs and match the input under simulation (≤ 20 qubits). Qiskit
-  *re-synthesises* gates, so it belongs to the gate-rewriting class.
-  - *An earlier run of this study* loaded `ecr` as an opaque custom gate and
-    passed a bare coupling map. Qiskit then either failed or, on retry with a
-    bidirectional map, produced circuits with 45–49% of ECRs against the native
-    direction (not executable as written). Those numbers are superseded; see
-    `experiments/run_qiskit.py`.
-- `qiskit_o3+mkco`: our reordering applied to Qiskit's output.
 - `mkco_rewrite`: our rewrite mode. Each maximal chain of single-qubit gates
   is re-synthesised in the device basis (rz/sx/x) by ZSX Euler decomposition,
   same-axis rotations are merged across commuting two-qubit gates, and the
-  result is reordered by MKCO. Qiskit O3 also re-synthesises two-qubit
-  blocks, which MKCO does not.
-- `qiskit_o3+mkco_rewrite`: our rewrite mode applied to Qiskit's output.
+  result is reordered by MKCO.
 - `mkco_full`: two-qubit block (KAK) resynthesis into native-direction ECRs
   plus the rewrite mode, iterated to a fixed point, then Max-k-Cut reordering.
   The numerical KAK step uses Qiskit's `TwoQubitBasisDecomposer`. Block
@@ -269,33 +257,32 @@ hubbard_18 (−3) improve.
   depth, but only 0.0–0.9% estimated duration, because ECRs dominate execution
   time.
 
-![Rewrite vs Qiskit](figures/ibm127_rewrite_vs_qiskit.png)
+![Rewriting](figures/ibm127_rewrite.png)
 
-**Gate rewriting vs Qiskit (Table 4).** Qiskit O3 runs on a device Target:
-ECRs only on the native directed edges, and the file's `ecr` mapped to
-`ECRGate`. All of its outputs are therefore executable as written, and every
-one of them that can be simulated matches the input.
-- **MKCO-full is shallower than Qiskit O3 on all 9 circuits** (−3.4% to
-  −25.5%), and every MKCO result is certified optimal for the gate list it
+**Gate rewriting (Table 4).** The inputs are already Qiskit's output at
+optimization level 3, so the reference is the input itself; re-running
+Qiskit O3 on them would not be a meaningful baseline.
+- **MKCO-full is shallower than the input on all 9 circuits** (−1.9% to
+  −57.8%). Every MKCO result is certified optimal for the gate list it
   reorders.
   - The two Hamiltonian-simulation circuits gain most: heisenberg_32
-    3,011 vs 4,039 (−25.5%), hubbard_18 72,992 vs 84,761 (−13.9%).
+    7,143 → 3,011 (−57.8%), hubbard_18 136,644 → 72,992 (−46.6%).
   - Their transpiled rz/sx chains collapse under single-qubit resynthesis.
     MKCO's run-based merging then gathers same-axis rotations *across*
-    commuting ECRs, which an adjacent-gate optimiser cannot do.
-- **Composition still helps Qiskit:** MKCO after Qiskit O3 lowers its depth on
-  every circuit (best on hubbard_8: 4,239).
+    commuting ECRs, which the level-3 transpiler's adjacent-gate passes did
+    not do.
+- On the other 7 circuits rewriting adds little to reordering (at most 27
+  layers).
 
 ![Execution time](figures/ibm127_duration.png)
 
 **Hardware time.** Total depth counts virtual rz layers, so the
 hardware-relevant figure is estimated execution time.
 - Selecting among MKCO's candidates by estimated duration, MKCO-full is
-  **faster than Qiskit O3 on all 9 circuits**: −0.2% to −7.8% on 8, and
-  −5.8% on hubbard_18.
-- On hubbard_18 it also beats Qiskit on two-qubit depth (18,795 vs 19,938),
-  ECR count (30,453 vs 33,586, −10.3% vs the input) and total depth
-  (80,677 vs 84,761).
+  **faster than the input on all 9 circuits**: −0.1% to −1.1% on 7, −9.0% on
+  heisenberg_32 and −17.7% on hubbard_18.
+- On hubbard_18 it also lowers two-qubit depth (21,769 → 18,795) and the ECR
+  count (33,958 → 30,453, −10.3%).
 - Depth- and duration-optimal choices differ on hubbard_18. The 1q-only
   pre-pass gives the smallest total depth (72,992). KAK block resynthesis
   gives the fewest ECRs and the shortest time.
@@ -337,7 +324,6 @@ block-wise colouring on every circuit and comparable to Jain & Kumar.
 - The crosstalk mode uses its time budget (30–60 s).
 - MKCO-full evaluates two pre-pass branches and takes up to 6 minutes on the
   358k-gate hubbard_18.
-- Qiskit O3 on a device Target takes 0.1–5 s.
 
 ### Table 1 - Total depth, reorder-only methods (lower is better)
 
@@ -381,35 +367,35 @@ block-wise colouring on every circuit and comparable to Jain & Kumar.
 | grover_10 | 4431 | 4431 | 4431 | 4431 | **3870** | -12.7% | 10895 -> 10895 | 43923 -> 45858 |
 | hubbard_18 | 7332 | 7332 | 7336 | 7334 | **5435** | -25.9% | 21769 -> 21766 | 136644 -> 137968 |
 
-### Table 4 - Gate-rewriting class: MKCO rewrite modes vs Qiskit O3 (device target), and composition
+### Table 4 - Gate-rewriting modes: depth
 
-Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native directed edges, so every output below is executable on the device (0 reversed ECRs). MKCO-rewrite = single-qubit ZSX resynthesis + run merging + Max-k-Cut reordering; MKCO-full adds two-qubit KAK block resynthesis. Every MKCO result is certified optimal for the gate list it reorders.
+Depth (lower is better). The inputs are already transpiled by Qiskit at optimization level 3, so the reference is the input itself; Lee'26 and JK'26 are reorder-only. MKCO-rewrite = single-qubit ZSX resynthesis + run merging + Max-k-Cut reordering; MKCO-full adds two-qubit KAK block resynthesis in the native ECR direction. Every MKCO result is certified optimal for the gate list it reorders.
 
-| Circuit | Original | MKCO (reorder) | MKCO-rewrite | **MKCO-full** | Qiskit O3 | O3 + MKCO | O3 + MKCO-rewrite | Best | MKCO-full vs Qiskit O3 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| mult_8 | 1138 | **1102** | **1102** | **1102** | 1173 | 1137 | 1137 | 1102 | -6.1% |
-| add_17 | 1003 | **964** | **964** | **964** | 1026 | 988 | 988 | 964 | -6.0% |
-| qae_17 | 1066 | 1035 | **1030** | **1030** | 1084 | 1055 | 1051 | 1030 | -5.0% |
-| qft_16 | 1009 | **980** | **980** | **980** | 1026 | 997 | 997 | 980 | -4.5% |
-| hubbard_8 | 4400 | 4268 | 4251 | 4241 | 4390 | 4256 | **4239** | 4239 | -3.4% |
-| hhl_8 | 10641 | **10434** | **10434** | **10434** | 11212 | 11005 | 11005 | 10434 | -6.9% |
-| heisenberg_32 | 7143 | 7143 | **3011** | **3011** | 4039 | 4039 | 4013 | 3011 | -25.5% |
-| grover_10 | 43923 | 41641 | **41631** | **41631** | 43995 | 41713 | 41703 | 41631 | -5.4% |
-| hubbard_18 | 136644 | 136637 | **72992** | **72992** | 84761 | 84698 | 84134 | 72992 | -13.9% |
+| Circuit | Original | Lee'26 | JK'26 | MKCO (reorder) | MKCO-rewrite | **MKCO-full** | MKCO-full vs original |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| mult_8 | 1138 | 1138 | **1102** | **1102** | **1102** | **1102** | -3.2% |
+| add_17 | 1003 | 1003 | **964** | **964** | **964** | **964** | -3.9% |
+| qae_17 | 1066 | 1066 | 1035 | 1035 | **1030** | **1030** | -3.4% |
+| qft_16 | 1009 | 1009 | **980** | **980** | **980** | **980** | -2.9% |
+| hubbard_8 | 4400 | 4400 | 4268 | 4268 | 4251 | **4241** | -3.6% |
+| hhl_8 | 10641 | 10641 | **10434** | **10434** | **10434** | **10434** | -1.9% |
+| heisenberg_32 | 7143 | 7143 | 7143 | 7143 | **3011** | **3011** | -57.8% |
+| grover_10 | 43923 | 43923 | 41641 | 41641 | **41631** | **41631** | -5.2% |
+| hubbard_18 | 136644 | 136644 | 136637 | 136637 | **72992** | **72992** | -46.6% |
 
 **Hardware-time view.** MKCO-full (duration objective) keeps, per circuit, the candidate with the lowest estimated execution time among {KAK + 1q rewrite, 1q rewrite} x {reorder for depth, for 2q-depth}.
 
-| Circuit | est. duration original (us) | Qiskit O3 (us) | MKCO-full, depth obj. (us) | **MKCO-full, duration obj. (us)** | vs Qiskit | 2q-depth Qiskit / MKCO-dur | ECRs Qiskit / MKCO-dur | depth Qiskit / MKCO-dur | reversed ECRs |
-|---|---:|---:|---:|---:|---:|---|---|---|---|
-| mult_8 | 159.89 | 160.29 | 158.69 | **158.69** | -1.0% | 276 / 276 | 311 / 311 | 1173 / 1102 | 0 / 0 |
-| add_17 | 145.60 | 145.78 | 145.42 | **145.42** | -0.2% | 253 / 255 | 499 / 499 | 1026 / 964 | 0 / 0 |
-| qae_17 | 157.37 | 157.55 | 156.44 | **156.44** | -0.7% | 274 / 274 | 541 / 541 | 1084 / 1030 | 0 / 0 |
-| qft_16 | 149.12 | 149.26 | 148.23 | **148.23** | -0.7% | 260 / 260 | 614 / 614 | 1026 / 980 | 0 / 0 |
-| hubbard_8 | 638.05 | 637.94 | 633.96 | **633.96** | -0.6% | 1111 / 1111 | 1344 / 1344 | 4390 / 4241 | 0 / 0 |
-| hhl_8 | 1365.41 | 1369.96 | 1359.51 | **1359.51** | -0.8% | 2319 / 2319 | 2377 / 2377 | 11212 / 10434 | 0 / 0 |
-| heisenberg_32 | 549.16 | 542.37 | 499.95 | **499.95** | -7.8% | 936 / 881 | 4071 / 3942 | 4039 / 3011 | 0 / 0 |
-| grover_10 | 6292.61 | 6293.25 | 6220.96 | **6220.96** | -1.1% | 10895 / 10895 | 16397 / 16397 | 43995 / 41631 | 0 / 0 |
-| hubbard_18 | 13230.21 | 11565.99 | 12313.54 | **10891.42** | -5.8% | 19938 / 18795 | 33586 / 30453 | 84761 / 80677 | 0 / 0 |
+| Circuit | est. duration original (us) | MKCO-full, depth obj. (us) | **MKCO-full, duration obj. (us)** | vs original | 2q-depth orig / MKCO-dur | ECRs orig / MKCO-dur | depth orig / MKCO-dur | reversed ECRs |
+|---|---:|---:|---:|---:|---|---|---|---|
+| mult_8 | 159.89 | 158.69 | **158.69** | -0.8% | 276 / 276 | 311 / 311 | 1138 / 1102 | 0 |
+| add_17 | 145.60 | 145.42 | **145.42** | -0.1% | 253 / 255 | 499 / 499 | 1003 / 964 | 0 |
+| qae_17 | 157.37 | 156.44 | **156.44** | -0.6% | 274 / 274 | 541 / 541 | 1066 / 1030 | 0 |
+| qft_16 | 149.12 | 148.23 | **148.23** | -0.6% | 260 / 260 | 614 / 614 | 1009 / 980 | 0 |
+| hubbard_8 | 638.05 | 633.96 | **633.96** | -0.6% | 1111 / 1111 | 1344 / 1344 | 4400 / 4241 | 0 |
+| hhl_8 | 1365.41 | 1359.51 | **1359.51** | -0.4% | 2319 / 2319 | 2377 / 2377 | 10641 / 10434 | 0 |
+| heisenberg_32 | 549.16 | 499.95 | **499.95** | -9.0% | 881 / 881 | 3942 / 3942 | 7143 / 3011 | 0 |
+| grover_10 | 6292.61 | 6220.96 | **6220.96** | -1.1% | 10895 / 10895 | 16397 / 16397 | 43923 / 41631 | 0 |
+| hubbard_18 | 13230.21 | 12313.54 | **10891.42** | -17.7% | 21769 / 18795 | 33958 / 30453 | 136644 / 80677 | 0 |
 
 ### Table 5 - Estimated execution time (us; ECR 533 ns, sx/x 36 ns, rz virtual)
 
@@ -427,31 +413,31 @@ Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native
 
 ### Table 6 - Runtime (s)
 
-| Circuit | Lee'26 | JK'26 | MKCO | MKCO-2q | MKCO-XT | MKCO-full | Qiskit O3 (target) | MKCO after O3 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| mult_8 | 0.3 | 0.2 | 0.1 | 0.1 | 4.4 | 3.7 | 0.1 | 0.2 |
-| add_17 | 0.5 | 0.2 | 0.2 | 0.2 | 23.6 | 1.3 | 0.0 | 0.3 |
-| qae_17 | 0.5 | 0.2 | 0.2 | 0.1 | 21.0 | 3.6 | 0.1 | 0.4 |
-| qft_16 | 0.5 | 0.2 | 0.2 | 0.1 | 30.1 | 7.5 | 0.1 | 0.3 |
-| hubbard_8 | 1.3 | 1.3 | 0.7 | 0.3 | 30.2 | 17.1 | 0.1 | 0.8 |
-| hhl_8 | 2.8 | 6.2 | 1.1 | 0.7 | 30.1 | 14.5 | 0.1 | 1.8 |
-| heisenberg_32 | 8.4 | 1.6 | 3.6 | 1.9 | 60.5 | 49.5 | 0.4 | 2.5 |
-| grover_10 | 14.3 | 3.1 | 5.7 | 3.7 | 60.9 | 90.5 | 0.6 | 9.4 |
-| hubbard_18 | 44.0 | 11.0 | 19.9 | 11.8 | 62.5 | 378.1 | 4.6 | 25.4 |
+| Circuit | Lee'26 | JK'26 | MKCO | MKCO-2q | MKCO-XT | MKCO-full |
+|---|---:|---:|---:|---:|---:|---:|
+| mult_8 | 0.3 | 0.2 | 0.1 | 0.1 | 4.4 | 3.7 |
+| add_17 | 0.5 | 0.2 | 0.2 | 0.2 | 23.6 | 1.3 |
+| qae_17 | 0.5 | 0.2 | 0.2 | 0.1 | 21.0 | 3.6 |
+| qft_16 | 0.5 | 0.2 | 0.2 | 0.1 | 30.1 | 7.5 |
+| hubbard_8 | 1.3 | 1.3 | 0.7 | 0.3 | 30.2 | 17.1 |
+| hhl_8 | 2.8 | 6.2 | 1.1 | 0.7 | 30.1 | 14.5 |
+| heisenberg_32 | 8.4 | 1.6 | 3.6 | 1.9 | 60.5 | 49.5 |
+| grover_10 | 14.3 | 3.1 | 5.7 | 3.7 | 60.9 | 90.5 |
+| hubbard_18 | 44.0 | 11.0 | 19.9 | 11.8 | 62.5 | 378.1 |
 
 ### Table 7 - Verification of every reordered output
 
 | Circuit | Active qubits | Commutation audit (all reorderings) | Inverted pairs checked (MKCO) | State-vector check (MKCO) | State-vector (MKCO-rewrite, vs original) | State-vector (MKCO-full dur., vs original) |
 |---|---:|:---:|---:|:---:|:---:|:---:|
-| mult_8 | 8 | 13/13 pass | 75 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| add_17 | 17 | 13/13 pass | 129 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| qae_17 | 17 | 13/13 pass | 142 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| qft_16 | 16 | 13/13 pass | 166 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| hubbard_8 | 8 | 13/13 pass | 260 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| hhl_8 | 8 | 13/13 pass | 333 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| heisenberg_32 | 32 | 13/13 pass | 0 | n/a (>20 qubits) | n/a (>20 qubits) | n/a (>20 qubits) |
-| grover_10 | 10 | 13/13 pass | 14222 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| hubbard_18 | 31 | 13/13 pass | 2654 | n/a (>20 qubits) | n/a (>20 qubits) | n/a (>20 qubits) |
+| mult_8 | 8 | 11/11 pass | 75 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| add_17 | 17 | 11/11 pass | 129 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| qae_17 | 17 | 11/11 pass | 142 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| qft_16 | 16 | 11/11 pass | 166 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| hubbard_8 | 8 | 11/11 pass | 260 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| hhl_8 | 8 | 11/11 pass | 333 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| heisenberg_32 | 32 | 11/11 pass | 0 | n/a (>20 qubits) | n/a (>20 qubits) | n/a (>20 qubits) |
+| grover_10 | 10 | 11/11 pass | 14222 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| hubbard_18 | 31 | 11/11 pass | 2654 | n/a (>20 qubits) | n/a (>20 qubits) | n/a (>20 qubits) |
 
 ### Table 8 - Two-qubit block (KAK) resynthesis: blocks that become cheaper in native ECRs
 
@@ -512,73 +498,73 @@ Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native
 
 ESP = estimated success probability (state-blind, ALAP idling); sESP = state-aware ESP (idle gaps weighted by the idling qubit's state, <= 22 active qubits); sim = exact density-matrix state fidelity (<= 8 active qubits). Scale 0.1 = all error rates x0.1 and T1, T2 x10. mkco_noise = the MKCO candidate with the best sESP (ESP for larger circuits), the input included.
 
-| Circuit | score | original | qiskit_o3 | mkco | mkco_alap | mkco_full | mkco_full_alap | mkco_noise | mkco_noise picks |
+| Circuit | score | original | jk2026 | mkco | mkco_alap | mkco_full | mkco_full_alap | mkco_noise | mkco_noise picks |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|
-| mult_8 | ESP | 0.00283 | 0.00279 | 0.0029 | **0.0029** | 0.0029 | 0.0029 | 0.00283 | original |
-| mult_8 | ESP_xt | 0.00232 | 0.00228 | 0.00234 | **0.00234** | 0.00234 | 0.00234 | 0.00232 |  |
-| mult_8 | ESP x0.1 | 0.526 | 0.525 | 0.529 | **0.529** | 0.529 | 0.529 | 0.526 |  |
-| mult_8 | sESP | **0.00222** | 0.00218 | 0.00141 | 0.0015 | 0.00141 | 0.00141 | **0.00222** |  |
-| mult_8 | sESP x0.1 | **0.543** | 0.542 | 0.519 | 0.522 | 0.519 | 0.519 | **0.543** |  |
-| mult_8 | sim F | **0.0155** | 0.0154 | 0.0126 | 0.0128 | 0.0126 | 0.0126 | **0.0155** |  |
-| mult_8 | sim F x0.1 | **0.567** | 0.566 | 0.542 | 0.545 | 0.542 | 0.542 | **0.567** |  |
-| add_17 | ESP | 1.41e-07 | 1.39e-07 | 1.37e-07 | **1.44e-07** | 1.37e-07 | **1.44e-07** | **1.44e-07** | mkco_full_alap |
-| add_17 | ESP_xt | 3.51e-08 | 3.36e-08 | 3.00e-08 | **3.58e-08** | 3.00e-08 | **3.58e-08** | **3.58e-08** |  |
+| mult_8 | ESP | 0.00283 | 0.0029 | 0.0029 | **0.0029** | 0.0029 | 0.0029 | 0.00283 | original |
+| mult_8 | ESP_xt | 0.00232 | 0.00234 | 0.00234 | **0.00234** | 0.00234 | 0.00234 | 0.00232 |  |
+| mult_8 | ESP x0.1 | 0.526 | 0.529 | 0.529 | **0.529** | 0.529 | 0.529 | 0.526 |  |
+| mult_8 | sESP | **0.00222** | 0.00141 | 0.00141 | 0.0015 | 0.00141 | 0.00141 | **0.00222** |  |
+| mult_8 | sESP x0.1 | **0.543** | 0.519 | 0.519 | 0.522 | 0.519 | 0.519 | **0.543** |  |
+| mult_8 | sim F | **0.0155** | 0.0126 | 0.0126 | 0.0128 | 0.0126 | 0.0126 | **0.0155** |  |
+| mult_8 | sim F x0.1 | **0.567** | 0.542 | 0.542 | 0.545 | 0.542 | 0.542 | **0.567** |  |
+| add_17 | ESP | 1.41e-07 | 1.37e-07 | 1.37e-07 | **1.44e-07** | 1.37e-07 | **1.44e-07** | **1.44e-07** | mkco_full_alap |
+| add_17 | ESP_xt | 3.51e-08 | 3.02e-08 | 3.00e-08 | **3.58e-08** | 3.00e-08 | **3.58e-08** | **3.58e-08** |  |
 | add_17 | ESP x0.1 | 0.171 | 0.171 | 0.171 | **0.172** | 0.171 | **0.172** | **0.172** |  |
-| add_17 | sESP | 1.07e-08 | 1.09e-08 | 1.14e-08 | 1.27e-08 | 1.14e-08 | **1.27e-08** | **1.27e-08** |  |
-| add_17 | sESP x0.1 | 0.147 | 0.147 | 0.148 | **0.149** | 0.148 | **0.149** | **0.149** |  |
-| qae_17 | ESP | 3.66e-05 | 3.62e-05 | 3.78e-05 | 3.73e-05 | 3.79e-05 | **3.79e-05** | **3.79e-05** | mkco_full_alap |
-| qae_17 | ESP_xt | **1.21e-05** | 1.20e-05 | 1.13e-05 | 1.13e-05 | 1.13e-05 | 1.13e-05 | 1.13e-05 |  |
-| qae_17 | ESP x0.1 | 0.279 | 0.278 | 0.281 | 0.28 | 0.281 | **0.281** | **0.281** |  |
-| qae_17 | sESP | 1.18e-07 | 1.16e-07 | 1.30e-07 | 1.27e-07 | 1.34e-07 | **1.34e-07** | **1.34e-07** |  |
-| qae_17 | sESP x0.1 | 0.194 | 0.194 | 0.196 | 0.196 | 0.197 | **0.197** | **0.197** |  |
-| qft_16 | ESP | 5.26e-05 | 5.21e-05 | 5.46e-05 | 5.45e-05 | **5.47e-05** | 5.47e-05 | 5.45e-05 | mkco_alap |
-| qft_16 | ESP_xt | **9.81e-06** | 9.72e-06 | 9.07e-06 | 9.06e-06 | 9.09e-06 | 9.09e-06 | 9.06e-06 |  |
-| qft_16 | ESP x0.1 | 0.316 | 0.315 | 0.318 | 0.318 | **0.318** | **0.318** | 0.318 |  |
-| qft_16 | sESP | 1.10e-05 | 1.06e-05 | 1.28e-05 | **1.29e-05** | 1.29e-05 | 1.29e-05 | **1.29e-05** |  |
-| qft_16 | sESP x0.1 | 0.311 | 0.299 | 0.316 | 0.316 | 0.316 | **0.316** | 0.316 |  |
-| hubbard_8 | ESP | 5.09e-09 | 5.13e-09 | 5.17e-09 | 5.17e-09 | 5.22e-09 | **5.22e-09** | **5.22e-09** | mkco_full_alap |
-| hubbard_8 | ESP_xt | 1.39e-09 | **1.40e-09** | 1.32e-09 | 1.34e-09 | 1.32e-09 | 1.35e-09 | 1.35e-09 |  |
-| hubbard_8 | ESP x0.1 | 0.0839 | 0.084 | 0.0848 | 0.0848 | 0.085 | **0.085** | **0.085** |  |
-| hubbard_8 | sESP | 8.14e-13 | 8.40e-13 | 4.30e-13 | 1.00e-12 | 4.55e-13 | **1.06e-12** | **1.06e-12** |  |
-| hubbard_8 | sESP x0.1 | 0.0618 | 0.062 | 0.0582 | 0.0631 | 0.0586 | **0.0634** | **0.0634** |  |
-| hubbard_8 | sim F | 0.00283 | **0.00285** | 0.00252 | 0.0028 | 0.00253 | 0.0028 | 0.0028 |  |
-| hubbard_8 | sim F x0.1 | 0.0751 | 0.0753 | 0.0702 | 0.0764 | 0.0706 | **0.0767** | **0.0767** |  |
-| hhl_8 | ESP | 8.57e-21 | 6.29e-21 | 8.60e-21 | 8.60e-21 | **8.61e-21** | 8.61e-21 | **8.61e-21** | mkco_full |
-| hhl_8 | ESP_xt | **5.35e-21** | 3.93e-21 | 5.29e-21 | 5.34e-21 | 5.30e-21 | 5.30e-21 | 5.30e-21 |  |
-| hhl_8 | ESP x0.1 | 0.00256 | 0.00247 | 0.00259 | **0.0026** | 0.00259 | 0.00259 | 0.00259 |  |
-| hhl_8 | sESP | 4.10e-28 | 2.77e-28 | 7.77e-28 | 2.47e-28 | **7.78e-28** | **7.78e-28** | **7.78e-28** |  |
-| hhl_8 | sESP x0.1 | 9.54e-04 | 9.12e-04 | 0.00102 | 9.23e-04 | **0.00102** | **0.00102** | **0.00102** |  |
-| hhl_8 | sim F | 0.0056 | 0.0056 | 0.00762 | 0.00741 | 0.00762 | **0.00762** | 0.00762 |  |
-| hhl_8 | sim F x0.1 | 0.0123 | 0.0122 | 0.0138 | 0.0126 | 0.0138 | **0.0138** | 0.0138 |  |
-| heisenberg_32 | ESP | 7.47e-35 | 1.18e-34 | 7.47e-35 | 7.47e-35 | 6.84e-33 | **6.84e-33** | **6.84e-33** | mkco_full_alap |
-| heisenberg_32 | ESP_xt | 7.52e-41 | 2.72e-40 | 7.52e-41 | 7.52e-41 | 3.84e-38 | **3.84e-38** | **3.84e-38** |  |
-| heisenberg_32 | ESP x0.1 | 3.37e-05 | 3.83e-05 | 3.37e-05 | 3.37e-05 | 7.24e-05 | **7.24e-05** | **7.24e-05** |  |
+| add_17 | sESP | 1.07e-08 | 1.14e-08 | 1.14e-08 | 1.27e-08 | 1.14e-08 | **1.27e-08** | **1.27e-08** |  |
+| add_17 | sESP x0.1 | 0.147 | 0.148 | 0.148 | **0.149** | 0.148 | **0.149** | **0.149** |  |
+| qae_17 | ESP | 3.66e-05 | 3.78e-05 | 3.78e-05 | 3.73e-05 | 3.79e-05 | **3.79e-05** | **3.79e-05** | mkco_full_alap |
+| qae_17 | ESP_xt | **1.21e-05** | 1.14e-05 | 1.13e-05 | 1.13e-05 | 1.13e-05 | 1.13e-05 | 1.13e-05 |  |
+| qae_17 | ESP x0.1 | 0.279 | 0.281 | 0.281 | 0.28 | 0.281 | **0.281** | **0.281** |  |
+| qae_17 | sESP | 1.18e-07 | 1.30e-07 | 1.30e-07 | 1.27e-07 | 1.34e-07 | **1.34e-07** | **1.34e-07** |  |
+| qae_17 | sESP x0.1 | 0.194 | 0.196 | 0.196 | 0.196 | 0.197 | **0.197** | **0.197** |  |
+| qft_16 | ESP | 5.26e-05 | 5.46e-05 | 5.46e-05 | 5.45e-05 | **5.47e-05** | 5.47e-05 | 5.45e-05 | mkco_alap |
+| qft_16 | ESP_xt | **9.81e-06** | 9.22e-06 | 9.07e-06 | 9.06e-06 | 9.09e-06 | 9.09e-06 | 9.06e-06 |  |
+| qft_16 | ESP x0.1 | 0.316 | 0.318 | 0.318 | 0.318 | **0.318** | **0.318** | 0.318 |  |
+| qft_16 | sESP | 1.10e-05 | 1.28e-05 | 1.28e-05 | **1.29e-05** | 1.29e-05 | 1.29e-05 | **1.29e-05** |  |
+| qft_16 | sESP x0.1 | 0.311 | 0.316 | 0.316 | 0.316 | 0.316 | **0.316** | 0.316 |  |
+| hubbard_8 | ESP | 5.09e-09 | 5.17e-09 | 5.17e-09 | 5.17e-09 | 5.22e-09 | **5.22e-09** | **5.22e-09** | mkco_full_alap |
+| hubbard_8 | ESP_xt | **1.39e-09** | 1.32e-09 | 1.32e-09 | 1.34e-09 | 1.32e-09 | 1.35e-09 | 1.35e-09 |  |
+| hubbard_8 | ESP x0.1 | 0.0839 | 0.0848 | 0.0848 | 0.0848 | 0.085 | **0.085** | **0.085** |  |
+| hubbard_8 | sESP | 8.14e-13 | 4.30e-13 | 4.30e-13 | 1.00e-12 | 4.55e-13 | **1.06e-12** | **1.06e-12** |  |
+| hubbard_8 | sESP x0.1 | 0.0618 | 0.0582 | 0.0582 | 0.0631 | 0.0586 | **0.0634** | **0.0634** |  |
+| hubbard_8 | sim F | **0.00283** | 0.00252 | 0.00252 | 0.0028 | 0.00253 | 0.0028 | 0.0028 |  |
+| hubbard_8 | sim F x0.1 | 0.0751 | 0.0702 | 0.0702 | 0.0764 | 0.0706 | **0.0767** | **0.0767** |  |
+| hhl_8 | ESP | 8.57e-21 | 8.60e-21 | 8.60e-21 | 8.60e-21 | **8.61e-21** | 8.61e-21 | **8.61e-21** | mkco_full |
+| hhl_8 | ESP_xt | **5.35e-21** | 5.29e-21 | 5.29e-21 | 5.34e-21 | 5.30e-21 | 5.30e-21 | 5.30e-21 |  |
+| hhl_8 | ESP x0.1 | 0.00256 | 0.00259 | 0.00259 | **0.0026** | 0.00259 | 0.00259 | 0.00259 |  |
+| hhl_8 | sESP | 4.10e-28 | 7.76e-28 | 7.77e-28 | 2.47e-28 | **7.78e-28** | **7.78e-28** | **7.78e-28** |  |
+| hhl_8 | sESP x0.1 | 9.54e-04 | 0.00102 | 0.00102 | 9.23e-04 | **0.00102** | **0.00102** | **0.00102** |  |
+| hhl_8 | sim F | 0.0056 | 0.00762 | 0.00762 | 0.00741 | 0.00762 | **0.00762** | 0.00762 |  |
+| hhl_8 | sim F x0.1 | 0.0123 | 0.0138 | 0.0138 | 0.0126 | 0.0138 | **0.0138** | 0.0138 |  |
+| heisenberg_32 | ESP | 7.47e-35 | 7.47e-35 | 7.47e-35 | 7.47e-35 | 6.84e-33 | **6.84e-33** | **6.84e-33** | mkco_full_alap |
+| heisenberg_32 | ESP_xt | 7.52e-41 | 7.52e-41 | 7.52e-41 | 7.52e-41 | 3.84e-38 | **3.84e-38** | **3.84e-38** |  |
+| heisenberg_32 | ESP x0.1 | 3.37e-05 | 3.37e-05 | 3.37e-05 | 3.37e-05 | 7.24e-05 | **7.24e-05** | **7.24e-05** |  |
 | heisenberg_32 | sESP | – | – | – | – | – | – | – |  |
 | heisenberg_32 | sESP x0.1 | – | – | – | – | – | – | – |  |
-| grover_10 | ESP | 8.41e-90 | 8.26e-90 | 8.42e-90 | 8.42e-90 | 9.43e-90 | **9.43e-90** | **9.43e-90** | mkco_full_alap |
-| grover_10 | ESP_xt | **1.28e-106** | 1.25e-106 | 4.14e-108 | 3.60e-108 | 4.64e-108 | 4.64e-108 | 4.64e-108 |  |
-| grover_10 | ESP x0.1 | 9.12e-12 | 9.10e-12 | 9.58e-12 | 9.59e-12 | **9.68e-12** | 9.68e-12 | 9.68e-12 |  |
-| grover_10 | sESP | 9.94e-151 | 9.68e-151 | 8.75e-145 | 3.69e-149 | 9.38e-145 | **9.38e-145** | **9.38e-145** |  |
-| grover_10 | sESP x0.1 | 1.98e-16 | 1.97e-16 | 9.30e-16 | 2.96e-16 | 9.36e-16 | **9.36e-16** | **9.36e-16** |  |
-| hubbard_18 | ESP | 1.22e-177 | 2.79e-180 | 1.22e-177 | 1.22e-177 | 1.79e-169 | 1.79e-169 | **2.70e-155** | mkco_full_dur |
-| hubbard_18 | ESP_xt | 1.36e-204 | 1.56e-209 | 2.02e-204 | 8.99e-205 | 4.15e-195 | 4.15e-195 | **9.82e-182** |  |
-| hubbard_18 | ESP x0.1 | 1.16e-26 | 7.36e-27 | 1.16e-26 | 1.16e-26 | 8.17e-26 | 8.17e-26 | **2.38e-24** |  |
+| grover_10 | ESP | 8.41e-90 | 8.42e-90 | 8.42e-90 | 8.42e-90 | 9.43e-90 | **9.43e-90** | **9.43e-90** | mkco_full_alap |
+| grover_10 | ESP_xt | **1.28e-106** | 4.14e-108 | 4.14e-108 | 3.60e-108 | 4.64e-108 | 4.64e-108 | 4.64e-108 |  |
+| grover_10 | ESP x0.1 | 9.12e-12 | 9.58e-12 | 9.58e-12 | 9.59e-12 | **9.68e-12** | 9.68e-12 | 9.68e-12 |  |
+| grover_10 | sESP | 9.94e-151 | 8.87e-145 | 8.75e-145 | 3.69e-149 | 9.38e-145 | **9.38e-145** | **9.38e-145** |  |
+| grover_10 | sESP x0.1 | 1.98e-16 | 9.31e-16 | 9.30e-16 | 2.96e-16 | 9.36e-16 | **9.36e-16** | **9.36e-16** |  |
+| hubbard_18 | ESP | 1.22e-177 | 1.22e-177 | 1.22e-177 | 1.22e-177 | 1.79e-169 | 1.79e-169 | **2.70e-155** | mkco_full_dur |
+| hubbard_18 | ESP_xt | 1.36e-204 | 1.33e-204 | 2.02e-204 | 8.99e-205 | 4.15e-195 | 4.15e-195 | **9.82e-182** |  |
+| hubbard_18 | ESP x0.1 | 1.16e-26 | 1.16e-26 | 1.16e-26 | 1.16e-26 | 8.17e-26 | 8.17e-26 | **2.38e-24** |  |
 | hubbard_18 | sESP | – | – | – | – | – | – | – |  |
 | hubbard_18 | sESP x0.1 | – | – | – | – | – | – | – |  |
 
 ### Table 11 - ECRs removed by block KAK, plain vs commutation-aware block formation
 
-| Circuit | input ECRs | plain KAK | regrouped KAK | Qiskit O3 ECRs | plain KAK on O3 | regrouped KAK on O3 |
-|---|---:|---:|---:|---:|---:|---:|
-| add_17 | 499 | 0 | 0 | 499 | 0 | 0 |
-| grover_10 | 16397 | 0 | 0 | 16397 | 0 | 0 |
-| heisenberg_32 | 3942 | 60 | 60 | 4071 | 0 | 0 |
-| hhl_8 | 2377 | 0 | 0 | 2377 | 0 | 0 |
-| hubbard_18 | 33958 | 3505 | 3505 | 33586 | 0 | 14 |
-| hubbard_8 | 1344 | 0 | 4 | 1344 | 0 | 4 |
-| mult_8 | 311 | 0 | 0 | 311 | 0 | 0 |
-| qae_17 | 541 | 0 | 0 | 541 | 0 | 0 |
-| qft_16 | 614 | 0 | 0 | 614 | 0 | 0 |
+| Circuit | input ECRs | removed by plain block KAK | removed by regrouped block KAK |
+|---|---:|---:|---:|
+| add_17 | 499 | 0 | 0 |
+| grover_10 | 16397 | 0 | 0 |
+| heisenberg_32 | 3942 | 60 | 60 |
+| hhl_8 | 2377 | 0 | 0 |
+| hubbard_18 | 33958 | 3505 | 3505 |
+| hubbard_8 | 1344 | 0 | 4 |
+| mult_8 | 311 | 0 | 0 |
+| qae_17 | 541 | 0 | 0 |
+| qft_16 | 614 | 0 | 0 |
 
 ### Table 12 - Noisy simulated backend: Aer + the circuits' device calibrations, sampled counts
 
@@ -592,33 +578,28 @@ Hellinger fidelity of 512 or 32768 shots against the ideal output [bootstrap 95%
 | mult_8 | mkco_full | 0.0111 [0.0100, 0.0123] | 0.5148 [0.5092, 0.5203] | 0.5266 | 0.5189 |
 | mult_8 | mkco_full_alap | 0.0112 [0.0101, 0.0123] | 0.5131 [0.5076, 0.5188] | 0.5266 | 0.5189 |
 | mult_8 | mkco_noise (= original) | 0.0128 [0.0116, 0.0140] | 0.5475 [0.5423, 0.5529] | 0.5505 | 0.5433 |
-| mult_8 | qiskit_o3 | 0.0127 [0.0116, 0.0139] | 0.5417 [0.5359, 0.5469] | 0.5494 | 0.5423 |
 | add_17 | original | – | 0.1680 [0.1348, 0.2012] | – | 0.1468 |
 | add_17 | mkco | – | 0.1484 [0.1191, 0.1777] | – | 0.1478 |
 | add_17 | mkco_noise (= mkco_full_alap) | – | 0.1270 [0.0996, 0.1563] | – | 0.1494 |
-| add_17 | qiskit_o3 | – | 0.1621 [0.1309, 0.1953] | – | 0.1470 |
 | qae_17 | original | – | 0.2799 [0.2245, 0.3051] | – | 0.1942 |
 | qae_17 | mkco | – | 0.3053 [0.2532, 0.3301] | – | 0.1963 |
 | qae_17 | mkco_noise (= mkco_full_alap) | – | 0.3525 [0.2960, 0.3752] | – | 0.1969 |
-| qae_17 | qiskit_o3 | – | 0.2544 [0.2013, 0.2751] | – | 0.1938 |
 | hubbard_8 | original | 0.0040 [0.0034, 0.0046] | 0.0695 [0.0667, 0.0721] | 0.0808 | 0.0618 |
 | hubbard_8 | mkco | 0.0032 [0.0025, 0.0038] | 0.0647 [0.0620, 0.0673] | 0.0757 | 0.0582 |
 | hubbard_8 | mkco_alap | 0.0039 [0.0032, 0.0046] | 0.0732 [0.0703, 0.0758] | 0.0820 | 0.0631 |
 | hubbard_8 | mkco_full | 0.0033 [0.0027, 0.0039] | 0.0677 [0.0650, 0.0704] | 0.0760 | 0.0586 |
 | hubbard_8 | mkco_full_alap | 0.0048 [0.0040, 0.0055] | 0.0740 [0.0712, 0.0770] | 0.0823 | 0.0634 |
 | hubbard_8 | mkco_noise (= mkco_full_alap) | 0.0037 [0.0031, 0.0043] | 0.0732 [0.0703, 0.0761] | 0.0823 | 0.0634 |
-| hubbard_8 | qiskit_o3 | 0.0040 [0.0033, 0.0047] | 0.0716 [0.0688, 0.0742] | 0.0810 | 0.0620 |
 | hhl_8 | original | 0.0630 [0.0605, 0.0654] | 0.0719 [0.0689, 0.0746] | 0.0722 | 0.0010 |
 | hhl_8 | mkco | 0.0627 [0.0598, 0.0651] | 0.0717 [0.0688, 0.0743] | 0.0738 | 0.0010 |
 | hhl_8 | mkco_alap | 0.0657 [0.0631, 0.0683] | 0.0731 [0.0702, 0.0760] | 0.0735 | 0.0009 |
 | hhl_8 | mkco_full | 0.0661 [0.0635, 0.0687] | 0.0746 [0.0717, 0.0774] | 0.0738 | 0.0010 |
 | hhl_8 | mkco_full_alap | 0.0647 [0.0619, 0.0672] | 0.0747 [0.0717, 0.0775] | 0.0738 | 0.0010 |
 | hhl_8 | mkco_noise (= mkco_full) | 0.0626 [0.0597, 0.0652] | 0.0721 [0.0692, 0.0749] | 0.0738 | 0.0010 |
-| hhl_8 | qiskit_o3 | 0.0601 [0.0574, 0.0626] | 0.0694 [0.0665, 0.0719] | 0.0720 | 0.0009 |
 
-Scale 1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 6/6, state-aware ESP 5/6, ESP 4/6 correctly.
+Scale 1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 4/4, state-aware ESP 4/4, ESP 2/4 correctly.
 
-Scale 0.1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 12/12, state-aware ESP 13/13, ESP 4/13 correctly.
+Scale 0.1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 7/7, state-aware ESP 7/7, ESP 3/7 correctly.
 
 ### 5.1 Second benchmark set
 
@@ -637,18 +618,16 @@ so its results are those of set 1.
   (−0.5% to −3.0%; Set 2 Table 1) and for two-qubit depth (Set 2 Table 2),
   where the inputs were already optimal. Lee et al. gains nothing; Jain &
   Kumar reaches the same depths without a certificate.
-- **Gate rewriting vs Qiskit O3.** Qiskit O3 on the device Target removes at
-  most one layer (tfim_7_40: 1560 → 1559). MKCO-full is 0.5–3.0% shallower
-  and 0.1–1.1% faster in estimated time. KAK finds no cheaper two-qubit block
-  in any of these circuits (Set 2 Table 8). The shallowest results come from
-  MKCO-rewrite applied after Qiskit (heisenberg_8: 526, tfim_7_40: 1511).
+- **Gate rewriting.** MKCO-full is 0.5–3.1% shallower than the transpiled
+  input and 0.1–1.1% faster in estimated time. KAK finds no cheaper two-qubit
+  block in any of these circuits (Set 2 Table 8).
 - **Crosstalk.** At the optimal two-qubit depth only qpe_8 has room
   (−13.6%). With a 20% two-qubit-depth budget, the weighted Max-k-Cut removes
   34–38% of the crosstalk-prone pairs on all four (Set 2 Table 9).
 - **Noise (Set 2 Table 10).** All four circuits are small enough for exact
   density-matrix simulation, each with the calibration of its own device. At
   10× lower noise:
-  - qpe_8: MKCO's orders are 4.3% more faithful than the input and Qiskit O3
+  - qpe_8: MKCO's orders are 4.3% more faithful than the input
     (0.0968 vs 0.0928);
   - heisenberg_8: +0.3% (0.3775 vs 0.3762);
   - tfim_8: all methods within 0.3% (0.469–0.470), and `mkco_noise` keeps the
@@ -657,22 +636,22 @@ so its results are those of set 1.
     (0.0139 vs 0.0136); the state-aware pick, plain MKCO, scores 0.0137.
 
   Across all method pairs, the state-aware ESP orders the pair as the
-  simulation does in 91% of cases at 10× lower noise (80% at calibrated
-  noise), against 78% (64%) for the state-blind ESP.
+  simulation does in 90% of cases at 10× lower noise (78% at calibrated
+  noise), against 80% (64%) for the state-blind ESP.
 - **Noisy simulated backend (Set 2 Table 12).** Aer ran each circuit with
   its own device noise model, 32,768 shots, at both noise levels.
   - **qpe_8 is the clear case.** At 10× lower noise every MKCO order
-    (0.701–0.707) beats the input (0.679) and Qiskit O3 (0.683), with
-    separated intervals, as the density-matrix model predicted (+4%). At
-    calibrated noise the MKCO outputs score 0.34, the level of pure noise for
-    this distribution, while the input and Qiskit O3 fall to 0.24.
+    (0.701–0.707) beats the input (0.679), with separated intervals, as the
+    density-matrix model predicted (+4%). At calibrated noise the MKCO outputs
+    score 0.34, the level of pure noise for this distribution, while the input
+    falls to 0.24.
   - **heisenberg_8 and tfim_8** differ by less than the sampling spread. The
     same circuit measured twice differs by up to 0.006.
   - **tfim_7_40's counts carry no information.** Its ideal output is so broad
     that uniform noise already scores 0.479, about where every method lands.
   - **Agreement.** On the pairs that sampling separates, the density-matrix
     model, the state-aware ESP and the state-blind ESP all order the pair
-    correctly: 10/10 at calibrated noise, 9/9 at 10× lower noise. In this set
+    correctly: 6/6 at calibrated noise, 4/4 at 10× lower noise. In this set
     the shorter MKCO orders are also the more faithful ones, so even the
     state-blind estimate ranks them correctly.
 - **A bug these circuits exposed, now fixed.** With final measurements in the
@@ -711,25 +690,25 @@ so its results are those of set 1.
 | qpe_8 | 22 | 22 | 22 | 22 | **19** | -13.6% | 452 -> 452 | 1930 -> 1934 |
 | tfim_7_40 | 156 | 156 | 156 | 156 | **156** | +0.0% | 368 -> 368 | 1560 -> 1587 |
 
-#### Set 2 - Table 4 - Gate-rewriting class: MKCO rewrite modes vs Qiskit O3 (device target), and composition
+#### Set 2 - Table 4 - Gate-rewriting modes: depth
 
-Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native directed edges, so every output below is executable on the device (0 reversed ECRs). MKCO-rewrite = single-qubit ZSX resynthesis + run merging + Max-k-Cut reordering; MKCO-full adds two-qubit KAK block resynthesis. Every MKCO result is certified optimal for the gate list it reorders.
+Depth (lower is better). The inputs are already transpiled by Qiskit at optimization level 3, so the reference is the input itself; Lee'26 and JK'26 are reorder-only. MKCO-rewrite = single-qubit ZSX resynthesis + run merging + Max-k-Cut reordering; MKCO-full adds two-qubit KAK block resynthesis in the native ECR direction. Every MKCO result is certified optimal for the gate list it reorders.
 
-| Circuit | Original | MKCO (reorder) | MKCO-rewrite | **MKCO-full** | Qiskit O3 | O3 + MKCO | O3 + MKCO-rewrite | Best | MKCO-full vs Qiskit O3 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| tfim_8 | 388 | **386** | **386** | **386** | 388 | **386** | **386** | 386 | -0.5% |
-| heisenberg_8 | 530 | 527 | 527 | 527 | 530 | **526** | **526** | 526 | -0.6% |
-| qpe_8 | 1930 | **1889** | **1889** | **1889** | 1930 | **1889** | **1889** | 1889 | -2.1% |
-| tfim_7_40 | 1560 | 1514 | 1512 | 1512 | 1559 | 1513 | **1511** | 1511 | -3.0% |
+| Circuit | Original | Lee'26 | JK'26 | MKCO (reorder) | MKCO-rewrite | **MKCO-full** | MKCO-full vs original |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| tfim_8 | 388 | 388 | **386** | **386** | **386** | **386** | -0.5% |
+| heisenberg_8 | 530 | 530 | **527** | **527** | **527** | **527** | -0.6% |
+| qpe_8 | 1930 | 1930 | **1889** | **1889** | **1889** | **1889** | -2.1% |
+| tfim_7_40 | 1560 | 1560 | 1514 | 1514 | **1512** | **1512** | -3.1% |
 
 **Hardware-time view.** MKCO-full (duration objective) keeps, per circuit, the candidate with the lowest estimated execution time among {KAK + 1q rewrite, 1q rewrite} x {reorder for depth, for 2q-depth}.
 
-| Circuit | est. duration original (us) | Qiskit O3 (us) | MKCO-full, depth obj. (us) | **MKCO-full, duration obj. (us)** | vs Qiskit | 2q-depth Qiskit / MKCO-dur | ECRs Qiskit / MKCO-dur | depth Qiskit / MKCO-dur | reversed ECRs |
-|---|---:|---:|---:|---:|---:|---|---|---|---|
-| tfim_8 | 53.05 | 53.05 | 52.98 | **52.98** | -0.1% | 90 / 90 | 280 / 280 | 388 / 386 | 0 / 0 |
-| heisenberg_8 | 76.23 | 76.23 | 75.80 | **75.80** | -0.6% | 130 / 130 | 420 / 420 | 530 / 527 | 0 / 0 |
-| qpe_8 | 261.83 | 261.83 | 260.45 | **260.45** | -0.5% | 452 / 452 | 484 / 484 | 1930 / 1889 | 0 / 0 |
-| tfim_7_40 | 215.08 | 215.08 | 212.62 | **212.62** | -1.1% | 368 / 368 | 714 / 714 | 1559 / 1512 | 0 / 0 |
+| Circuit | est. duration original (us) | MKCO-full, depth obj. (us) | **MKCO-full, duration obj. (us)** | vs original | 2q-depth orig / MKCO-dur | ECRs orig / MKCO-dur | depth orig / MKCO-dur | reversed ECRs |
+|---|---:|---:|---:|---:|---|---|---|---|
+| tfim_8 | 53.05 | 52.98 | **52.98** | -0.1% | 90 / 90 | 280 / 280 | 388 / 386 | 0 |
+| heisenberg_8 | 76.23 | 75.80 | **75.80** | -0.6% | 130 / 130 | 420 / 420 | 530 / 527 | 0 |
+| qpe_8 | 261.83 | 260.45 | **260.45** | -0.5% | 452 / 452 | 484 / 484 | 1930 / 1889 | 0 |
+| tfim_7_40 | 215.08 | 212.62 | **212.62** | -1.1% | 368 / 368 | 714 / 714 | 1560 / 1512 | 0 |
 
 #### Set 2 - Table 5 - Estimated execution time (us; ECR 533 ns, sx/x 36 ns, rz virtual)
 
@@ -742,21 +721,21 @@ Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native
 
 #### Set 2 - Table 6 - Runtime (s)
 
-| Circuit | Lee'26 | JK'26 | MKCO | MKCO-2q | MKCO-XT | MKCO-full | Qiskit O3 (target) | MKCO after O3 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| tfim_8 | 0.2 | 0.1 | 0.1 | 0.1 | 0.0 | 0.5 | 2.4 | 0.1 |
-| heisenberg_8 | 0.3 | 0.1 | 0.1 | 0.1 | 0.0 | 0.7 | 0.0 | 0.2 |
-| qpe_8 | 0.5 | 0.3 | 0.2 | 0.1 | 3.9 | 1.0 | 0.0 | 0.2 |
-| tfim_7_40 | 0.8 | 0.3 | 0.4 | 0.2 | 0.1 | 9.3 | 0.0 | 0.3 |
+| Circuit | Lee'26 | JK'26 | MKCO | MKCO-2q | MKCO-XT | MKCO-full |
+|---|---:|---:|---:|---:|---:|---:|
+| tfim_8 | 0.2 | 0.1 | 0.1 | 0.1 | 0.0 | 0.5 |
+| heisenberg_8 | 0.3 | 0.1 | 0.1 | 0.1 | 0.0 | 0.7 |
+| qpe_8 | 0.5 | 0.3 | 0.2 | 0.1 | 3.9 | 1.0 |
+| tfim_7_40 | 0.8 | 0.3 | 0.4 | 0.2 | 0.1 | 9.3 |
 
 #### Set 2 - Table 7 - Verification of every reordered output
 
 | Circuit | Active qubits | Commutation audit (all reorderings) | Inverted pairs checked (MKCO) | State-vector check (MKCO) | State-vector (MKCO-rewrite, vs original) | State-vector (MKCO-full dur., vs original) |
 |---|---:|:---:|---:|:---:|:---:|:---:|
-| tfim_8 | 8 | 13/13 pass | 159 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| heisenberg_8 | 8 | 13/13 pass | 238 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| qpe_8 | 8 | 13/13 pass | 83 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
-| tfim_7_40 | 7 | 13/13 pass | 274 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| tfim_8 | 8 | 11/11 pass | 159 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| heisenberg_8 | 8 | 11/11 pass | 238 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| qpe_8 | 8 | 11/11 pass | 83 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
+| tfim_7_40 | 7 | 11/11 pass | 274 | pass (F=1.0000000000) | pass (F=1.0000000000) | pass (F=1.0000000000) |
 
 #### Set 2 - Table 8 - Two-qubit block (KAK) resynthesis: blocks that become cheaper in native ECRs
 
@@ -800,45 +779,45 @@ Depth (lower is better). Qiskit O3 runs on a Target with ECRs only on the native
 
 ESP = estimated success probability (state-blind, ALAP idling); sESP = state-aware ESP (idle gaps weighted by the idling qubit's state, <= 22 active qubits); sim = exact density-matrix state fidelity (<= 8 active qubits). Scale 0.1 = all error rates x0.1 and T1, T2 x10. mkco_noise = the MKCO candidate with the best sESP (ESP for larger circuits), the input included.
 
-| Circuit | score | original | qiskit_o3 | mkco | mkco_alap | mkco_full | mkco_full_alap | mkco_noise | mkco_noise picks |
+| Circuit | score | original | jk2026 | mkco | mkco_alap | mkco_full | mkco_full_alap | mkco_noise | mkco_noise picks |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|
-| tfim_8 | ESP | 7.88e-04 | 7.88e-04 | **7.91e-04** | 7.79e-04 | **7.91e-04** | 7.91e-04 | 7.88e-04 | original |
-| tfim_8 | ESP_xt | **1.81e-04** | **1.81e-04** | 1.56e-04 | 1.61e-04 | 1.56e-04 | 1.56e-04 | **1.81e-04** |  |
+| tfim_8 | ESP | 7.88e-04 | **7.91e-04** | **7.91e-04** | 7.79e-04 | **7.91e-04** | 7.91e-04 | 7.88e-04 | original |
+| tfim_8 | ESP_xt | **1.81e-04** | 1.54e-04 | 1.56e-04 | 1.61e-04 | 1.56e-04 | 1.56e-04 | **1.81e-04** |  |
 | tfim_8 | ESP x0.1 | 0.495 | 0.495 | **0.495** | 0.494 | **0.495** | **0.495** | 0.495 |  |
-| tfim_8 | sESP | **7.04e-04** | 7.04e-04 | 7.00e-04 | 6.85e-04 | 7.00e-04 | 7.00e-04 | **7.04e-04** |  |
+| tfim_8 | sESP | **7.04e-04** | 7.00e-04 | 7.00e-04 | 6.85e-04 | 7.00e-04 | 7.00e-04 | **7.04e-04** |  |
 | tfim_8 | sESP x0.1 | **0.49** | 0.49 | 0.49 | 0.489 | 0.49 | 0.49 | **0.49** |  |
-| tfim_8 | sim F | **0.00778** | **0.00778** | 0.00767 | 0.00761 | 0.00767 | 0.00767 | **0.00778** |  |
-| tfim_8 | sim F x0.1 | **0.47** | **0.47** | 0.47 | 0.469 | 0.47 | 0.47 | **0.47** |  |
-| heisenberg_8 | ESP | 2.66e-05 | 2.66e-05 | **2.71e-05** | 2.70e-05 | **2.71e-05** | 2.71e-05 | **2.71e-05** | mkco |
-| heisenberg_8 | ESP_xt | **2.85e-06** | **2.85e-06** | 2.32e-06 | 2.80e-06 | 2.32e-06 | 2.32e-06 | 2.32e-06 |  |
-| heisenberg_8 | ESP x0.1 | 0.355 | 0.355 | **0.355** | 0.355 | **0.355** | **0.355** | **0.355** |  |
-| heisenberg_8 | sESP | 2.55e-05 | 2.55e-05 | **2.60e-05** | 2.58e-05 | **2.60e-05** | **2.60e-05** | **2.60e-05** |  |
-| heisenberg_8 | sESP x0.1 | 0.354 | 0.354 | 0.355 | 0.354 | 0.355 | **0.355** | 0.355 |  |
-| heisenberg_8 | sim F | 0.0108 | 0.0108 | 0.0111 | 0.011 | 0.0111 | **0.0111** | 0.0111 |  |
-| heisenberg_8 | sim F x0.1 | 0.376 | 0.376 | 0.378 | 0.377 | 0.378 | **0.378** | 0.378 |  |
-| qpe_8 | ESP | 4.32e-08 | 4.32e-08 | 4.41e-08 | 4.41e-08 | 4.41e-08 | **4.41e-08** | **4.41e-08** | mkco_full_alap |
-| qpe_8 | ESP_xt | 3.43e-08 | 3.43e-08 | 3.47e-08 | 3.47e-08 | 3.47e-08 | **3.47e-08** | **3.47e-08** |  |
+| tfim_8 | sim F | **0.00778** | 0.00766 | 0.00767 | 0.00761 | 0.00767 | 0.00767 | **0.00778** |  |
+| tfim_8 | sim F x0.1 | **0.47** | 0.47 | 0.47 | 0.469 | 0.47 | 0.47 | **0.47** |  |
+| heisenberg_8 | ESP | 2.66e-05 | **2.71e-05** | **2.71e-05** | 2.70e-05 | **2.71e-05** | 2.71e-05 | **2.71e-05** | mkco |
+| heisenberg_8 | ESP_xt | **2.85e-06** | 2.30e-06 | 2.32e-06 | 2.80e-06 | 2.32e-06 | 2.32e-06 | 2.32e-06 |  |
+| heisenberg_8 | ESP x0.1 | 0.355 | **0.355** | **0.355** | 0.355 | **0.355** | **0.355** | **0.355** |  |
+| heisenberg_8 | sESP | 2.55e-05 | 2.59e-05 | **2.60e-05** | 2.58e-05 | **2.60e-05** | **2.60e-05** | **2.60e-05** |  |
+| heisenberg_8 | sESP x0.1 | 0.354 | 0.355 | 0.355 | 0.354 | 0.355 | **0.355** | 0.355 |  |
+| heisenberg_8 | sim F | 0.0108 | 0.0111 | 0.0111 | 0.011 | 0.0111 | **0.0111** | 0.0111 |  |
+| heisenberg_8 | sim F x0.1 | 0.376 | 0.377 | 0.378 | 0.377 | 0.378 | **0.378** | 0.378 |  |
+| qpe_8 | ESP | 4.32e-08 | 4.41e-08 | 4.41e-08 | 4.41e-08 | 4.41e-08 | **4.41e-08** | **4.41e-08** | mkco_full_alap |
+| qpe_8 | ESP_xt | 3.43e-08 | 3.47e-08 | 3.47e-08 | 3.47e-08 | 3.47e-08 | **3.47e-08** | **3.47e-08** |  |
 | qpe_8 | ESP x0.1 | 0.15 | 0.15 | 0.15 | 0.15 | 0.15 | **0.15** | **0.15** |  |
-| qpe_8 | sESP | 6.68e-10 | 6.68e-10 | 1.04e-09 | 1.04e-09 | 1.04e-09 | **1.04e-09** | **1.04e-09** |  |
-| qpe_8 | sESP x0.1 | 0.114 | 0.114 | **0.119** | 0.119 | **0.119** | **0.119** | **0.119** |  |
-| qpe_8 | sim F | 0.0023 | 0.0023 | 0.0031 | 0.00303 | 0.0031 | **0.0031** | **0.0031** |  |
-| qpe_8 | sim F x0.1 | 0.0928 | 0.0928 | 0.0968 | 0.0968 | 0.0968 | **0.0968** | **0.0968** |  |
-| tfim_7_40 | ESP | 3.57e-28 | 3.57e-28 | 4.08e-28 | 4.02e-28 | **5.48e-28** | 5.48e-28 | 4.08e-28 | mkco |
-| tfim_7_40 | ESP_xt | **8.43e-30** | **8.43e-30** | 6.63e-30 | 6.83e-30 | 5.74e-30 | 5.74e-30 | 6.63e-30 |  |
-| tfim_7_40 | ESP x0.1 | 0.00163 | 0.00163 | 0.00167 | 0.00167 | **0.00171** | **0.00171** | 0.00167 |  |
-| tfim_7_40 | sESP | 5.84e-30 | 5.84e-30 | **9.55e-30** | 7.25e-30 | 8.73e-30 | 8.73e-30 | **9.55e-30** |  |
-| tfim_7_40 | sESP x0.1 | 0.00141 | 0.00141 | **0.00148** | 0.00144 | 0.00147 | 0.00147 | **0.00148** |  |
-| tfim_7_40 | sim F | 0.0086 | 0.0086 | 0.00826 | 0.00809 | **0.00941** | 0.00941 | 0.00826 |  |
-| tfim_7_40 | sim F x0.1 | 0.0136 | 0.0136 | 0.0137 | 0.0136 | **0.0139** | 0.0139 | 0.0137 |  |
+| qpe_8 | sESP | 6.68e-10 | **1.04e-09** | 1.04e-09 | 1.04e-09 | 1.04e-09 | 1.04e-09 | 1.04e-09 |  |
+| qpe_8 | sESP x0.1 | 0.114 | **0.119** | 0.119 | 0.119 | 0.119 | 0.119 | 0.119 |  |
+| qpe_8 | sim F | 0.0023 | **0.0031** | 0.0031 | 0.00303 | 0.0031 | 0.0031 | 0.0031 |  |
+| qpe_8 | sim F x0.1 | 0.0928 | **0.0968** | 0.0968 | 0.0968 | 0.0968 | 0.0968 | 0.0968 |  |
+| tfim_7_40 | ESP | 3.57e-28 | 4.04e-28 | 4.08e-28 | 4.02e-28 | **5.48e-28** | 5.48e-28 | 4.08e-28 | mkco |
+| tfim_7_40 | ESP_xt | **8.43e-30** | 6.71e-30 | 6.63e-30 | 6.83e-30 | 5.74e-30 | 5.74e-30 | 6.63e-30 |  |
+| tfim_7_40 | ESP x0.1 | 0.00163 | 0.00167 | 0.00167 | 0.00167 | **0.00171** | **0.00171** | 0.00167 |  |
+| tfim_7_40 | sESP | 5.84e-30 | 9.26e-30 | **9.55e-30** | 7.25e-30 | 8.73e-30 | 8.73e-30 | **9.55e-30** |  |
+| tfim_7_40 | sESP x0.1 | 0.00141 | 0.00147 | **0.00148** | 0.00144 | 0.00147 | 0.00147 | **0.00148** |  |
+| tfim_7_40 | sim F | 0.0086 | 0.00826 | 0.00826 | 0.00809 | **0.00941** | 0.00941 | 0.00826 |  |
+| tfim_7_40 | sim F x0.1 | 0.0136 | 0.0137 | 0.0137 | 0.0136 | **0.0139** | 0.0139 | 0.0137 |  |
 
 #### Set 2 - Table 11 - ECRs removed by block KAK, plain vs commutation-aware block formation
 
-| Circuit | input ECRs | plain KAK | regrouped KAK | Qiskit O3 ECRs | plain KAK on O3 | regrouped KAK on O3 |
-|---|---:|---:|---:|---:|---:|---:|
-| heisenberg_8 | 420 | 0 | 0 | 420 | 0 | 0 |
-| qpe_8 | 484 | 0 | 0 | 484 | 0 | 0 |
-| tfim_7_40 | 714 | 0 | 0 | 714 | 0 | 0 |
-| tfim_8 | 280 | 0 | 0 | 280 | 0 | 0 |
+| Circuit | input ECRs | removed by plain block KAK | removed by regrouped block KAK |
+|---|---:|---:|---:|
+| heisenberg_8 | 420 | 0 | 0 |
+| qpe_8 | 484 | 0 | 0 |
+| tfim_7_40 | 714 | 0 | 0 |
+| tfim_8 | 280 | 0 | 0 |
 
 #### Set 2 - Table 12 - Noisy simulated backend: Aer + the circuits' device calibrations, sampled counts
 
@@ -846,38 +825,34 @@ Hellinger fidelity of 32768 shots against the ideal output [bootstrap 95% interv
 
 | Circuit | method | scale 1 | scale 0.1 | predicted (DM, x0.1) | sESP x0.1 |
 |---|---|---:|---:|---:|---:|
-| qpe_8 | original | 0.2423 [0.2372, 0.2463] | 0.6793 [0.6735, 0.6838] | 0.6795 | 0.1136 |
 | heisenberg_8 | original | 0.0492 [0.0469, 0.0513] | 0.4846 [0.4788, 0.4897] | 0.5003 | 0.3539 |
 | tfim_8 | original | 0.0455 [0.0430, 0.0477] | 0.5518 [0.5462, 0.5572] | 0.5744 | 0.4901 |
+| qpe_8 | original | 0.2423 [0.2372, 0.2463] | 0.6793 [0.6735, 0.6838] | 0.6795 | 0.1136 |
 | tfim_7_40 | original | 0.4782 [0.4718, 0.4830] | 0.4604 [0.4543, 0.4650] | 0.5189 | 0.0014 |
+| qpe_8 | mkco | 0.3396 [0.3338, 0.3442] | 0.7012 [0.6952, 0.7053] | 0.7028 | 0.1187 |
 | tfim_8 | mkco | 0.0465 [0.0441, 0.0485] | 0.5608 [0.5549, 0.5661] | 0.5738 | 0.4898 |
 | tfim_7_40 | mkco | 0.4902 [0.4842, 0.4944] | 0.4688 [0.4629, 0.4738] | 0.5231 | 0.0015 |
-| qpe_8 | mkco | 0.3396 [0.3338, 0.3442] | 0.7012 [0.6952, 0.7053] | 0.7028 | 0.1187 |
 | heisenberg_8 | mkco | 0.0508 [0.0484, 0.0532] | 0.4887 [0.4832, 0.4942] | 0.5007 | 0.3546 |
-| heisenberg_8 | mkco_alap | 0.0503 [0.0479, 0.0527] | 0.4840 [0.4780, 0.4892] | 0.5009 | 0.3544 |
 | tfim_8 | mkco_alap | 0.0442 [0.0418, 0.0464] | 0.5615 [0.5559, 0.5666] | 0.5731 | 0.4887 |
-| tfim_7_40 | mkco_alap | 0.4892 [0.4831, 0.4940] | 0.4709 [0.4650, 0.4756] | 0.5223 | 0.0014 |
 | qpe_8 | mkco_alap | 0.3314 [0.3258, 0.3358] | 0.7036 [0.6983, 0.7076] | 0.7015 | 0.1187 |
-| qpe_8 | mkco_full | 0.3391 [0.3339, 0.3438] | 0.7065 [0.7012, 0.7108] | 0.7028 | 0.1187 |
-| heisenberg_8 | mkco_full | 0.0521 [0.0498, 0.0545] | 0.4865 [0.4810, 0.4917] | 0.5007 | 0.3546 |
+| tfim_7_40 | mkco_alap | 0.4892 [0.4831, 0.4940] | 0.4709 [0.4650, 0.4756] | 0.5223 | 0.0014 |
+| heisenberg_8 | mkco_alap | 0.0503 [0.0479, 0.0527] | 0.4840 [0.4780, 0.4892] | 0.5009 | 0.3544 |
 | tfim_8 | mkco_full | 0.0469 [0.0444, 0.0492] | 0.5578 [0.5521, 0.5629] | 0.5738 | 0.4898 |
+| qpe_8 | mkco_full | 0.3391 [0.3339, 0.3438] | 0.7065 [0.7012, 0.7108] | 0.7028 | 0.1187 |
 | tfim_7_40 | mkco_full | 0.4870 [0.4809, 0.4917] | 0.4667 [0.4612, 0.4715] | 0.5217 | 0.0015 |
-| qpe_8 | mkco_full_alap | 0.3390 [0.3337, 0.3436] | 0.7045 [0.6989, 0.7088] | 0.7028 | 0.1187 |
+| heisenberg_8 | mkco_full | 0.0521 [0.0498, 0.0545] | 0.4865 [0.4810, 0.4917] | 0.5007 | 0.3546 |
 | heisenberg_8 | mkco_full_alap | 0.0524 [0.0499, 0.0546] | 0.4843 [0.4787, 0.4892] | 0.5007 | 0.3546 |
+| qpe_8 | mkco_full_alap | 0.3390 [0.3337, 0.3436] | 0.7045 [0.6989, 0.7088] | 0.7028 | 0.1187 |
 | tfim_8 | mkco_full_alap | 0.0457 [0.0434, 0.0481] | 0.5579 [0.5523, 0.5631] | 0.5738 | 0.4898 |
 | tfim_7_40 | mkco_full_alap | 0.4851 [0.4791, 0.4898] | 0.4648 [0.4588, 0.4694] | 0.5217 | 0.0015 |
-| qpe_8 | mkco_noise (= mkco_full_alap) | 0.3336 [0.3279, 0.3378] | 0.7026 [0.6969, 0.7072] | 0.7028 | 0.1187 |
-| heisenberg_8 | mkco_noise (= mkco) | 0.0538 [0.0513, 0.0562] | 0.4898 [0.4843, 0.4949] | 0.5007 | 0.3546 |
 | tfim_8 | mkco_noise (= original) | 0.0429 [0.0408, 0.0450] | 0.5575 [0.5520, 0.5628] | 0.5744 | 0.4901 |
+| qpe_8 | mkco_noise (= mkco_full_alap) | 0.3336 [0.3279, 0.3378] | 0.7026 [0.6969, 0.7072] | 0.7028 | 0.1187 |
 | tfim_7_40 | mkco_noise (= mkco) | 0.4910 [0.4852, 0.4958] | 0.4688 [0.4630, 0.4737] | 0.5231 | 0.0015 |
-| tfim_8 | qiskit_o3 | 0.0438 [0.0415, 0.0459] | 0.5570 [0.5517, 0.5623] | 0.5744 | 0.4901 |
-| tfim_7_40 | qiskit_o3 | 0.4798 [0.4742, 0.4850] | 0.4603 [0.4545, 0.4649] | 0.5189 | 0.0014 |
-| qpe_8 | qiskit_o3 | 0.2390 [0.2340, 0.2430] | 0.6826 [0.6767, 0.6870] | 0.6795 | 0.1136 |
-| heisenberg_8 | qiskit_o3 | 0.0499 [0.0474, 0.0520] | 0.4872 [0.4814, 0.4928] | 0.5003 | 0.3539 |
+| heisenberg_8 | mkco_noise (= mkco) | 0.0538 [0.0513, 0.0562] | 0.4898 [0.4843, 0.4949] | 0.5007 | 0.3546 |
 
-Scale 1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 10/10, state-aware ESP 10/10, ESP 10/10 correctly.
+Scale 1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 6/6, state-aware ESP 6/6, ESP 6/6 correctly.
 
-Scale 0.1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 9/9, state-aware ESP 9/9, ESP 9/9 correctly.
+Scale 0.1: on the method pairs that sampling separates (non-overlapping intervals), the predictions order density-matrix model 4/4, state-aware ESP 4/4, ESP 4/4 correctly.
 
 ## 6. Results in the settings of Lee et al. and on structured commuting circuits
 
@@ -1186,8 +1161,11 @@ run on each of its wires has executed.
   layers it again. The trial with the smallest CNOTs + depth is kept.
 - Every output passes the exact `unroute` check (Proposition 11) and the
   coupling check.
-- The comparison is Qiskit O3 (SabreLayout + SabreSwap + its optimisation
-  loop) on IBM Eagle's 127-qubit heavy-hex graph, at CNOT level.
+- The comparison is Qiskit's transpiler at optimization level 3 ("Qiskit
+  O3": SabreLayout + SabreSwap + its optimisation loop) on IBM Eagle's
+  127-qubit heavy-hex graph, at CNOT level. Unlike the IBM benchmarks, these
+  are untranspiled logical circuits, so Qiskit's level-3 routing is the
+  natural baseline here.
 
 ![Routing](figures/routing.png)
 
@@ -1219,14 +1197,13 @@ that are contiguous on the gate DAG. A gate that commutes past a block still
 splits it. `regroup_pairs` applies a legal reordering (a linear extension of
 the trace order, checked) that keeps the gates of one qubit pair together, in
 a forward and a backward pass, before block KAK.
-- On 19 logical circuits it removes CNOTs on 17 relative to plain block KAK,
-  and never adds any. It is then on par with Qiskit O3 (CX basis), and its
-  outputs are shallower after MKCO layering on the Trotter, QAOA and random
-  circuits.
-- Applied after Qiskit O3, it removes further CNOTs on 5 circuits.
-- On the IBM benchmarks (Table 11) the transpiler has already merged every
-  block that commutation could join. Only hubbard_8 (4 ECRs) and Qiskit's
-  hubbard_18 output (14 ECRs) gain.
+- On 19 logical (untranspiled) circuits it removes CNOTs on 17 relative to
+  plain block KAK, and never adds any. Against Qiskit's level-3 optimiser on
+  the same logical circuits (CX basis) it is on par in CNOTs, and its outputs
+  are shallower after MKCO layering on the Trotter, QAOA and random circuits.
+  Applied after Qiskit, it removes further CNOTs on 5 circuits.
+- On the IBM benchmarks (Table 11) the level-3 transpiler has already merged
+  every block that commutation could join. Only hubbard_8 gains (4 ECRs).
 - Qiskit's KAK decomposer silently snaps near-identity blocks (e.g. a
   controlled phase of angle 5·10⁻⁵ in QFT-20) to cheaper, inexact circuits,
   even with `approximate=False`. MKCO's exact check rejects those
@@ -1255,18 +1232,18 @@ T1, T2 and readout errors (`mkco.noise`, Table 10):
   - hhl_8: it gains 12% (0.0138 vs 0.0123).
 - **The state-aware ESP sees this; the usual ESP does not.** Over all pairs of
   methods on the 3 simulated circuits, the state-aware ESP orders the pair as
-  the density-matrix simulation does in **97%** of cases at 10× lower noise
-  (86% at calibrated noise, where fidelities approach the noise floor). The
-  state-blind ESP manages 66% (55%).
+  the density-matrix simulation does in **95%** of cases at 10× lower noise
+  (84% at calibrated noise, where fidelities approach the noise floor). The
+  state-blind ESP manages 70% (57%).
 - **`mkco_noise` picks the output by state-aware ESP.** Candidates are MKCO's
-  orders, their ALAP variants and the input. It never scores below the input,
-  and beats Qiskit O3 under the best available score for every circuit:
-  - simulated fidelity: +0.2% (mult_8, where it keeps the input order),
-    +2% (hubbard_8), +12% (hhl_8);
-  - state-aware ESP: +2% (add_17, qae_17), +6% (qft_16), ×4.7 (grover_10);
-  - ESP (too large to simulate): ×1.9 (heisenberg_32); ×324 (hubbard_18,
-    with 3,505 fewer ECRs than the input, 3,133 fewer than Qiskit, and a 6%
-    shorter schedule).
+  orders, their ALAP variants and the input. Under the best available score
+  it never falls below the input, and is above it on 8 of 9 circuits:
+  - simulated fidelity: equal on mult_8 (it keeps the input order), +2%
+    (hubbard_8), +12% (hhl_8);
+  - state-aware ESP: +1–2% (add_17, qae_17, qft_16), ×4.7 (grover_10);
+  - ESP (too large to simulate): ×2.1 (heisenberg_32); ×205 (hubbard_18,
+    with 3,505 fewer ECRs than the input and an 18% shorter schedule).
+  It also scores at least as well as Jain & Kumar's output on every circuit.
 - **Crosstalk mode under a timing model.** Its objective counts
   neighbouring-coupler pairs *in the same layer*. With calibrated durations
   and ALAP timing, ECRs of different layers overlap in time, so the layer
@@ -1282,32 +1259,31 @@ T1, T2 and readout errors (`mkco.noise`, Table 10):
   - 32,768 shots per circuit, all methods interleaved in one job, at
     calibrated and at 10× lower noise.
   - On the method pairs that sampling separates, at 10× lower noise,
-    `mkco.noise`'s density-matrix model orders **12/12** pairs correctly
-    (8-qubit circuits). The state-aware ESP orders **13/13** (including
-    qae_17). The state-blind ESP gets 4/13, worse than chance, because it
-    rewards the shorter orders.
+    `mkco.noise`'s density-matrix model and the state-aware ESP order **7/7**
+    pairs correctly. The state-blind ESP gets 3/7, worse than chance, because
+    it rewards the shorter orders.
   - At calibrated noise, where the circuits sit near the noise floor, the
-    scores are 6/6, 5/6 and 4/6.
+    scores are 4/4, 4/4 and 2/4.
   - Measured at 10× lower noise, `mkco_noise` reproduces the predicted
     winners. Its circuit is measured twice, as itself and as the method it
     selects, so the pair of numbers shows the sampling spread:
-    - mult_8: it keeps the input order, 0.546–0.548, on par with Qiskit
-      (0.542), while plain MKCO drops to 0.513;
-    - hubbard_8: 0.073–0.074, against 0.072 for Qiskit and 0.065 for plain
-      MKCO;
-    - hhl_8 (MKCO-full): 0.072–0.075, against 0.069 for Qiskit.
+    - mult_8: it keeps the input order (0.546–0.548), while plain MKCO
+      drops to 0.513;
+    - hubbard_8: 0.073–0.074, against 0.070 for the input and 0.065 for
+      plain MKCO;
+    - hhl_8 (MKCO-full): 0.072–0.075, against 0.072 for the input.
   - Larger circuits:
     - add_17 and qae_17 (17 qubits, outputs concentrated on 1 and 4
       bitstrings) were sampled at 10× lower noise: 512 shots per version,
       quantum-trajectory simulation at about 0.85 s per shot. With 512 shots the 95% intervals span about
-      ±0.03, wider than the 1–2% differences the model predicts. Results:
+      ±0.03, wider than the 1–2% differences the model predicts. Results
+      (versions: input, plain MKCO, noise-aware MKCO):
       - qae_17: the measured order is the one the state-aware ESP predicts
-        (noise-aware MKCO 0.353 > plain MKCO 0.305 > input 0.280 > Qiskit O3
-        0.254). The gap between noise-aware MKCO and Qiskit O3 is resolved
-        (non-overlapping intervals). The Hellinger values exceed the predicted
-        state fidelities because phase errors do not show in counts taken in
-        the computational basis.
-      - add_17: the four versions overlap (0.127–0.168), and every predicted
+        (noise-aware MKCO 0.353 > plain MKCO 0.305 > input 0.280), though the
+        intervals overlap. The Hellinger values exceed the predicted state
+        fidelities because phase errors do not show in counts taken in the
+        computational basis.
+      - add_17: the three versions overlap (0.127–0.168), and every predicted
         success probability lies inside its interval. The point estimates run
         the other way from the predicted ranking, but well within the sampling
         error.
@@ -1379,7 +1355,7 @@ On the 17 T-depth instances MKCO-T lowers PyZX(full)'s T-depth by 10-69% (mean 4
 
 ### E9 - Commutation-aware routing + layering on the 127-qubit heavy-hex device (CNOT level)
 
-Cells: CNOTs / depth after routing and optimisation. sabre_dag is the ablation (same router, plain DAG front). Every mkco_route output passes the exact unroute check and the coupling check.
+Cells: CNOTs / depth after routing and optimisation of untranspiled logical circuits. Qiskit O3 = Qiskit's transpiler at level 3 (SabreLayout + SabreSwap), the routing baseline. sabre_dag is the ablation (same router, plain DAG front). Every mkco_route output passes the exact unroute check and the coupling check.
 
 | circuit | qubits | logical CNOTs | Qiskit O3 | **MKCO-route** | SWAPs | sabre_dag (ablation) | Qiskit O3 + MKCO | CNOTs vs O3 | depth vs O3 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -1483,15 +1459,16 @@ small demonstration; ⭕ are open problems we identified.
     could seed the Max-k-Cut search instead of competing with it.
 12. ✅ **Single-qubit resynthesis inside the run structure** (rewrite mode).
     ZSX re-synthesis of 1q chains plus run-based merging, followed by Max-k-Cut
-    reordering, is shallower than Qiskit O3 on 8/9 benchmarks.
+    reordering, lowers depth further on 5/9 benchmarks (−57.8% and −46.6% on
+    heisenberg_32 and hubbard_18).
 13. ✅ **Two-qubit block resynthesis (KAK) inside the run model** (MKCO-full).
     Finding: transpiled blocks are already ECR-optimal on 7 of 9 benchmarks
     (Table 8). Where KAK does find cheaper blocks (heisenberg_32, hubbard_18),
     locally cheaper blocks can *increase* global depth, because they destroy the
     cross-block rotation merging that MKCO's commutation runs enable. 🧪
     Commutation-aware block formation (E11) lets KAK see blocks that commuting
-    gates had split. It removes CNOTs on 17/19 logical circuits, and ECRs that
-    block KAK misses on hubbard_8 and on Qiskit's hubbard_18 output. ⭕ Scoring
+    gates had split. It removes CNOTs on 17/19 logical circuits, and 4 ECRs
+    that block KAK misses on hubbard_8. ⭕ Scoring
     blocks by their effect on the global layering is still open.
 14. ✅ **State-dependent idle noise (E10, Prop. 12).** A depth-optimal
     reordering can be *less* faithful on hardware, because qubits may wait in
@@ -1507,7 +1484,7 @@ small demonstration; ⭕ are open problems we identified.
   list scheduling already meets the certified bound. Every layering method that
   uses commutation (JK and MKCO) therefore reaches the same optimal depth.
   MKCO's distinctive contributions there are the *proof* of optimality, the
-  crosstalk mode, and composability with Qiskit. Max-k-Cut search matters on
+  crosstalk mode and the rewrite modes. Max-k-Cut search matters on
   structured commuting workloads (E1–E4).
 - **JK baseline.** No public code exists, so it was re-implemented from the
   published description. A learned independent-set generator could behave
@@ -1516,11 +1493,10 @@ small demonstration; ⭕ are open problems we identified.
   inferred from used edges are proxies. Real gains should be validated with
   device calibration data or hardware runs. Anchor barriers keep the 2q-depth
   optimal but cost 0.8–7.6% in total depth (0.0–0.9% estimated duration).
-- **Qiskit settings.** Device Target with native directed ECR edges, `ecr`
-  mapped to `ECRGate`, trivial layout, `optimization_level=3`, one seed. Other
-  seeds, optimization levels or Qiskit's approximation degree could change its
-  numbers somewhat. Qiskit re-synthesises gates, so it is compared with MKCO's
-  rewrite modes, not with reorder-only methods.
+- **No Qiskit re-optimisation baseline on the IBM benchmarks.** They are
+  already Qiskit's output at optimization level 3, so the rewrite modes are
+  measured against the input. Qiskit appears only as the routing baseline for
+  untranspiled logical circuits (E9, E11).
 - **Durations** in Tables 1–9 are nominal Eagle values. The noise study (E10)
   uses the ibm_brisbane calibration snapshot from qiskit-ibm-runtime
   (ECR 660–780 ns, sx 60 ns). The ranking of methods there comes from a noise
@@ -1544,8 +1520,8 @@ small demonstration; ⭕ are open problems we identified.
 
 ```bash
 python experiments/run_ibm127.py benchmarks/ibm127     # all methods, verification, QASM outputs
-python experiments/run_qiskit.py                       # Qiskit O3 on a device Target (+ MKCO after it)
 python experiments/add_merge.py && python experiments/add_rewrite.py && python experiments/add_full.py
+python experiments/add_full_duration.py
 python experiments/run_blocks.py && python experiments/run_pareto.py && python experiments/run_theta.py
 python experiments/summarize_ibm127.py                 # tables -> results/ibm127/tables.md
 python experiments/run_structured.py                   # E1-E6 -> results/structured/*.json

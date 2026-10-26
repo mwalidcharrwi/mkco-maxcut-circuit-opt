@@ -4,14 +4,15 @@ Plain block KAK only sees blocks that are contiguous in the given gate order.
 regroup_both_ways first applies a legal reordering that keeps gates of one
 qubit pair together wherever commutation allows, so KAK sees larger blocks.
 
-Part 1, logical circuits (CX basis, all-to-all):
+Part 1, logical (untranspiled) circuits (CX basis, all-to-all):
   kak            block KAK + 1q rewrite, iterated (plain blocks)
   regroup_kak    the same with commutation-aware block formation
-  qiskit_o3      Qiskit O3, basis {cx, rz, sx, x}, no coupling map
+  qiskit_o3      Qiskit O3, basis {cx, rz, sx, x}, no coupling map (a baseline
+                 here because these circuits are not transpiled yet)
   o3+regroup_kak our pass applied to Qiskit's output
   every result is then layered by MKCO; depth and 2q-gate count are reported.
-Part 2, the 9 IBM-127 benchmarks and their Qiskit O3 outputs: ECRs removed by
-plain vs regrouped block KAK.
+Part 2, the IBM-127 benchmarks (already transpiled at level 3): ECRs removed
+by plain vs regrouped block KAK.
 
 Writes results/structured/regroup.json.
 """
@@ -62,12 +63,11 @@ def logical_cases():
 
 
 def ibm_rows(bdir, rdir):
-    """ECRs removed by plain vs regrouped block KAK, on the inputs and on Qiskit O3's outputs."""
+    """ECRs removed by plain vs regrouped block KAK on the (already transpiled) inputs."""
     for f in sorted(os.listdir(bdir)):
         name = os.path.splitext(f)[0]
         row = {"circuit": name}
-        for tag, path in (("input", os.path.join(bdir, f)),
-                          ("qiskit_o3", os.path.join(rdir, f"{name}__qiskit_o3.qasm"))):
+        for tag, path in (("input", os.path.join(bdir, f)),):
             if not os.path.exists(path):
                 continue
             c = load_qasm(path)

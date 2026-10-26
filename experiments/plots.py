@@ -107,14 +107,14 @@ def fig_rewrite(res):
     pct = lambda n, k: 100 * (res[n]["methods"]["original"]["depth"] - res[n]["methods"][k]["depth"]) \
         / res[n]["methods"]["original"]["depth"]  # noqa: E731
     fig, ax = plt.subplots(figsize=(10, 4.4))
-    grouped_bars(ax, names, [("Qiskit O3 (device target)", [pct(n, "qiskit_o3") for n in names], ORANGE),
-                             ("MKCO-rewrite (1q resynthesis + reorder)", [pct(n, "mkco_rewrite") for n in names], AQUA),
+    grouped_bars(ax, names, [("MKCO (reorder only, certified optimal)", [pct(n, "mkco") for n in names], AQUA),
+                             ("MKCO-rewrite (1q resynthesis + reorder)", [pct(n, "mkco_rewrite") for n in names], ORANGE),
                              ("MKCO-full (+ 2q KAK blocks)", [pct(n, "mkco_full") for n in names], BLUE)])
     ax.axhline(0, color=INK2, linewidth=0.8)
-    style(ax, "Gate-rewriting class: depth reduction vs. transpiled input (higher is better)",
+    style(ax, "Depth reduction vs the transpiled input (Qiskit level 3), higher is better",
           "depth reduction (%)")
     ax.legend(frameon=False, fontsize=9, labelcolor=INK2, loc="upper left")
-    save(fig, "ibm127_rewrite_vs_qiskit.png")
+    save(fig, "ibm127_rewrite.png")
 
 
 def fig_duration(res):
@@ -124,11 +124,11 @@ def fig_duration(res):
     pct = lambda n, k: 100 * (res[n]["methods"]["original"]["duration_ns"] -  # noqa: E731
                               res[n]["methods"][k]["duration_ns"]) / res[n]["methods"]["original"]["duration_ns"]
     fig, ax = plt.subplots(figsize=(10, 4.2))
-    grouped_bars(ax, names, [("Qiskit O3 (device target)", [pct(n, "qiskit_o3") for n in names], ORANGE),
+    grouped_bars(ax, names, [("MKCO-full, depth objective", [pct(n, "mkco_full") for n in names], AQUA),
                              ("MKCO-full, duration objective", [pct(n, "mkco_full_dur") for n in names], BLUE)],
                  w=0.36)
     ax.axhline(0, color=INK2, linewidth=0.8)
-    style(ax, "Estimated execution time saved vs. transpiled input (ECR 533 ns, sx/x 36 ns, rz virtual)",
+    style(ax, "Estimated execution time saved vs the transpiled input (ECR 533 ns, sx/x 36 ns, rz virtual)",
           "time saved (%)")
     ax.legend(frameon=False, fontsize=9, labelcolor=INK2, loc="upper left")
     save(fig, "ibm127_duration.png")

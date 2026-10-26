@@ -52,8 +52,8 @@ def main(bdir="benchmarks/ibm127", outdir="results/ibm127"):
         r["methods"]["mkco_full"] = m
         open(os.path.join(outdir, f"{name}__mkco_full.qasm"), "w").write(opt.to_qasm())
         print(f"{name}: mkco_full depth {m['depth']} [{chosen}] (cert {rep['certified_optimal']}), ECR {m['ecr']} "
-              f"(reversed {rev}), 2q {m['depth_2q']}, sv {ok}, {tt:.0f}s | rewrite {r['methods']['mkco_rewrite']['depth']} "
-              f"| O3 {r['methods']['qiskit_o3']['depth']}", flush=True)
+              f"(reversed {rev}), 2q {m['depth_2q']}, sv {ok}, {tt:.0f}s | rewrite {r['methods']['mkco_rewrite']['depth']}",
+              flush=True)
         json.dump(res, open(path, "w"), indent=1, default=float)
 
 

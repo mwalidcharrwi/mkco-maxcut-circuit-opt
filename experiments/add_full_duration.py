@@ -50,10 +50,10 @@ def main(bdir="benchmarks/ibm127", outdir="results/ibm127"):
                                    "statevector": None if ok is None else {"ok": bool(ok), "min_fidelity": fid}}})
         r["methods"]["mkco_full_dur"] = m
         open(os.path.join(outdir, f"{name}__mkco_full_dur.qasm"), "w").write(opt.to_qasm())
-        q = r["methods"]["qiskit_o3"]
-        print(f"{name}: [{label}, {metric}] duration {m['duration_ns']/1000:.1f}us (O3 {q['duration_ns']/1000:.1f}) "
-              f"depth {m['depth']} (O3 {q['depth']}) 2q {m['depth_2q']} (O3 {q['depth_2q']}) ECR {m['ecr']} "
-              f"(O3 {q['ecr']}) sv {ok}", flush=True)
+        q = r["methods"]["original"]
+        print(f"{name}: [{label}, {metric}] duration {m['duration_ns']/1000:.1f}us (input {q['duration_ns']/1000:.1f}) "
+              f"depth {m['depth']} (input {q['depth']}) 2q {m['depth_2q']} (input {q['depth_2q']}) ECR {m['ecr']} "
+              f"(input {q['ecr']}) sv {ok}", flush=True)
         json.dump(res, open(path, "w"), indent=1, default=float)
 
 

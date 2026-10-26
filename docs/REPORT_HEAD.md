@@ -28,8 +28,8 @@ MKCO turns that reduction into a **Max-k-Cut framework** that:
    qubits, verifies every output.
 5. **Goes beyond reordering when asked.** Optional single-qubit (ZSX) and
    two-qubit (KAK, native ECR direction) resynthesis feed the same Max-k-Cut
-   layering. Selected by depth or by estimated execution time, this beats
-   Qiskit O3 on every benchmark. Commutation-aware block formation lets KAK see
+   layering. On the already-transpiled benchmarks this lowers depth by up to
+   58% and estimated execution time by up to 18%. Commutation-aware block formation lets KAK see
    blocks that commuting gates had split (E11).
 6. **Optimises fault-tolerant depth.** T-depth and Toffoli-depth with free
    Clifford gates reduce to a mixed-graph colouring on the non-Clifford gates
@@ -37,8 +37,8 @@ MKCO turns that reduction into a **Max-k-Cut framework** that:
    of PyZX it lowers T-depth by 41% on average (E8).
 7. **Routes with the same commutation structure.** A SABRE-style router whose
    front layer is the trace-order front, followed by Max-k-Cut layering. It is
-   proven correct per output (Proposition 11) and evaluated against Qiskit O3
-   on IBM's 127-qubit heavy-hex device (E9).
+   proven correct per output (Proposition 11) and evaluated against Qiskit's
+   SABRE routing on logical circuits for IBM's 127-qubit heavy-hex device (E9).
 8. **Is checked against device noise.** Scoring with the ibm_brisbane
    calibration shows that a depth-optimal reordering can be *less* faithful,
    because qubits may idle in superposition for longer. A state-aware success

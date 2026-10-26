@@ -170,42 +170,6 @@
      }
     }
    },
-   "qiskit_o3": {
-    "depth": 1173,
-    "depth_2q": 276,
-    "gates": 1959,
-    "ecr": 311,
-    "xt_pairs": 31,
-    "duration_ns": 160285.2,
-    "time_s": 0.1,
-    "reversed_ecr": 0,
-    "target": "native directed ECR edges",
-    "verification": {
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999999489
-     }
-    }
-   },
-   "qiskit_o3+mkco": {
-    "depth": 1137,
-    "depth_2q": 276,
-    "gates": 1959,
-    "ecr": 311,
-    "xt_pairs": 31,
-    "duration_ns": 159040.6,
-    "time_s": 0.2,
-    "lower_bound": 1137,
-    "certified_optimal": true,
-    "verification": {
-     "audit": {
-      "ok": true,
-      "inverted_pairs": 75,
-      "distinct_pair_types": 5,
-      "failures": 0
-     }
-    }
-   },
    "mkco_merge": {
     "depth": 1102,
     "depth_2q": 276,
@@ -261,36 +225,6 @@
      "statevector": {
       "ok": true,
       "min_fidelity": 0.9999999999998613
-     }
-    }
-   },
-   "qiskit_o3+mkco_rewrite": {
-    "depth": 1137,
-    "depth_2q": 276,
-    "gates": 1958,
-    "ecr": 311,
-    "xt_pairs": 31,
-    "duration_ns": 159040.6,
-    "time_s": 0.68,
-    "lower_bound": 1137,
-    "certified_optimal": true,
-    "rewrite": {
-     "rounds": 2,
-     "fused_groups": 0,
-     "merged_groups": 1,
-     "gates_before": 1959,
-     "gates_after": 1958
-    },
-    "verification": {
-     "audit_of_reordering": {
-      "ok": true,
-      "inverted_pairs": 74,
-      "distinct_pair_types": 5,
-      "failures": 0
-     },
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.999999999999949
      }
     }
    },
@@ -522,42 +456,6 @@
      }
     }
    },
-   "qiskit_o3": {
-    "depth": 1026,
-    "depth_2q": 253,
-    "gates": 2920,
-    "ecr": 499,
-    "xt_pairs": 151,
-    "duration_ns": 145778.3,
-    "time_s": 0.03,
-    "reversed_ecr": 0,
-    "target": "native directed ECR edges",
-    "verification": {
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999999301
-     }
-    }
-   },
-   "qiskit_o3+mkco": {
-    "depth": 988,
-    "depth_2q": 254,
-    "gates": 2920,
-    "ecr": 499,
-    "xt_pairs": 149,
-    "duration_ns": 145067.0,
-    "time_s": 0.26,
-    "lower_bound": 988,
-    "certified_optimal": true,
-    "verification": {
-     "audit": {
-      "ok": true,
-      "inverted_pairs": 127,
-      "distinct_pair_types": 7,
-      "failures": 0
-     }
-    }
-   },
    "mkco_merge": {
     "depth": 964,
     "depth_2q": 255,
@@ -613,36 +511,6 @@
      "statevector": {
       "ok": true,
       "min_fidelity": 0.9999999999997866
-     }
-    }
-   },
-   "qiskit_o3+mkco_rewrite": {
-    "depth": 988,
-    "depth_2q": 254,
-    "gates": 2920,
-    "ecr": 499,
-    "xt_pairs": 149,
-    "duration_ns": 145067.0,
-    "time_s": 13.31,
-    "lower_bound": 988,
-    "certified_optimal": true,
-    "rewrite": {
-     "rounds": 1,
-     "fused_groups": 0,
-     "merged_groups": 0,
-     "gates_before": 2920,
-     "gates_after": 2920
-    },
-    "verification": {
-     "audit_of_reordering": {
-      "ok": true,
-      "inverted_pairs": 127,
-      "distinct_pair_types": 7,
-      "failures": 0
-     },
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999999283
      }
     }
    },
@@ -874,42 +742,6 @@
      }
     }
    },
-   "qiskit_o3": {
-    "depth": 1084,
-    "depth_2q": 274,
-    "gates": 3090,
-    "ecr": 541,
-    "xt_pairs": 165,
-    "duration_ns": 157547.2,
-    "time_s": 0.1,
-    "reversed_ecr": 0,
-    "target": "native directed ECR edges",
-    "verification": {
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999999202
-     }
-    }
-   },
-   "qiskit_o3+mkco": {
-    "depth": 1055,
-    "depth_2q": 274,
-    "gates": 3090,
-    "ecr": 541,
-    "xt_pairs": 165,
-    "duration_ns": 156693.7,
-    "time_s": 0.41,
-    "lower_bound": 1055,
-    "certified_optimal": true,
-    "verification": {
-     "audit": {
-      "ok": true,
-      "inverted_pairs": 140,
-      "distinct_pair_types": 8,
-      "failures": 0
-     }
-    }
-   },
    "mkco_merge": {
     "depth": 1035,
     "depth_2q": 274,
@@ -965,36 +797,6 @@
      "statevector": {
       "ok": true,
       "min_fidelity": 0.9999999999997627
-     }
-    }
-   },
-   "qiskit_o3+mkco_rewrite": {
-    "depth": 1051,
-    "depth_2q": 274,
-    "gates": 3084,
-    "ecr": 541,
-    "xt_pairs": 165,
-    "duration_ns": 156622.6,
-    "time_s": 11.02,
-    "lower_bound": 1051,
-    "certified_optimal": true,
-    "rewrite": {
-     "rounds": 2,
-     "fused_groups": 4,
-     "merged_groups": 0,
-     "gates_before": 3090,
-     "gates_after": 3084
-    },
-    "verification": {
-     "audit_of_reordering": {
-      "ok": true,
-      "inverted_pairs": 139,
-      "distinct_pair_types": 8,
-      "failures": 0
-     },
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999999178
      }
     }
    },
@@ -1226,42 +1028,6 @@
      }
     }
    },
-   "qiskit_o3": {
-    "depth": 1026,
-    "depth_2q": 260,
-    "gates": 3517,
-    "ecr": 614,
-    "xt_pairs": 210,
-    "duration_ns": 149262.7,
-    "time_s": 0.11,
-    "reversed_ecr": 0,
-    "target": "native directed ECR edges",
-    "verification": {
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999999079
-     }
-    }
-   },
-   "qiskit_o3+mkco": {
-    "depth": 997,
-    "depth_2q": 260,
-    "gates": 3517,
-    "ecr": 614,
-    "xt_pairs": 211,
-    "duration_ns": 148373.7,
-    "time_s": 0.31,
-    "lower_bound": 997,
-    "certified_optimal": true,
-    "verification": {
-     "audit": {
-      "ok": true,
-      "inverted_pairs": 167,
-      "distinct_pair_types": 9,
-      "failures": 0
-     }
-    }
-   },
    "mkco_merge": {
     "depth": 980,
     "depth_2q": 260,
@@ -1317,36 +1083,6 @@
      "statevector": {
       "ok": true,
       "min_fidelity": 0.9999999999997223
-     }
-    }
-   },
-   "qiskit_o3+mkco_rewrite": {
-    "depth": 997,
-    "depth_2q": 260,
-    "gates": 3502,
-    "ecr": 614,
-    "xt_pairs": 211,
-    "duration_ns": 148373.7,
-    "time_s": 6.5,
-    "lower_bound": 997,
-    "certified_optimal": true,
-    "rewrite": {
-     "rounds": 2,
-     "fused_groups": 8,
-     "merged_groups": 0,
-     "gates_before": 3517,
-     "gates_after": 3502
-    },
-    "verification": {
-     "audit_of_reordering": {
-      "ok": true,
-      "inverted_pairs": 164,
-      "distinct_pair_types": 9,
-      "failures": 0
-     },
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999999033
      }
     }
    },
@@ -1578,42 +1314,6 @@
      }
     }
    },
-   "qiskit_o3": {
-    "depth": 4390,
-    "depth_2q": 1111,
-    "gates": 8067,
-    "ecr": 1344,
-    "xt_pairs": 166,
-    "duration_ns": 637939.8,
-    "time_s": 0.08,
-    "reversed_ecr": 0,
-    "target": "native directed ECR edges",
-    "verification": {
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999998899
-     }
-    }
-   },
-   "qiskit_o3+mkco": {
-    "depth": 4256,
-    "depth_2q": 1111,
-    "gates": 8067,
-    "ecr": 1344,
-    "xt_pairs": 168,
-    "duration_ns": 634277.1,
-    "time_s": 0.77,
-    "lower_bound": 4256,
-    "certified_optimal": true,
-    "verification": {
-     "audit": {
-      "ok": true,
-      "inverted_pairs": 266,
-      "distinct_pair_types": 8,
-      "failures": 0
-     }
-    }
-   },
    "mkco_merge": {
     "depth": 4266,
     "depth_2q": 1112,
@@ -1669,36 +1369,6 @@
      "statevector": {
       "ok": true,
       "min_fidelity": 0.9999999999995041
-     }
-    }
-   },
-   "qiskit_o3+mkco_rewrite": {
-    "depth": 4239,
-    "depth_2q": 1111,
-    "gates": 8033,
-    "ecr": 1344,
-    "xt_pairs": 168,
-    "duration_ns": 633779.2,
-    "time_s": 4.13,
-    "lower_bound": 4239,
-    "certified_optimal": true,
-    "rewrite": {
-     "rounds": 3,
-     "fused_groups": 14,
-     "merged_groups": 18,
-     "gates_before": 8067,
-     "gates_after": 8033
-    },
-    "verification": {
-     "audit_of_reordering": {
-      "ok": true,
-      "inverted_pairs": 256,
-      "distinct_pair_types": 8,
-      "failures": 0
-     },
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999998856
      }
     }
    },
@@ -1930,42 +1600,6 @@
      }
     }
    },
-   "qiskit_o3": {
-    "depth": 11212,
-    "depth_2q": 2319,
-    "gates": 19120,
-    "ecr": 2377,
-    "xt_pairs": 56,
-    "duration_ns": 1369964.5,
-    "time_s": 0.1,
-    "reversed_ecr": 0,
-    "target": "native directed ECR edges",
-    "verification": {
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999996373
-     }
-    }
-   },
-   "qiskit_o3+mkco": {
-    "depth": 11005,
-    "depth_2q": 2319,
-    "gates": 19120,
-    "ecr": 2377,
-    "xt_pairs": 56,
-    "duration_ns": 1364061.5,
-    "time_s": 1.77,
-    "lower_bound": 11005,
-    "certified_optimal": true,
-    "verification": {
-     "audit": {
-      "ok": true,
-      "inverted_pairs": 333,
-      "distinct_pair_types": 7,
-      "failures": 0
-     }
-    }
-   },
    "mkco_merge": {
     "depth": 10434,
     "depth_2q": 2319,
@@ -2021,36 +1655,6 @@
      "statevector": {
       "ok": true,
       "min_fidelity": 0.9999999999989687
-     }
-    }
-   },
-   "qiskit_o3+mkco_rewrite": {
-    "depth": 11005,
-    "depth_2q": 2319,
-    "gates": 19120,
-    "ecr": 2377,
-    "xt_pairs": 56,
-    "duration_ns": 1364061.5,
-    "time_s": 5.46,
-    "lower_bound": 11005,
-    "certified_optimal": true,
-    "rewrite": {
-     "rounds": 1,
-     "fused_groups": 0,
-     "merged_groups": 0,
-     "gates_before": 19120,
-     "gates_after": 19120
-    },
-    "verification": {
-     "audit_of_reordering": {
-      "ok": true,
-      "inverted_pairs": 333,
-      "distinct_pair_types": 7,
-      "failures": 0
-     },
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999996335
      }
     }
    },
@@ -2262,39 +1866,6 @@
      }
     }
    },
-   "qiskit_o3": {
-    "depth": 4039,
-    "depth_2q": 936,
-    "gates": 26707,
-    "ecr": 4071,
-    "xt_pairs": 1312,
-    "duration_ns": 542366.7,
-    "time_s": 0.36,
-    "reversed_ecr": 0,
-    "target": "native directed ECR edges",
-    "verification": {
-     "statevector": null
-    }
-   },
-   "qiskit_o3+mkco": {
-    "depth": 4039,
-    "depth_2q": 936,
-    "gates": 26707,
-    "ecr": 4071,
-    "xt_pairs": 1312,
-    "duration_ns": 542366.7,
-    "time_s": 2.51,
-    "lower_bound": 4039,
-    "certified_optimal": true,
-    "verification": {
-     "audit": {
-      "ok": true,
-      "inverted_pairs": 0,
-      "distinct_pair_types": 0,
-      "failures": 0
-     }
-    }
-   },
    "mkco_merge": {
     "depth": 5265,
     "depth_2q": 881,
@@ -2342,33 +1913,6 @@
       "ok": true,
       "inverted_pairs": 530,
       "distinct_pair_types": 12,
-      "failures": 0
-     },
-     "statevector": null
-    }
-   },
-   "qiskit_o3+mkco_rewrite": {
-    "depth": 4013,
-    "depth_2q": 936,
-    "gates": 26515,
-    "ecr": 4071,
-    "xt_pairs": 1308,
-    "duration_ns": 541477.7,
-    "time_s": 6.98,
-    "lower_bound": 4013,
-    "certified_optimal": true,
-    "rewrite": {
-     "rounds": 2,
-     "fused_groups": 37,
-     "merged_groups": 164,
-     "gates_before": 26707,
-     "gates_after": 26515
-    },
-    "verification": {
-     "audit_of_reordering": {
-      "ok": true,
-      "inverted_pairs": 216,
-      "distinct_pair_types": 11,
       "failures": 0
      },
      "statevector": null
@@ -2596,42 +2140,6 @@
      }
     }
    },
-   "qiskit_o3": {
-    "depth": 43995,
-    "depth_2q": 10895,
-    "gates": 93398,
-    "ecr": 16397,
-    "xt_pairs": 4431,
-    "duration_ns": 6293250.7,
-    "time_s": 0.59,
-    "reversed_ecr": 0,
-    "target": "native directed ECR edges",
-    "verification": {
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999978466
-     }
-    }
-   },
-   "qiskit_o3+mkco": {
-    "depth": 41713,
-    "depth_2q": 10895,
-    "gates": 93398,
-    "ecr": 16397,
-    "xt_pairs": 4431,
-    "duration_ns": 6221810.6,
-    "time_s": 9.39,
-    "lower_bound": 41713,
-    "certified_optimal": true,
-    "verification": {
-     "audit": {
-      "ok": true,
-      "inverted_pairs": 14222,
-      "distinct_pair_types": 8,
-      "failures": 0
-     }
-    }
-   },
    "mkco_merge": {
     "depth": 41641,
     "depth_2q": 10895,
@@ -2687,36 +2195,6 @@
      "statevector": {
       "ok": true,
       "min_fidelity": 0.9999999999931399
-     }
-    }
-   },
-   "qiskit_o3+mkco_rewrite": {
-    "depth": 41703,
-    "depth_2q": 10895,
-    "gates": 92817,
-    "ecr": 16397,
-    "xt_pairs": 4431,
-    "duration_ns": 6221597.3,
-    "time_s": 46.55,
-    "lower_bound": 41703,
-    "certified_optimal": true,
-    "rewrite": {
-     "rounds": 2,
-     "fused_groups": 8,
-     "merged_groups": 94,
-     "gates_before": 93398,
-     "gates_after": 92817
-    },
-    "verification": {
-     "audit_of_reordering": {
-      "ok": true,
-      "inverted_pairs": 4699,
-      "distinct_pair_types": 8,
-      "failures": 0
-     },
-     "statevector": {
-      "ok": true,
-      "min_fidelity": 0.9999999999978031
      }
     }
    },
@@ -2928,39 +2406,6 @@
      }
     }
    },
-   "qiskit_o3": {
-    "depth": 84761,
-    "depth_2q": 19938,
-    "gates": 219843,
-    "ecr": 33586,
-    "xt_pairs": 7612,
-    "duration_ns": 11565987.9,
-    "time_s": 4.61,
-    "reversed_ecr": 0,
-    "target": "native directed ECR edges",
-    "verification": {
-     "statevector": null
-    }
-   },
-   "qiskit_o3+mkco": {
-    "depth": 84698,
-    "depth_2q": 19933,
-    "gates": 219843,
-    "ecr": 33586,
-    "xt_pairs": 7592,
-    "duration_ns": 11562858.9,
-    "time_s": 25.38,
-    "lower_bound": 84698,
-    "certified_optimal": true,
-    "verification": {
-     "audit": {
-      "ok": true,
-      "inverted_pairs": 3664,
-      "distinct_pair_types": 11,
-      "failures": 0
-     }
-    }
-   },
    "mkco_merge": {
     "depth": 110907,
     "depth_2q": 21767,
@@ -3008,33 +2453,6 @@
       "ok": true,
       "inverted_pairs": 3627,
       "distinct_pair_types": 10,
-      "failures": 0
-     },
-     "statevector": null
-    }
-   },
-   "qiskit_o3+mkco_rewrite": {
-    "depth": 84134,
-    "depth_2q": 19933,
-    "gates": 217250,
-    "ecr": 33586,
-    "xt_pairs": 7592,
-    "duration_ns": 11539567.1,
-    "time_s": 83.09,
-    "lower_bound": 84134,
-    "certified_optimal": true,
-    "rewrite": {
-     "rounds": 2,
-     "fused_groups": 428,
-     "merged_groups": 2255,
-     "gates_before": 219843,
-     "gates_after": 217250
-    },
-    "verification": {
-     "audit_of_reordering": {
-      "ok": true,
-      "inverted_pairs": 2167,
-      "distinct_pair_types": 11,
       "failures": 0
      },
      "statevector": null

@@ -26,26 +26,6 @@
   },
   {
    "circuit": "add_17",
-   "method": "qiskit_o3",
-   "backend": "fake_brisbane",
-   "job_id": "2d692933-2458-4d82-9460-e6793740e565",
-   "shots": 512,
-   "hellinger_fidelity": 0.16210937500006845,
-   "ci95": [
-    0.1308593750000518,
-    0.1953125000000589
-   ],
-   "uniform_baseline": 7.62939453126301e-06,
-   "model": {
-    "esp": 0.1707314642993982,
-    "sesp": 0.14700418616494543
-   },
-   "two_qubit_gates": 499,
-   "depth": 1026,
-   "ecr_flipped": 0
-  },
-  {
-   "circuit": "add_17",
    "method": "mkco",
    "backend": "fake_brisbane",
    "job_id": "2d692933-2458-4d82-9460-e6793740e565",

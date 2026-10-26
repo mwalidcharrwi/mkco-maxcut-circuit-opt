@@ -9,8 +9,9 @@ Methods
   mkco            ours: precedence-constrained Max-k-Cut layering (+ certified bound)
   mkco_xt         ours: crosstalk-aware weighted Max-k-Cut at optimal 2q-depth
 
-Qiskit O3 (on a device Target) and the gate-rewriting modes are added by
-run_qiskit.py, add_merge.py, add_rewrite.py and add_full.py.
+The gate-rewriting modes are added by add_merge.py, add_rewrite.py,
+add_full.py and add_full_duration.py.  The inputs are already transpiled with
+Qiskit at optimization level 3, so re-running Qiskit O3 is not a baseline.
 
 Usage: python experiments/run_ibm127.py [benchmark_dir] [--quick]
 """

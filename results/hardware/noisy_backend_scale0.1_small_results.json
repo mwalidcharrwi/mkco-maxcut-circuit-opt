@@ -26,26 +26,6 @@
   },
   {
    "circuit": "mult_8",
-   "method": "qiskit_o3",
-   "backend": "fake_brisbane",
-   "job_id": "599631ed-4c32-4eb8-b45a-4406941962c2",
-   "shots": 32768,
-   "hellinger_fidelity": 0.5416870117187719,
-   "ci95": [
-    0.5359489440918185,
-    0.5468757629394752
-   ],
-   "uniform_baseline": 0.003906250000000468,
-   "model": {
-    "esp": 0.5252868942048934,
-    "sesp": 0.5423048806259957
-   },
-   "two_qubit_gates": 311,
-   "depth": 1173,
-   "ecr_flipped": 0
-  },
-  {
-   "circuit": "mult_8",
    "method": "mkco",
    "backend": "fake_brisbane",
    "job_id": "599631ed-4c32-4eb8-b45a-4406941962c2",
@@ -166,26 +146,6 @@
   },
   {
    "circuit": "hubbard_8",
-   "method": "qiskit_o3",
-   "backend": "fake_brisbane",
-   "job_id": "599631ed-4c32-4eb8-b45a-4406941962c2",
-   "shots": 32768,
-   "hellinger_fidelity": 0.07157686865952723,
-   "ci95": [
-    0.06876953929423332,
-    0.07417794288262168
-   ],
-   "uniform_baseline": 0.005462567196928636,
-   "model": {
-    "esp": 0.08395143343678182,
-    "sesp": 0.06196115312604435
-   },
-   "two_qubit_gates": 1344,
-   "depth": 4390,
-   "ecr_flipped": 0
-  },
-  {
-   "circuit": "hubbard_8",
    "method": "mkco",
    "backend": "fake_brisbane",
    "job_id": "599631ed-4c32-4eb8-b45a-4406941962c2",
@@ -302,26 +262,6 @@
    },
    "two_qubit_gates": 2377,
    "depth": 10641,
-   "ecr_flipped": 0
-  },
-  {
-   "circuit": "hhl_8",
-   "method": "qiskit_o3",
-   "backend": "fake_brisbane",
-   "job_id": "599631ed-4c32-4eb8-b45a-4406941962c2",
-   "shots": 32768,
-   "hellinger_fidelity": 0.0693703715904497,
-   "ci95": [
-    0.06653823497286,
-    0.07188060273212746
-   ],
-   "uniform_baseline": 0.051872986411495195,
-   "model": {
-    "esp": 0.0024685854281298655,
-    "sesp": 0.0009123269636746803
-   },
-   "two_qubit_gates": 2377,
-   "depth": 11212,
    "ecr_flipped": 0
   },
   {

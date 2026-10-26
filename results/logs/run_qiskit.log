@@ -1,9 +1,0 @@
-mult_8: O3 1173 (reversed ECR 0, 0s, sv True) | O3+MKCO 1137 | O3+MKCO-rewrite 1137 (sv True) | MKCO-rewrite 1102
-add_17: O3 1026 (reversed ECR 0, 0s, sv True) | O3+MKCO 988 | O3+MKCO-rewrite 988 (sv True) | MKCO-rewrite 964
-qae_17: O3 1084 (reversed ECR 0, 0s, sv True) | O3+MKCO 1055 | O3+MKCO-rewrite 1051 (sv True) | MKCO-rewrite 1030
-qft_16: O3 1026 (reversed ECR 0, 0s, sv True) | O3+MKCO 997 | O3+MKCO-rewrite 997 (sv True) | MKCO-rewrite 980
-hubbard_8: O3 4390 (reversed ECR 0, 0s, sv True) | O3+MKCO 4256 | O3+MKCO-rewrite 4239 (sv True) | MKCO-rewrite 4251
-hhl_8: O3 11212 (reversed ECR 0, 0s, sv True) | O3+MKCO 11005 | O3+MKCO-rewrite 11005 (sv True) | MKCO-rewrite 10434
-heisenberg_32: O3 4039 (reversed ECR 0, 0s, sv None) | O3+MKCO 4039 | O3+MKCO-rewrite 4013 (sv None) | MKCO-rewrite 3011
-grover_10: O3 43995 (reversed ECR 0, 1s, sv True) | O3+MKCO 41713 | O3+MKCO-rewrite 41703 (sv True) | MKCO-rewrite 41631
-hubbard_18: O3 84761 (reversed ECR 0, 5s, sv None) | O3+MKCO 84698 | O3+MKCO-rewrite 84134 (sv None) | MKCO-rewrite 72992

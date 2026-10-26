@@ -26,26 +26,6 @@
   },
   {
    "circuit": "heisenberg_8",
-   "method": "qiskit_o3",
-   "backend": "fake_brisbane",
-   "job_id": "a6f91865-67eb-4cb2-8ec8-962baa1b74a9",
-   "shots": 32768,
-   "hellinger_fidelity": 0.049851116295263016,
-   "ci95": [
-    0.047372342802624916,
-    0.05203439836085
-   ],
-   "uniform_baseline": 0.029796408897003104,
-   "model": {
-    "esp": 2.6649664444746916e-05,
-    "sesp": 2.548351639182144e-05
-   },
-   "two_qubit_gates": 420,
-   "depth": 530,
-   "ecr_flipped": 0
-  },
-  {
-   "circuit": "heisenberg_8",
    "method": "mkco",
    "backend": "fake_brisbane",
    "job_id": "a6f91865-67eb-4cb2-8ec8-962baa1b74a9",
@@ -166,26 +146,6 @@
   },
   {
    "circuit": "qpe_8",
-   "method": "qiskit_o3",
-   "backend": "fake_brisbane",
-   "job_id": "a6f91865-67eb-4cb2-8ec8-962baa1b74a9",
-   "shots": 32768,
-   "hellinger_fidelity": 0.23896138386715937,
-   "ci95": [
-    0.23400197982294957,
-    0.24300567817457186
-   ],
-   "uniform_baseline": 0.33786784852834156,
-   "model": {
-    "esp": 4.315904996139978e-08,
-    "sesp": 6.680948474948423e-10
-   },
-   "two_qubit_gates": 484,
-   "depth": 1930,
-   "ecr_flipped": 0
-  },
-  {
-   "circuit": "qpe_8",
    "method": "mkco",
    "backend": "fake_brisbane",
    "job_id": "a6f91865-67eb-4cb2-8ec8-962baa1b74a9",
@@ -294,26 +254,6 @@
    "ci95": [
     0.043048860376201446,
     0.04772525458793759
-   ],
-   "uniform_baseline": 0.029983647524499408,
-   "model": {
-    "esp": 0.0007883868776616231,
-    "sesp": 0.0007044276856785789
-   },
-   "two_qubit_gates": 280,
-   "depth": 388,
-   "ecr_flipped": 0
-  },
-  {
-   "circuit": "tfim_8",
-   "method": "qiskit_o3",
-   "backend": "fake_brisbane",
-   "job_id": "a6f91865-67eb-4cb2-8ec8-962baa1b74a9",
-   "shots": 32768,
-   "hellinger_fidelity": 0.04380778025856935,
-   "ci95": [
-    0.04152443734451093,
-    0.045949151557041566
    ],
    "uniform_baseline": 0.029983647524499408,
    "model": {

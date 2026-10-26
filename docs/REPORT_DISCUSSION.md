@@ -31,33 +31,32 @@ hubbard_18 (−3) improve.
   depth, but only 0.0–0.9% estimated duration, because ECRs dominate execution
   time.
 
-![Rewrite vs Qiskit](figures/ibm127_rewrite_vs_qiskit.png)
+![Rewriting](figures/ibm127_rewrite.png)
 
-**Gate rewriting vs Qiskit (Table 4).** Qiskit O3 runs on a device Target:
-ECRs only on the native directed edges, and the file's `ecr` mapped to
-`ECRGate`. All of its outputs are therefore executable as written, and every
-one of them that can be simulated matches the input.
-- **MKCO-full is shallower than Qiskit O3 on all 9 circuits** (−3.4% to
-  −25.5%), and every MKCO result is certified optimal for the gate list it
+**Gate rewriting (Table 4).** The inputs are already Qiskit's output at
+optimization level 3, so the reference is the input itself; re-running
+Qiskit O3 on them would not be a meaningful baseline.
+- **MKCO-full is shallower than the input on all 9 circuits** (−1.9% to
+  −57.8%). Every MKCO result is certified optimal for the gate list it
   reorders.
   - The two Hamiltonian-simulation circuits gain most: heisenberg_32
-    3,011 vs 4,039 (−25.5%), hubbard_18 72,992 vs 84,761 (−13.9%).
+    7,143 → 3,011 (−57.8%), hubbard_18 136,644 → 72,992 (−46.6%).
   - Their transpiled rz/sx chains collapse under single-qubit resynthesis.
     MKCO's run-based merging then gathers same-axis rotations *across*
-    commuting ECRs, which an adjacent-gate optimiser cannot do.
-- **Composition still helps Qiskit:** MKCO after Qiskit O3 lowers its depth on
-  every circuit (best on hubbard_8: 4,239).
+    commuting ECRs, which the level-3 transpiler's adjacent-gate passes did
+    not do.
+- On the other 7 circuits rewriting adds little to reordering (at most 27
+  layers).
 
 ![Execution time](figures/ibm127_duration.png)
 
 **Hardware time.** Total depth counts virtual rz layers, so the
 hardware-relevant figure is estimated execution time.
 - Selecting among MKCO's candidates by estimated duration, MKCO-full is
-  **faster than Qiskit O3 on all 9 circuits**: −0.2% to −7.8% on 8, and
-  −5.8% on hubbard_18.
-- On hubbard_18 it also beats Qiskit on two-qubit depth (18,795 vs 19,938),
-  ECR count (30,453 vs 33,586, −10.3% vs the input) and total depth
-  (80,677 vs 84,761).
+  **faster than the input on all 9 circuits**: −0.1% to −1.1% on 7, −9.0% on
+  heisenberg_32 and −17.7% on hubbard_18.
+- On hubbard_18 it also lowers two-qubit depth (21,769 → 18,795) and the ECR
+  count (33,958 → 30,453, −10.3%).
 - Depth- and duration-optimal choices differ on hubbard_18. The 1q-only
   pre-pass gives the smallest total depth (72,992). KAK block resynthesis
   gives the fewest ECRs and the shortest time.
@@ -99,4 +98,3 @@ block-wise colouring on every circuit and comparable to Jain & Kumar.
 - The crosstalk mode uses its time budget (30–60 s).
 - MKCO-full evaluates two pre-pass branches and takes up to 6 minutes on the
   358k-gate hubbard_18.
-- Qiskit O3 on a device Target takes 0.1–5 s.

@@ -29,33 +29,34 @@ Full tables in [docs/REPORT.md](docs/REPORT.md) and
     nothing on any circuit; Jain & Kumar ties on depth but cannot certify it.
   - **Crosstalk mode:** 2–26% fewer neighbouring-coupler ECR pairs at the
     optimal two-qubit depth.
-  - **Gate-rewriting modes vs Qiskit O3** (Qiskit run on a device Target with
-    native ECR directions; every output is executable):
-    - MKCO-full is shallower on **9/9** circuits (−3.4% to −25.5%;
-      heisenberg_32: 3,011 vs 4,039, hubbard_18: 72,992 vs 84,761).
-    - Selected by estimated execution time, MKCO-full is also faster than
-      Qiskit on 9/9 (see the hardware-time table in the report).
+  - **Gate-rewriting modes vs the transpiled input** (the inputs are already
+    Qiskit's level-3 output; every MKCO output keeps native ECR directions):
+    - MKCO-full is shallower on **9/9** circuits (−1.9% to −57.8%;
+      heisenberg_32: 7,143 → 3,011, hubbard_18: 136,644 → 72,992).
+    - Selected by estimated execution time, MKCO-full is also faster on 9/9
+      (−0.1% to −17.7%; see the hardware-time table in the report).
   - **Depth budgets:** with 20% two-qubit-depth slack, the weighted Max-k-Cut
     removes 39–65% of crosstalk-prone pairs (Pareto fronts in the report).
 - **Second benchmark set** (heisenberg_8, qpe_8, tfim_8, tfim_7_40, with measurements; report
   Section 5.1):
   - **Certified optimal depth:** on 4/4 circuits, for both total depth and two-qubit depth.
-  - **vs Qiskit O3:** MKCO-full is 0.5–3.0% shallower; Qiskit removes at most one layer.
+  - **Gate rewriting:** MKCO-full is 0.5–3.1% shallower than the transpiled input.
   - **Crosstalk:** a 20% two-qubit-depth budget removes 34–38% of crosstalk-prone pairs.
-  - **Noisy simulation:** on qpe_8, every MKCO order beats the input and Qiskit O3 (+3–4%),
-    as the noise model predicted.
+  - **Noisy simulation:** on qpe_8, every MKCO order beats the input (+3–4%), as the noise
+    model predicted.
 - **Extensions** (report Section 7):
   - **T-depth with free Cliffords:** on top of PyZX, 10–69% lower T-depth
     (mean 41%) on 17 Clifford+T circuits, all certified optimal; Toffoli-depth
     of GF(2ⁿ) multipliers −53% to −64%.
-  - **Commutation-aware routing on IBM's 127-qubit heavy-hex:** on QAOA,
-    3.8–21.9% fewer CNOTs than Qiskit O3 and up to 55% less depth. Each output
-    is proven correct by an exact `unroute` check. QFT remains Qiskit's case.
+  - **Commutation-aware routing of logical circuits on IBM's 127-qubit
+    heavy-hex:** on QAOA, 3.8–21.9% fewer CNOTs than Qiskit's SABRE (level 3)
+    and up to 55% less depth. Each output is proven correct by an exact
+    `unroute` check. QFT remains Qiskit's case.
   - **Noise study with ibm_brisbane calibration data:** a depth-optimal
     reordering can lose fidelity, because qubits may idle in superposition. A
-    state-aware success estimate predicts this (97% pairwise agreement with
-    density-matrix simulation vs 66% for the usual ESP) and picks the output.
-    The picked output beats Qiskit O3 on all 9 benchmarks under the model.
+    state-aware success estimate predicts this (95% pairwise agreement with
+    density-matrix simulation vs 70% for the usual ESP) and picks the output.
+    The picked output is never below the input, and above it on 8 of 9.
   - **Commutation-aware block formation** gives KAK larger blocks: fewer CNOTs
     on 17 of 19 logical circuits.
 - **The paper's own settings:**
@@ -74,7 +75,7 @@ It needs your own account, saved beforehand with
 `submit --fake [--noise-scale 0.1]` runs the same pipeline on a noisy
 simulated backend (Aer + the ibm_brisbane calibration snapshot). The results
 are in report Table 12: the state-aware estimate ordered every resolved pair
-of methods correctly (13/13), while the usual ESP got 4/13.
+of methods correctly (7/7), while the usual ESP got 3/7.
 
 ## Layout
 ```
@@ -104,7 +105,7 @@ mkco/
   exact.py        optional CP-SAT reference solver (needs ortools)
 benchmarks/ibm127/  the 9 IBM-127-transpiled input circuits
 benchmarks/devices/  IBM Eagle 127-qubit coupling map (heavy-hex)
-experiments/      run_ibm127.py, run_qiskit.py, add_merge.py, add_rewrite.py, add_full.py,
+experiments/      run_ibm127.py, add_merge.py, add_rewrite.py, add_full.py,
                   add_full_duration.py, run_blocks.py, run_pareto.py, run_theta.py,
                   run_theta_plus.py, run_structured.py, run_tdepth.py, run_routing.py,
                   run_regroup.py, run_noise.py, run_ibm_hardware.py, summarize_*.py, plots.py
@@ -141,7 +142,7 @@ print(report["before"], "->", report["after"], "certified:", report["certified_o
 ## Reproduce
 ```bash
 python experiments/run_ibm127.py benchmarks/ibm127
-python experiments/run_qiskit.py && python experiments/add_merge.py && python experiments/add_rewrite.py
+python experiments/add_merge.py && python experiments/add_rewrite.py
 python experiments/add_full.py && python experiments/add_full_duration.py
 python experiments/run_blocks.py && python experiments/run_pareto.py
 python experiments/summarize_ibm127.py

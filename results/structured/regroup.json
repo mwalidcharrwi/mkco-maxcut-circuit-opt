@@ -655,12 +655,6 @@
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
     "gates_moved": 5282
-   },
-   "qiskit_o3": {
-    "ecr": 499,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 5546
    }
   },
   {
@@ -670,12 +664,6 @@
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
     "gates_moved": 178952
-   },
-   "qiskit_o3": {
-    "ecr": 16397,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 179260
    }
   },
   {
@@ -685,12 +673,6 @@
     "plain_ecr_removed": 60,
     "regroup_ecr_removed": 60,
     "gates_moved": 115094
-   },
-   "qiskit_o3": {
-    "ecr": 4071,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 52965
    }
   },
   {
@@ -700,12 +682,6 @@
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
     "gates_moved": 28730
-   },
-   "qiskit_o3": {
-    "ecr": 2377,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 30209
    }
   },
   {
@@ -715,12 +691,6 @@
     "plain_ecr_removed": 3505,
     "regroup_ecr_removed": 3505,
     "gates_moved": 711301
-   },
-   "qiskit_o3": {
-    "ecr": 33586,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 14,
-    "gates_moved": 438870
    }
   },
   {
@@ -730,12 +700,6 @@
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 4,
     "gates_moved": 15506
-   },
-   "qiskit_o3": {
-    "ecr": 1344,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 4,
-    "gates_moved": 15473
    }
   },
   {
@@ -745,12 +709,6 @@
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
     "gates_moved": 3594
-   },
-   "qiskit_o3": {
-    "ecr": 311,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 3699
    }
   },
   {
@@ -760,12 +718,6 @@
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
     "gates_moved": 5846
-   },
-   "qiskit_o3": {
-    "ecr": 541,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 5953
    }
   },
   {
@@ -775,12 +727,6 @@
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
     "gates_moved": 6539
-   },
-   "qiskit_o3": {
-    "ecr": 614,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 6535
    }
   }
  ]

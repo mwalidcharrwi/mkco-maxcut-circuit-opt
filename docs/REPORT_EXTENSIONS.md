@@ -51,8 +51,11 @@ run on each of its wires has executed.
   layers it again. The trial with the smallest CNOTs + depth is kept.
 - Every output passes the exact `unroute` check (Proposition 11) and the
   coupling check.
-- The comparison is Qiskit O3 (SabreLayout + SabreSwap + its optimisation
-  loop) on IBM Eagle's 127-qubit heavy-hex graph, at CNOT level.
+- The comparison is Qiskit's transpiler at optimization level 3 ("Qiskit
+  O3": SabreLayout + SabreSwap + its optimisation loop) on IBM Eagle's
+  127-qubit heavy-hex graph, at CNOT level. Unlike the IBM benchmarks, these
+  are untranspiled logical circuits, so Qiskit's level-3 routing is the
+  natural baseline here.
 
 ![Routing](figures/routing.png)
 
@@ -84,14 +87,13 @@ that are contiguous on the gate DAG. A gate that commutes past a block still
 splits it. `regroup_pairs` applies a legal reordering (a linear extension of
 the trace order, checked) that keeps the gates of one qubit pair together, in
 a forward and a backward pass, before block KAK.
-- On 19 logical circuits it removes CNOTs on 17 relative to plain block KAK,
-  and never adds any. It is then on par with Qiskit O3 (CX basis), and its
-  outputs are shallower after MKCO layering on the Trotter, QAOA and random
-  circuits.
-- Applied after Qiskit O3, it removes further CNOTs on 5 circuits.
-- On the IBM benchmarks (Table 11) the transpiler has already merged every
-  block that commutation could join. Only hubbard_8 (4 ECRs) and Qiskit's
-  hubbard_18 output (14 ECRs) gain.
+- On 19 logical (untranspiled) circuits it removes CNOTs on 17 relative to
+  plain block KAK, and never adds any. Against Qiskit's level-3 optimiser on
+  the same logical circuits (CX basis) it is on par in CNOTs, and its outputs
+  are shallower after MKCO layering on the Trotter, QAOA and random circuits.
+  Applied after Qiskit, it removes further CNOTs on 5 circuits.
+- On the IBM benchmarks (Table 11) the level-3 transpiler has already merged
+  every block that commutation could join. Only hubbard_8 gains (4 ECRs).
 - Qiskit's KAK decomposer silently snaps near-identity blocks (e.g. a
   controlled phase of angle 5·10⁻⁵ in QFT-20) to cheaper, inexact circuits,
   even with `approximate=False`. MKCO's exact check rejects those
@@ -120,18 +122,18 @@ T1, T2 and readout errors (`mkco.noise`, Table 10):
   - hhl_8: it gains 12% (0.0138 vs 0.0123).
 - **The state-aware ESP sees this; the usual ESP does not.** Over all pairs of
   methods on the 3 simulated circuits, the state-aware ESP orders the pair as
-  the density-matrix simulation does in **97%** of cases at 10× lower noise
-  (86% at calibrated noise, where fidelities approach the noise floor). The
-  state-blind ESP manages 66% (55%).
+  the density-matrix simulation does in **95%** of cases at 10× lower noise
+  (84% at calibrated noise, where fidelities approach the noise floor). The
+  state-blind ESP manages 70% (57%).
 - **`mkco_noise` picks the output by state-aware ESP.** Candidates are MKCO's
-  orders, their ALAP variants and the input. It never scores below the input,
-  and beats Qiskit O3 under the best available score for every circuit:
-  - simulated fidelity: +0.2% (mult_8, where it keeps the input order),
-    +2% (hubbard_8), +12% (hhl_8);
-  - state-aware ESP: +2% (add_17, qae_17), +6% (qft_16), ×4.7 (grover_10);
-  - ESP (too large to simulate): ×1.9 (heisenberg_32); ×324 (hubbard_18,
-    with 3,505 fewer ECRs than the input, 3,133 fewer than Qiskit, and a 6%
-    shorter schedule).
+  orders, their ALAP variants and the input. Under the best available score
+  it never falls below the input, and is above it on 8 of 9 circuits:
+  - simulated fidelity: equal on mult_8 (it keeps the input order), +2%
+    (hubbard_8), +12% (hhl_8);
+  - state-aware ESP: +1–2% (add_17, qae_17, qft_16), ×4.7 (grover_10);
+  - ESP (too large to simulate): ×2.1 (heisenberg_32); ×205 (hubbard_18,
+    with 3,505 fewer ECRs than the input and an 18% shorter schedule).
+  It also scores at least as well as Jain & Kumar's output on every circuit.
 - **Crosstalk mode under a timing model.** Its objective counts
   neighbouring-coupler pairs *in the same layer*. With calibrated durations
   and ALAP timing, ECRs of different layers overlap in time, so the layer
@@ -147,32 +149,31 @@ T1, T2 and readout errors (`mkco.noise`, Table 10):
   - 32,768 shots per circuit, all methods interleaved in one job, at
     calibrated and at 10× lower noise.
   - On the method pairs that sampling separates, at 10× lower noise,
-    `mkco.noise`'s density-matrix model orders **12/12** pairs correctly
-    (8-qubit circuits). The state-aware ESP orders **13/13** (including
-    qae_17). The state-blind ESP gets 4/13, worse than chance, because it
-    rewards the shorter orders.
+    `mkco.noise`'s density-matrix model and the state-aware ESP order **7/7**
+    pairs correctly. The state-blind ESP gets 3/7, worse than chance, because
+    it rewards the shorter orders.
   - At calibrated noise, where the circuits sit near the noise floor, the
-    scores are 6/6, 5/6 and 4/6.
+    scores are 4/4, 4/4 and 2/4.
   - Measured at 10× lower noise, `mkco_noise` reproduces the predicted
     winners. Its circuit is measured twice, as itself and as the method it
     selects, so the pair of numbers shows the sampling spread:
-    - mult_8: it keeps the input order, 0.546–0.548, on par with Qiskit
-      (0.542), while plain MKCO drops to 0.513;
-    - hubbard_8: 0.073–0.074, against 0.072 for Qiskit and 0.065 for plain
-      MKCO;
-    - hhl_8 (MKCO-full): 0.072–0.075, against 0.069 for Qiskit.
+    - mult_8: it keeps the input order (0.546–0.548), while plain MKCO
+      drops to 0.513;
+    - hubbard_8: 0.073–0.074, against 0.070 for the input and 0.065 for
+      plain MKCO;
+    - hhl_8 (MKCO-full): 0.072–0.075, against 0.072 for the input.
   - Larger circuits:
     - add_17 and qae_17 (17 qubits, outputs concentrated on 1 and 4
       bitstrings) were sampled at 10× lower noise: 512 shots per version,
       quantum-trajectory simulation at about 0.85 s per shot. With 512 shots the 95% intervals span about
-      ±0.03, wider than the 1–2% differences the model predicts. Results:
+      ±0.03, wider than the 1–2% differences the model predicts. Results
+      (versions: input, plain MKCO, noise-aware MKCO):
       - qae_17: the measured order is the one the state-aware ESP predicts
-        (noise-aware MKCO 0.353 > plain MKCO 0.305 > input 0.280 > Qiskit O3
-        0.254). The gap between noise-aware MKCO and Qiskit O3 is resolved
-        (non-overlapping intervals). The Hellinger values exceed the predicted
-        state fidelities because phase errors do not show in counts taken in
-        the computational basis.
-      - add_17: the four versions overlap (0.127–0.168), and every predicted
+        (noise-aware MKCO 0.353 > plain MKCO 0.305 > input 0.280), though the
+        intervals overlap. The Hellinger values exceed the predicted state
+        fidelities because phase errors do not show in counts taken in the
+        computational basis.
+      - add_17: the three versions overlap (0.127–0.168), and every predicted
         success probability lies inside its interval. The point estimates run
         the other way from the predicted ranking, but well within the sampling
         error.

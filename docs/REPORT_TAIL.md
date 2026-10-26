@@ -54,15 +54,16 @@ small demonstration; ⭕ are open problems we identified.
     could seed the Max-k-Cut search instead of competing with it.
 12. ✅ **Single-qubit resynthesis inside the run structure** (rewrite mode).
     ZSX re-synthesis of 1q chains plus run-based merging, followed by Max-k-Cut
-    reordering, is shallower than Qiskit O3 on 8/9 benchmarks.
+    reordering, lowers depth further on 5/9 benchmarks (−57.8% and −46.6% on
+    heisenberg_32 and hubbard_18).
 13. ✅ **Two-qubit block resynthesis (KAK) inside the run model** (MKCO-full).
     Finding: transpiled blocks are already ECR-optimal on 7 of 9 benchmarks
     (Table 8). Where KAK does find cheaper blocks (heisenberg_32, hubbard_18),
     locally cheaper blocks can *increase* global depth, because they destroy the
     cross-block rotation merging that MKCO's commutation runs enable. 🧪
     Commutation-aware block formation (E11) lets KAK see blocks that commuting
-    gates had split. It removes CNOTs on 17/19 logical circuits, and ECRs that
-    block KAK misses on hubbard_8 and on Qiskit's hubbard_18 output. ⭕ Scoring
+    gates had split. It removes CNOTs on 17/19 logical circuits, and 4 ECRs
+    that block KAK misses on hubbard_8. ⭕ Scoring
     blocks by their effect on the global layering is still open.
 14. ✅ **State-dependent idle noise (E10, Prop. 12).** A depth-optimal
     reordering can be *less* faithful on hardware, because qubits may wait in
@@ -78,7 +79,7 @@ small demonstration; ⭕ are open problems we identified.
   list scheduling already meets the certified bound. Every layering method that
   uses commutation (JK and MKCO) therefore reaches the same optimal depth.
   MKCO's distinctive contributions there are the *proof* of optimality, the
-  crosstalk mode, and composability with Qiskit. Max-k-Cut search matters on
+  crosstalk mode and the rewrite modes. Max-k-Cut search matters on
   structured commuting workloads (E1–E4).
 - **JK baseline.** No public code exists, so it was re-implemented from the
   published description. A learned independent-set generator could behave
@@ -87,11 +88,10 @@ small demonstration; ⭕ are open problems we identified.
   inferred from used edges are proxies. Real gains should be validated with
   device calibration data or hardware runs. Anchor barriers keep the 2q-depth
   optimal but cost 0.8–7.6% in total depth (0.0–0.9% estimated duration).
-- **Qiskit settings.** Device Target with native directed ECR edges, `ecr`
-  mapped to `ECRGate`, trivial layout, `optimization_level=3`, one seed. Other
-  seeds, optimization levels or Qiskit's approximation degree could change its
-  numbers somewhat. Qiskit re-synthesises gates, so it is compared with MKCO's
-  rewrite modes, not with reorder-only methods.
+- **No Qiskit re-optimisation baseline on the IBM benchmarks.** They are
+  already Qiskit's output at optimization level 3, so the rewrite modes are
+  measured against the input. Qiskit appears only as the routing baseline for
+  untranspiled logical circuits (E9, E11).
 - **Durations** in Tables 1–9 are nominal Eagle values. The noise study (E10)
   uses the ibm_brisbane calibration snapshot from qiskit-ibm-runtime
   (ECR 660–780 ns, sx 60 ns). The ranking of methods there comes from a noise
@@ -115,8 +115,8 @@ small demonstration; ⭕ are open problems we identified.
 
 ```bash
 python experiments/run_ibm127.py benchmarks/ibm127     # all methods, verification, QASM outputs
-python experiments/run_qiskit.py                       # Qiskit O3 on a device Target (+ MKCO after it)
 python experiments/add_merge.py && python experiments/add_rewrite.py && python experiments/add_full.py
+python experiments/add_full_duration.py
 python experiments/run_blocks.py && python experiments/run_pareto.py && python experiments/run_theta.py
 python experiments/summarize_ibm127.py                 # tables -> results/ibm127/tables.md
 python experiments/run_structured.py                   # E1-E6 -> results/structured/*.json

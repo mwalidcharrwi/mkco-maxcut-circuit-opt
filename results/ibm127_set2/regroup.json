@@ -7,23 +7,11 @@
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
     "gates_moved": 3741
-   },
-   "qiskit_o3": {
-    "ecr": 420,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 3736
    }
   },
   {
    "circuit": "qpe_8",
    "input": {
-    "ecr": 484,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 5866
-   },
-   "qiskit_o3": {
     "ecr": 484,
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
@@ -37,23 +25,11 @@
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
     "gates_moved": 7583
-   },
-   "qiskit_o3": {
-    "ecr": 714,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 7572
    }
   },
   {
    "circuit": "tfim_8",
    "input": {
-    "ecr": 280,
-    "plain_ecr_removed": 0,
-    "regroup_ecr_removed": 0,
-    "gates_moved": 2677
-   },
-   "qiskit_o3": {
     "ecr": 280,
     "plain_ecr_removed": 0,
     "regroup_ecr_removed": 0,
