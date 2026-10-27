@@ -1,11 +1,8 @@
 # Prompt for drafting the paper from the GitHub repository
 
 Use this version when the chat reads the results straight from the repository
-instead of an uploaded zip. The repository is **private**, so the chat needs
-one of:
-- a GitHub connector/integration in the chat, authorised for
-  `mwalidcharrwi/mkco-maxcut-circuit-opt` (works while the repo stays private);
-- or the repository made public (then the raw links below work for anyone).
+instead of an uploaded zip. The repository is public, so any chat that can
+browse the web can read the raw links below (a GitHub connector works too).
 
 Paste everything below the line.
 
