@@ -4,7 +4,8 @@ Everything needed to draft the MKCO paper, organised for a writing assistant.
 
 | Path | What it is |
 |---|---|
-| `PAPER_PROMPT.md` | The prompt to paste into the chat, with the paper structure and the rules for numbers and comparisons. |
+| `PAPER_PROMPT.md` | The prompt to paste into the chat together with the uploaded zip, with the paper structure and the rules for numbers and comparisons. |
+| `PAPER_PROMPT_REPO.md` | The same prompt for a chat that reads the results from this GitHub repository (needs a GitHub connector, or the repository made public). |
 | `RESULTS_DIGEST.md` | All results in one document: summary, gap, contributions with evidence, framework, theory statements, setup, results by research question, figure captions, limitations, claims-to-evidence map, references. |
 | `figures/fig1`–`fig8` | New paper figures (PDF vector + PNG): framework workflow, worked example, certified-optimal share, IBM overview, noise-aware selection, crosstalk under a depth budget, capability matrix, theory map. |
 | `figures/*.png` (others) | Figures from the technical report. |

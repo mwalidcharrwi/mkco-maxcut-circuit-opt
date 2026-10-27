@@ -246,7 +246,7 @@ def main():
     # zip for upload
     zpath = os.path.join(P, "mkco_paper_package.zip")
     with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
-        for base in ("README.md", "PAPER_PROMPT.md", "RESULTS_DIGEST.md"):
+        for base in ("README.md", "PAPER_PROMPT.md", "PAPER_PROMPT_REPO.md", "RESULTS_DIGEST.md"):
             z.write(os.path.join(P, base), os.path.join("mkco_paper_package", base))
         for sub in ("figures", "tables", "supplement"):
             for f in sorted(os.listdir(os.path.join(P, sub))):
